@@ -1,0 +1,20 @@
+:root {
+    /* --primary-color: #607ff2; */
+    --primary-color: #00345a;
+    /* --secondary-color: #fd830d; */
+    --secondary-color: #007b7f;
+    /* --text-color: #4c51c6; */
+    --text-color: #004080;
+    --background-color: #e9f4ff;
+
+    --dark-gray: #111111;
+    --light-gray: #d3d3d3;
+    --charcoal: #4f4f4f;
+    --navy-blue: #004080;
+    --teal: #007b7f;
+    --white: #ffffff;
+
+    --light-white: #d9d9d9;
+}
+
+/* Use: color: var(--light-white); */

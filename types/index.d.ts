@@ -9,17 +9,19 @@ interface UserContext {
     balances: UserBalances;
     userNFTs: Nfts;
     collections: Collections;
-    syncWeb3: () => void;
+    fetchWeb3Data: () => void;
     displayPaneMode: DisplayPane;
     setDisplayPaneMode: Dispatch<SetStateAction<DisplayPane>>;
     resetDisplayPane: () => void;
+    loading: boolean;
+    error: string | null;
 }
 
 interface Web3Data {
-    balances: UserBalances;
-    userNFTs: Nfts;
-    collections: Collections;
-    syncWeb3: () => void;
+    data: any;
+    loading: boolean;
+    error: string | null;
+    fetchWeb3Data: () => void;
 }
 
 interface UserBalances {

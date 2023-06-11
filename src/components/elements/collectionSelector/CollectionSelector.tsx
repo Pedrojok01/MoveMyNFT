@@ -16,14 +16,14 @@ const CollectionSelector: FC<CollectionSelectorProps> = ({ setNftsDisplayed }) =
     const [label, setLabel] = useState<JSX.Element>();
 
     const IconToShow = (collec: string) => {
-        const randomNft = userNFTs.nfts.find((item) => item.token_address.toLowerCase() === collec.toLowerCase());
+        const randomNft = userNFTs?.nfts.find((item) => item.token_address.toLowerCase() === collec.toLowerCase());
         if (randomNft) {
             const nft = resolveLink(randomNft);
             return <img className={styles.thumbnail} src={nft.image} alt={nft.name ?? "nft_image"} />;
         } else return <>Loading...</>;
     };
 
-    const items: Item[] = collections.map((item) => {
+    const items: Item[] = collections?.map((item) => {
         return { label: item.name, key: item.token_address.toLowerCase(), icon: IconToShow(item.token_address) };
     });
 

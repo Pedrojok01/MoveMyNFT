@@ -8,8 +8,8 @@ const Verification: FC = () => {
     const { isConnected } = useUserData();
     const isSupportedChain = useSuportedChains();
 
-    const notConnected = "Connect your wallet";
-    const unupportedChain = ` This chain is not supported, \n
+    const notConnected = "Connect your wallet to get started";
+    const unupportedChain = `This chain is not supported, \n
     please select a different chain`;
 
     let message = "";

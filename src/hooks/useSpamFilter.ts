@@ -8,7 +8,7 @@ export const useSpamFilter = () => {
     const [nfts, setNfts] = useState<Nfts>({ nfts: [], total: 0 });
 
     const getAllCollectionAddresses = (nfts: NFTinDB[]) => {
-        return Array.from(new Set(nfts.map((nft) => nft.token_address)));
+        return Array.from(new Set(nfts?.map((nft) => nft.token_address)));
     };
 
     const getAllSpamCollection = async (collections: string[]): Promise<string[]> => {

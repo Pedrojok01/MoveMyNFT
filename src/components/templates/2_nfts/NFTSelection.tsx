@@ -14,7 +14,7 @@ const NFTSelection: FC<NFTProps> = ({ NFTsToTransfer, setNFTsToTransfer }) => {
     const [selectedNFTs, setSelectedNFTs] = useState(NFTsToTransfer ?? []);
 
     useEffect(() => {
-        setNftsDisplayed(nfts.nfts);
+        setNftsDisplayed(nfts?.nfts);
     }, [nfts]);
 
     const isNFTSelected = useCallback(

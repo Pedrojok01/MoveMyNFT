@@ -65,7 +65,7 @@ const TokenSelection: FC<TokenProps> = ({ tokensToTransfer, setTokensToTransfer 
     };
 
     const onValidateTokensToTransfer = () => {
-        setTokensToTransfer(ERC20tokens.filter((token) => selectedTokensKeys.includes(token.key)));
+        setTokensToTransfer(ERC20tokens?.filter((token) => selectedTokensKeys.includes(token.key)));
         setDisplayPaneMode("nfts");
     };
 

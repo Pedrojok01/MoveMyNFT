@@ -1,57 +1,63 @@
 import { useCallback, useEffect, useState } from "react";
-
 import { useAccount, useNetwork } from "wagmi";
-
 import { URL } from "../data/constant";
+
+const fetchData = async (address: string, chainId: number) => {
+    const res = await fetch(`${URL}api/getMoralisData`, {
+        method: "POST",
+        headers: {
+            accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            account: address,
+            chainId: chainId,
+        }),
+    });
+    if (!res.ok) {
+        throw new Error("Network response was not ok");
+    }
+    return await res.json();
+};
 
 export const useWeb3Data = (): Web3Data => {
     const { address } = useAccount();
     const { chain } = useNetwork();
 
-    const [balances, setBalances] = useState<UserBalances>({ native: "0", token: [] });
-    const [userNFTs, setUserNFTs] = useState<Nfts>({ nfts: [], total: 0 });
-    const [collections, setCollections] = useState<Collections>([]);
+    const [data, setData] = useState<any>(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-    const fetchMoralisData = async () => {
-        const res: Response = await fetch(`${URL}api/getMoralisData`, {
-            method: "POST",
-            headers: {
-                accept: "application/json",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                account: address,
-                chainId: chain?.id,
-            }),
-        });
-        const data = await res.json();
+    const fetchWeb3Data = useCallback(async () => {
+        setLoading(true);
+        try {
+            if (!chain?.id) throw new Error("Chain id is not defined");
 
-        setUserNFTs(data?.data?.userNfts);
-        setCollections(data?.data?.collections);
-        setBalances({
-            native: data?.data?.nativeBalance,
-            token: data?.data?.tokenBalance,
-        });
-    };
-
-    const syncWeb3 = useCallback(() => {
-        if (address && chain) {
-            fetchMoralisData();
+            const fetchedData = await fetchData(address as string, chain.id);
+            setData(fetchedData?.data);
+        } catch (error: any) {
+            setError(error.message);
+        } finally {
+            setLoading(false);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [address, chain]);
 
     useEffect(() => {
         if (address && chain?.id) {
-            syncWeb3();
+            let isMounted = true; // add a flag to prevent updating state on unmounted component
+            fetchWeb3Data().then((data) => {
+                if (isMounted) setData(data);
+            });
+            return () => {
+                isMounted = false;
+            };
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [address, chain?.id]);
+    }, [address, chain?.id, fetchWeb3Data]);
 
     return {
-        balances,
-        userNFTs,
-        collections,
-        syncWeb3,
+        data,
+        loading,
+        error,
+        fetchWeb3Data,
     };
 };

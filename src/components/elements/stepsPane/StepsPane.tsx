@@ -29,8 +29,8 @@ const StepsPane: FC<StepsPaneProps> = ({ tokensToTransfer, NFTsToTransfer }) => 
         }
     };
 
-    const tokens = tokensToTransfer.length;
-    const nfts = NFTsToTransfer.length;
+    const tokens = tokensToTransfer?.length;
+    const nfts = NFTsToTransfer?.length;
 
     const items = [
         {

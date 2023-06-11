@@ -6,36 +6,37 @@ import { useWriteContract } from "./useWriteContract";
 import { useUserData } from "../context/UserContextProvider";
 
 export const useContractExecution = () => {
-    const { setDisplayPaneMode, syncWeb3 } = useUserData();
+    const { setDisplayPaneMode, fetchWeb3Data } = useUserData();
     const { executeBundle, executeTransfer } = useWriteContract();
     const { updateBundle } = useMongoDB();
     const multipleApprove = useMultipleApprovals();
 
     const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<Error | null>(null);
 
     const bundle = async (addresses: string[], numbers: (string | number)[]) => {
         setLoading(true);
-        return multipleApprove(addresses, numbers)
-            .then(async () => {
-                const res = await executeBundle(addresses, numbers);
-                if (res?.success) {
-                    if (res?.data) {
-                        updateBundle(res.data);
-                    }
-                    syncWeb3();
-                    setLoading(false);
-                    setDisplayPaneMode("transfer");
-                    return res?.data;
-                } else {
-                    setLoading(false);
-                    return null;
+        setError(null);
+
+        try {
+            await multipleApprove(addresses, numbers);
+            const res = await executeBundle(addresses, numbers);
+            if (res?.success) {
+                if (res?.data) {
+                    updateBundle(res.data);
                 }
-            })
-            .catch((err) => {
-                console.error(err);
-                setLoading(false);
+                fetchWeb3Data();
+                setDisplayPaneMode("transfer");
+                return res?.data;
+            } else {
                 return null;
-            });
+            }
+        } catch (err: any) {
+            setError(err);
+            return null;
+        } finally {
+            setLoading(false);
+        }
     };
 
     const transfer = async (
@@ -46,24 +47,24 @@ export const useContractExecution = () => {
         numbers: (string | number)[]
     ) => {
         setLoading(true);
+        setError(null);
 
         try {
             const res = await executeTransfer(receiver, tokenId, salt, addresses, numbers);
             if (res.success) {
-                syncWeb3();
-                setLoading(false);
+                fetchWeb3Data();
                 setDisplayPaneMode("done");
                 return true;
             } else {
-                setLoading(false);
                 return false;
             }
-        } catch (err) {
-            console.error(err);
-            setLoading(false);
+        } catch (err: any) {
+            setError(err);
             return false;
+        } finally {
+            setLoading(false);
         }
     };
 
-    return { bundle, transfer, loading };
+    return { bundle, transfer, loading, error };
 };

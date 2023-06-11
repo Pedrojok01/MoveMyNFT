@@ -1,13 +1,11 @@
 <div align="center">
-<img src="./public/images/MMW_Logo.png"  width="500px" />
+<img src="./public/images/movemynft_logo_transparent.png"  width="500px" />
 
-<br><br>
+<h1><strong> The easiest and fastest way to transfer your NFTs between addresses.</strong></h1>
 
-<h1><strong>Transfer all the assets from one wallet to another easily.</strong></h1>
-
-[![Stargazers](https://img.shields.io/github/stars/shamrockstudios/MoveMyWallet-app)](https://github.com/shamrockstudios/MoveMyWallet-app/stargazers)
-[![Issues](https://img.shields.io/github/issues/shamrockstudios/MoveMyWallet-app)](https://github.com/shamrockstudios/MoveMyWallet-app/issues)
-[![MIT License](https://img.shields.io/github/license/shamrockstudios/MoveMyWallet-app)](https://github.com/shamrockstudios/MoveMyWallet-app/blob/main/License)
+[![Stargazers](https://img.shields.io/github/stars/Pedrojok01/movemynft-app)](https://github.com/Pedrojok01/movemynft-app/stargazers)
+[![Issues](https://img.shields.io/github/issues/Pedrojok01/movemynft-app)](https://github.com/Pedrojok01/movemynft-app/issues)
+[![MIT License](https://img.shields.io/github/license/Pedrojok01/movemynft-app)](https://github.com/Pedrojok01/movemynft-app/blob/main/License)
 
 </div>
 
@@ -15,8 +13,8 @@
 
 Cross-chain Dapp deployed on Ethereum, Binance Smart-Chain and Polygon. Allow any user to quickly and simply transfer all assets (ERC20, ERC721 and ERC1155) from one address to another.
 
--   Website: https://www.movemywallet.com/
--   Dapp: https://app.movemywallet.com/
+-   Website: https://www.movemynft.com/
+-   Dapp: https://app.movemynft.com/
     <br></br>
 
 ![Preview](./public/images/preview.gif)
@@ -26,8 +24,8 @@ Cross-chain Dapp deployed on Ethereum, Binance Smart-Chain and Polygon. Allow an
 💿 Clone the repo and install all dependencies:
 
 ```sh
-git clone https://github.com/superultra-io/MoveMyWallet-app.git
-cd MoveMyWallet-App
+git clone https://github.com/superultra-io/movemynft-app.git
+cd movemynft-App
 yarn install
 ```
 
