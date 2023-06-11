@@ -1,5 +1,6 @@
 import Moralis from "moralis";
 import { NextApiRequest, NextApiResponse } from "next";
+
 import { getMoralisChain } from "../../utils/getMoralisChain";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

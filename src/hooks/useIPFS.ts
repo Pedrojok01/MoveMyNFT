@@ -18,7 +18,7 @@ export const useIPFS = () => {
             uri = uri.replace("ipfs/ipfs/", "ipfs/");
             nft.image = uri;
         } else if (nftUri.startsWith("https://")) {
-            let uri = fixIpfsUrl(nftUri);
+            const uri = fixIpfsUrl(nftUri);
             nft.image = uri;
         } else {
             nft.image = fallback;

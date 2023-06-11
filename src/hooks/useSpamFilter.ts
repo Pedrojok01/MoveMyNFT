@@ -37,10 +37,12 @@ export const useSpamFilter = () => {
             const filteredNfts = userNFTs?.nfts.filter((nft) => !spams.includes(nft.token_address));
             setNfts({ nfts: filteredNfts, total: filteredNfts.length });
         } else setNfts(userNFTs);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
         removeSpamNFT();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return { nfts };

@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
+
 import { useAccount, useNetwork } from "wagmi";
+
 import { URL } from "../data/constant";
 
 const fetchData = async (address: string, chainId: number) => {

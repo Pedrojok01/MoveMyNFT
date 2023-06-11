@@ -1,5 +1,6 @@
 import { FC } from "react";
 
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Layout } from "antd";
 import Link from "next/link";
 
@@ -9,7 +10,6 @@ import movemynft_logo_transparent from "/public/images/movemynft_logo_transparen
 import movemynft_logo_transparent_small from "/public/android-chrome-192x192.png";
 
 import { useWindowWidthAndHeight } from "../../../hooks";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const { Header } = Layout;
 

@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import type { AppProps } from "next/app";
 import NextHead from "next/head";
 import { WagmiConfig } from "wagmi";
 
 import { UserDataProvider } from "../context/UserContextProvider";
 import { chains, wagmiConfig } from "../wagmi";
+
 import "../styles/globals.css";
-import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 
 function App({ Component, pageProps }: AppProps) {
     const [mounted, setMounted] = useState(false);
