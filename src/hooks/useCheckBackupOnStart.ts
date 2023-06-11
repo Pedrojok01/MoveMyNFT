@@ -1,5 +1,7 @@
 import { useCallback } from "react";
 
+import { useSwitchNetwork } from "wagmi";
+
 import { useMongoDB } from "./useMongoDB";
 import { useUserData } from "../context/UserContextProvider";
 import { toHexString } from "../utils/format";
@@ -8,6 +10,7 @@ import { openNotification } from "../utils/notifications";
 export const useCheckBackupOnStart = () => {
     const { address, chainId, setDisplayPaneMode } = useUserData();
     const { findBundle } = useMongoDB();
+    const { switchNetwork } = useSwitchNetwork();
 
     const checkIfBackupOnStart = useCallback(async () => {
         const result = await findBundle(address as string);
@@ -17,11 +20,8 @@ export const useCheckBackupOnStart = () => {
             const msg = "You have an unsent bundle from your previous session. Finish your transfer to avoid any loss.";
             openNotification("info", title, msg);
             setDisplayPaneMode("transfer");
-            if (window.ethereum && chainId !== result.chainId) {
-                window.ethereum.request({
-                    method: "wallet_switchEthereumChain",
-                    params: [{ chainId: toHexString(result.chainId) }],
-                });
+            if (chainId !== result.chainId && switchNetwork) {
+                switchNetwork(result.chainId);
             }
             return {
                 tokenId: result.tokenId,

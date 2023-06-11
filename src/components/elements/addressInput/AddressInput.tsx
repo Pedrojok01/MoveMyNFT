@@ -1,60 +1,54 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { SearchOutlined } from "@ant-design/icons";
-import { fetchEnsAddress, FetchEnsAddressResult, fetchEnsResolver } from "@wagmi/core";
 import { Input, InputRef } from "antd";
-import { utils } from "ethers";
+import { useEnsResolver } from "wagmi";
 
 import Jazzicons from "./Jazzicons";
-import { isProdEnv } from "../../../data/constant";
-import { getEllipsisTxt } from "../../../utils/format";
+import { useUserData } from "../../../context/UserContextProvider";
+import { isAddress } from "viem";
 
-const AddressInput: React.FC<any> = (props) => {
+const AddressInput: React.FC<{
+    placeholder?: string;
+    autoFocus?: boolean;
+    address: string;
+    setAddress: (address: string) => void;
+}> = ({ placeholder, autoFocus, address, setAddress }) => {
     const input = useRef<InputRef>(null);
-    const [address, setAddress] = useState<string>("");
-    const [validatedAddress, setValidatedAddress] = useState<FetchEnsAddressResult | string>("");
-    const [isDomain, setIsDomain] = useState<boolean>(false);
-    const [error, setError] = useState<string>("");
+    const { chainId } = useUserData();
+    const [userInput, setUserInput] = useState<string>(address || "");
+    const [error, setError] = useState<string | null>(null);
+
+    const isDomain = userInput.endsWith(".eth") || userInput.endsWith(".xyz");
+    const isSupportedENSNetwork = chainId === 1;
+
+    const { data: resolvedAddress, isError: isResolverError } = useEnsResolver({
+        name: userInput,
+        chainId: 1,
+        enabled: isDomain && isSupportedENSNetwork,
+    });
+
+    const updateAddress = useCallback(
+        (value: string) => {
+            setUserInput(value);
+            if (value !== "" && !isAddress(value) && !isDomain) {
+                setError("Invalid address. Please check your input.");
+            } else {
+                setError(null);
+                setAddress(value);
+            }
+        },
+        [setAddress, isDomain]
+    );
 
     useEffect(() => {
-        if (validatedAddress) props.onChange(isDomain ? validatedAddress : address);
-    }, [props, validatedAddress, isDomain, address]);
-
-    const updateAddress = useCallback(async (value: string) => {
-        setError("");
-        setAddress(value);
-
-        const isAddress = utils.isAddress(value);
-        const isSupportedDomain = value.endsWith(".eth") || value.endsWith(".xyz");
-
-        if (isSupportedDomain) {
-            if (isProdEnv) {
-                try {
-                    let result: FetchEnsAddressResult | string;
-                    if (value.endsWith(".eth")) {
-                        result = await fetchEnsAddress({ name: value });
-                    } else {
-                        const resolver = await fetchEnsResolver({ name: value });
-                        result = resolver?.address || "";
-                    }
-                    setValidatedAddress(result);
-                    setIsDomain(true);
-                } catch (error) {
-                    setValidatedAddress("");
-                    setError("Error fetching ENS address");
-                }
-            } else {
-                setError("ENS not supported on this network. Are you connected on a testnet?");
-            }
-        } else if (isAddress) {
-            setValidatedAddress(getEllipsisTxt(value, 10));
-            setIsDomain(false);
-        } else {
-            setValidatedAddress("");
-            setIsDomain(false);
-            setError("Invalid address. Please check your input.");
+        if (resolvedAddress && isDomain) {
+            setAddress(resolvedAddress);
+            setUserInput(resolvedAddress);
         }
-    }, []);
+    }, [resolvedAddress, setAddress, isDomain]);
+
+    const displayError = error || (isResolverError ? "Error fetching ENS address" : null);
 
     const Cross = () => (
         <svg
@@ -69,14 +63,10 @@ const AddressInput: React.FC<any> = (props) => {
             strokeLinejoin="round"
             onClick={() => {
                 setAddress("");
-                setValidatedAddress("");
-                setIsDomain(false);
-                setError("");
-                setTimeout(() => {
-                    if (input.current !== null) {
-                        input.current.focus();
-                    }
-                });
+                setUserInput("");
+                if (input.current !== null) {
+                    input.current.focus();
+                }
             }}
             style={{ cursor: "pointer" }}
         >
@@ -90,24 +80,24 @@ const AddressInput: React.FC<any> = (props) => {
         <>
             <Input
                 ref={input}
-                placeholder={props.placeholder ? props.placeholder : "Public address"}
+                placeholder={placeholder || "Public address"}
                 prefix={
-                    isDomain || address.length === 42 ? (
-                        <Jazzicons seed={(isDomain && validatedAddress ? validatedAddress : address).toLowerCase()} />
-                    ) : (
-                        <SearchOutlined />
-                    )
+                    isDomain || isAddress(userInput) ? <Jazzicons seed={userInput.toLowerCase()} /> : <SearchOutlined />
                 }
-                suffix={validatedAddress && <Cross />}
-                autoFocus={props.autoFocus}
-                value={isDomain && validatedAddress ? `${address} (${getEllipsisTxt(validatedAddress)})` : address}
+                suffix={isAddress(userInput) && <Cross />}
+                autoFocus={autoFocus}
+                value={isAddress(userInput) ? userInput : userInput}
                 onChange={(e) => {
                     updateAddress(e.target.value);
                 }}
-                disabled={validatedAddress !== "" ? true : false}
-                style={{ ...props?.style, backgroundColor: "white", gap: "0.5rem" }}
+                disabled={isAddress(userInput)}
+                style={{ backgroundColor: "white", gap: "0.5rem" }}
             />
-            {error && <p style={{ color: "red", marginBlock: "-15px 15px", fontSize: "12px" }}>{error}</p>}
+            {displayError && (
+                <p style={{ color: "red", marginBlock: "15px", fontSize: "12px", backgroundColor: "white" }}>
+                    {displayError}
+                </p>
+            )}
         </>
     );
 };

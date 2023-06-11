@@ -39,7 +39,7 @@ const Transfer: FC<TransferProps> = ({ bundleDataToTransfer, getAddressFromTrans
             <div className={styles.content}>
                 <div style={{ margin: "auto", width: "80%" }}>
                     <p className={styles.text}>Transfer my assets</p>
-                    <AddressInput autoFocus placeholder="Receiver" onChange={setAddress} />
+                    <AddressInput autoFocus placeholder="Receiver" address={receiver} setAddress={setAddress} />
                     <div className={styles.buttonDiv}>
                         <Button className={styles.transferButton} shape="round" onClick={handleTransfer}>
                             TRANSFER <SendOutlined style={{ padding: "0 20px", fontSize: "18px" }} />

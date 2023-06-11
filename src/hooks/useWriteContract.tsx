@@ -1,25 +1,34 @@
 import { FileSearchOutlined } from "@ant-design/icons";
-import { BigNumber, providers, Contract } from "ethers";
+import { BigNumber } from "ethers";
+import { getContract } from "viem";
+import { useWalletClient } from "wagmi";
 
-import { MoveMyWallet } from "../../types/MoveMyWallet";
 import { useUserData } from "../context/UserContextProvider";
 import { MMW_ABI, ERC20_ABI, NFT_ABI } from "../data/abis";
 import { getContractAddress } from "../data/constant";
 import { getExplorer } from "../utils/getExplorerByChain";
 import { openNotification } from "../utils/notifications";
 
+
 export const useWriteContract = () => {
     const { address, chainId } = useUserData();
     const mmw = getContractAddress(chainId);
 
-    const provider = new providers.Web3Provider(window?.ethereum as any, "any");
-    const signer = provider.getSigner();
-    const mmwInstance = new Contract(mmw, MMW_ABI, signer) as MoveMyWallet;
+    const { data: walletClient } = useWalletClient();
+    if (!walletClient) {
+        throw new Error("WalletClient not found");
+    }
+
+    const mmwInstance: any = getContract({ abi: MMW_ABI, address: mmw as `0x${string}`, walletClient: walletClient });
 
     /* Set Token Allowance:
      ***************************/
     const approveToken = async (token: string, allowance: BigNumber) => {
-        const tokenInstance = new Contract(token, ERC20_ABI, signer) as MoveMyWallet;
+        const tokenInstance: any = getContract({
+            abi: ERC20_ABI,
+            address: token as `0x${string}`,
+            walletClient: walletClient,
+        });
 
         try {
             const tx = await tokenInstance.approve(mmw, allowance);
@@ -40,7 +49,12 @@ export const useWriteContract = () => {
     /* Set Token Allowance:
      ***************************/
     const approveNft = async (nft: string) => {
-        const nftInstance = new Contract(nft, NFT_ABI, signer) as MoveMyWallet;
+        const nftInstance: any = getContract({
+            abi: NFT_ABI,
+            address: nft as `0x${string}`,
+            walletClient: walletClient,
+        });
+
         try {
             const tx = await nftInstance.setApprovalForAll(mmw, true);
             await tx.wait(2);
@@ -63,7 +77,7 @@ export const useWriteContract = () => {
             const eventArr = receipt.events;
 
             if (eventArr) {
-                const assemblyEvent = eventArr.filter((event) => event.event === "AssemblyAsset");
+                const assemblyEvent = eventArr.filter((event: any) => event.event === "AssemblyAsset");
 
                 const data: AssemblyEventData = {
                     addresses: assemblyEvent[0].args?.addresses,

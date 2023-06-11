@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-
-import { Contract, providers } from "ethers";
+import { getContract } from "viem";
+import { usePublicClient } from "wagmi";
 
 import { useUserData } from "../context/UserContextProvider";
 import { ERC20_ABI, NFT_ABI } from "../data/abis";
@@ -8,19 +7,19 @@ import { getContractAddress } from "../data/constant";
 
 export const useReadContract = () => {
     const { address, chainId } = useUserData();
-    const [provider, setProvider] = useState<providers.Web3Provider | undefined>(undefined);
+    const publicClient = usePublicClient();
     const mmw = getContractAddress(chainId);
-
-    useEffect(() => {
-        setProvider(new providers.Web3Provider(window?.ethereum as any, "any"));
-    }, [chainId]);
 
     /* Check if existing allowance of ERC20 token :
      ***********************************************/
     const checkTokenAllowance = async (token: string) => {
-        if (!provider || !mmw) return 0;
+        if (!publicClient || !mmw) return 0;
 
-        const tokenInstance: Contract = new Contract(token, ERC20_ABI, provider);
+        const tokenInstance: any = getContract({
+            abi: ERC20_ABI,
+            address: token as `0x${string}`,
+            publicClient: publicClient,
+        });
 
         try {
             const allowance = await tokenInstance.allowance(address, mmw);
@@ -34,9 +33,13 @@ export const useReadContract = () => {
     /* Check if existing allowance of NFT 1155 :
      ***********************************************/
     const checkNftAllowance = async (nft: string) => {
-        if (!provider || !mmw) return false;
+        if (!publicClient || !mmw) return false;
 
-        const nftInstance: Contract = new Contract(nft, NFT_ABI, provider);
+        const nftInstance: any = getContract({
+            abi: NFT_ABI,
+            address: nft as `0x${string}`,
+            publicClient: publicClient,
+        });
 
         try {
             const allowance = await nftInstance.isApprovedForAll(address, mmw);
