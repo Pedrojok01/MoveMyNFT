@@ -7,7 +7,7 @@ export function useMultipleApprovals() {
     const { checkTokenAllowance, checkNftAllowance } = useReadContract();
     const { approveToken, approveNft } = useWriteContract();
 
-    const multipleApprove = async (addresses: string[], numbers: (string | number | BigNumber)[]) => {
+    const multipleApprove = async (addresses: `0x${string}`[], numbers: (string | number | BigNumber)[]) => {
         const numOfERC20 = Number(numbers[1]);
         const uniqueAddresses = [...new Set(addresses.slice(numOfERC20))];
 

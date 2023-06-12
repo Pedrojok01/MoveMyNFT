@@ -14,7 +14,7 @@ export const useContractExecution = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<Error | null>(null);
 
-    const bundle = async (addresses: string[], numbers: (string | number)[]) => {
+    const bundle = async (addresses: `0x${string}`[], numbers: (string | number)[]) => {
         setLoading(true);
         setError(null);
 

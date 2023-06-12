@@ -18,7 +18,7 @@ interface UserContext {
 }
 
 interface Web3Data {
-    address: `0x${string}`;
+    address: `0x${string}` | undefined;
     isConnected: boolean;
     data: any;
     loading: boolean;
@@ -227,7 +227,7 @@ interface DisplayNFTProps {
 }
 
 interface BundleArrays {
-    addressesArray: string[];
+    addressesArray: `0x${string}`[];
     numbersArray: (number | string | BigNumber)[];
 }
 

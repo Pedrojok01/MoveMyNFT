@@ -5,10 +5,10 @@ export const sortArrayForBundle = (tokens: Token[], NFTs: NFTinDB[]): BundleArra
     const ERC721s = (NFTs || []).filter((nft) => nft.contract_type === "ERC721");
     const ERC1155s = (NFTs || []).filter((nft) => nft.contract_type === "ERC1155");
 
-    const addressesArray = [
-        ...ERC20s.map((token) => token.token_address),
-        ...ERC721s.map((nft) => nft.token_address),
-        ...ERC1155s.map((nft) => nft.token_address),
+    const addressesArray: `0x${string}`[] = [
+        ...ERC20s.map((token) => token.token_address as `0x${string}`),
+        ...ERC721s.map((nft) => nft.token_address as `0x${string}`),
+        ...ERC1155s.map((nft) => nft.token_address as `0x${string}`),
     ];
 
     const numbersArray = [
