@@ -20,7 +20,7 @@ export const useContractExecution = () => {
 
         try {
             await multipleApprove(addresses, numbers);
-            const res = await executeBundle(addresses, numbers);
+            const res: any = await executeBundle(addresses, numbers);
             if (res?.success) {
                 if (res?.data) {
                     updateBundle(res.data);

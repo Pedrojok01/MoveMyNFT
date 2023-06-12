@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useContext } from "react";
 
-import { useAccount, useNetwork } from "wagmi";
+import { useNetwork } from "wagmi";
 
 import UserContext from "./context";
 import { useDisplayPane } from "./useDisplayPane";
@@ -11,8 +11,7 @@ type Props = {
 };
 
 const UserDataProvider: FC<Props> = ({ children }) => {
-    const { address, isConnected } = useAccount();
-    const { data, loading, error, fetchWeb3Data } = useWeb3Data();
+    const { address, isConnected, data, loading, error, fetchWeb3Data } = useWeb3Data();
     const { displayPaneMode, setDisplayPaneMode, resetDisplayPane } = useDisplayPane();
     const { chain } = useNetwork();
     const chainId: number = chain !== undefined ? chain.id : 1;
@@ -23,7 +22,7 @@ const UserDataProvider: FC<Props> = ({ children }) => {
                 address,
                 chainId,
                 isConnected,
-                balances: data?.nativeBalance,
+                balances: { native: data?.nativeBalance, token: data?.tokenBalance },
                 userNFTs: data?.userNfts,
                 collections: data?.collections,
                 fetchWeb3Data,

@@ -1,3 +1,5 @@
+import { Abi } from "viem";
+
 export const NFT_ABI = [
     { inputs: [], stateMutability: "nonpayable", type: "constructor" },
     {
@@ -201,4 +203,4 @@ export const NFT_ABI = [
         stateMutability: "nonpayable",
         type: "function",
     },
-];
+] as Abi;

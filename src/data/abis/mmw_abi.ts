@@ -1,3 +1,5 @@
+import { Abi } from "viem";
+
 export const MMW_ABI = [
     {
         inputs: [
@@ -247,4 +249,4 @@ export const MMW_ABI = [
         stateMutability: "nonpayable",
         type: "function",
     },
-];
+] as Abi;

@@ -14,6 +14,19 @@ if (!alchemyApiKey || !projectId) {
     throw new Error("Some ENV variables are not defined");
 }
 
+// export const { chains, publicClient } = configureChains(
+//     [
+//         mainnet,
+//         goerli,
+//         polygon,
+//         polygonMumbai,
+//         bsc,
+//         bscTestnet,
+//         ...(isProdEnv ? [mainnet, polygon, bsc] : [goerli, polygonMumbai, bscTestnet]),
+//     ],
+//     [alchemyProvider({ apiKey: alchemyApiKey }), publicProvider()]
+// );
+
 export const { chains, publicClient } = configureChains(
     [
         mainnet,

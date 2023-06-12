@@ -33,9 +33,9 @@ export const useSpamFilter = () => {
         const uniqueAddress = getAllCollectionAddresses(userNFTs?.nfts);
         const spams = await getAllSpamCollection(uniqueAddress);
 
-        if (spams.length > 0) {
+        if (spams?.length > 0) {
             const filteredNfts = userNFTs?.nfts.filter((nft) => !spams.includes(nft.token_address));
-            setNfts({ nfts: filteredNfts, total: filteredNfts.length });
+            setNfts({ nfts: filteredNfts, total: filteredNfts?.length });
         } else setNfts(userNFTs);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

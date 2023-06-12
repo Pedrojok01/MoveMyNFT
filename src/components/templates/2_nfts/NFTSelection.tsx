@@ -34,15 +34,15 @@ const NFTSelection: FC<NFTProps> = ({ NFTsToTransfer, setNFTsToTransfer }) => {
                     )
                 );
             } else {
-                setSelectedNFTs([...selectedNFTs, clickedNFT]);
+                setSelectedNFTs((prev) => [...prev, clickedNFT]);
             }
         },
-        [isNFTSelected, selectedNFTs, setSelectedNFTs]
+        [isNFTSelected]
     );
 
     const onSelectAllNFTs = useCallback(() => {
-        setSelectedNFTs(selectedNFTs.length < nftsDisplayed?.length ? nftsDisplayed : []);
-    }, [selectedNFTs, nftsDisplayed]);
+        setSelectedNFTs((prev) => (prev.length < nftsDisplayed?.length ? nftsDisplayed : []));
+    }, [nftsDisplayed]);
 
     const selectButtonText = useMemo(() => {
         return selectedNFTs.length < nftsDisplayed?.length ? "Select All" : "Deselect All";
@@ -57,6 +57,9 @@ const NFTSelection: FC<NFTProps> = ({ NFTsToTransfer, setNFTsToTransfer }) => {
         setDisplayPaneMode("tokens");
     };
 
+    const alertMessage =
+        "Approving a smart-contract comes with risks. We make our best to filter all scam NFTs, but some might still be left behind. Make sure not to approve any undesired NFTs.";
+
     return (
         <div className="pane-content">
             <div className={styles.title}>
@@ -66,16 +69,7 @@ const NFTSelection: FC<NFTProps> = ({ NFTsToTransfer, setNFTsToTransfer }) => {
                 </div>
             </div>
 
-            {userNFTs?.total !== 0 && (
-                <Alert
-                    type="warning"
-                    closable={true}
-                    showIcon
-                    message={
-                        "Approving a smart-contract comes with risks. We make our best to filter all scam NFTs, but some might still be left behind. Make sure not to approve any undesired NFTs."
-                    }
-                />
-            )}
+            {userNFTs?.total > 0 && <Alert type="warning" closable={true} showIcon message={alertMessage} />}
 
             {/* {userNFTs && userNFTs.total > 500 && (
                 <Alert
@@ -87,7 +81,9 @@ const NFTSelection: FC<NFTProps> = ({ NFTsToTransfer, setNFTsToTransfer }) => {
             )} */}
 
             {userNFTs && userNFTs.total === 0 && (
-                <Alert type="info" showIcon message={"No NFTs found on this account"} />
+                <>
+                    <Alert type="info" showIcon message={"No NFTs found on this account"} />
+                </>
             )}
 
             <div className={styles.NFTs} style={{ overflowY: "scroll" }}>

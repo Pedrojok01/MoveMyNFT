@@ -14,7 +14,7 @@ import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 import {IAssemblyNFT} from "./interface/IAssemblyNFT.sol";
 
 /**
- * @title MoveMyWallet
+ * @title MoveMyNFT
  * @author Pedrojok01
  * @notice Allow a user to move multiple assets (ERC20 | ERC721 | ERC1155) via a simple NFT transfer.
  * The contract act as a temporary escrow while the user transfer (claim) his NFT to his new address.
@@ -22,7 +22,7 @@ import {IAssemblyNFT} from "./interface/IAssemblyNFT.sol";
  * except the content that they allow to claim.
  * This contract is based on the EIP-3589: https://eips.ethereum.org/EIPS/eip-3589
  */
-contract MoveMyWallet is ERC721, ERC721Holder, ERC1155Holder, IAssemblyNFT {
+contract MoveMyNFT is ERC721, ERC721Holder, ERC1155Holder, IAssemblyNFT {
     using SafeERC20 for IERC20;
     using Strings for uint256;
 

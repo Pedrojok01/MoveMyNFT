@@ -18,6 +18,8 @@ interface UserContext {
 }
 
 interface Web3Data {
+    address: `0x${string}`;
+    isConnected: boolean;
     data: any;
     loading: boolean;
     error: string | null;

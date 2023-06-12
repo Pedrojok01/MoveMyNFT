@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useMemo, useState } from "react";
 
 import { DownOutlined } from "@ant-design/icons";
 import { Button, Dropdown, MenuProps } from "antd";
@@ -15,25 +15,25 @@ const CollectionSelector: FC<CollectionSelectorProps> = ({ setNftsDisplayed }) =
     const [selected, setSelected] = useState<MenuItem>();
     const [label, setLabel] = useState<JSX.Element>();
 
-    const IconToShow = (collec: string) => {
-        const randomNft = userNFTs?.nfts.find((item) => item.token_address.toLowerCase() === collec.toLowerCase());
-        if (randomNft) {
-            const nft = resolveLink(randomNft);
-            return <img className={styles.thumbnail} src={nft.image} alt={nft.name ?? "nft_image"} />;
-        } else return <>Loading...</>;
-    };
+    const dropdownItems = useMemo(
+        () =>
+            collections?.map((item) => {
+                return {
+                    label: item.name,
+                    key: item.token_address.toLowerCase(),
+                    icon: IconToShow(item.token_address, userNFTs, resolveLink),
+                };
+            }),
+        [collections, userNFTs, resolveLink]
+    );
 
-    const items: Item[] = collections?.map((item) => {
-        return { label: item.name, key: item.token_address.toLowerCase(), icon: IconToShow(item.token_address) };
-    });
+    const items: Item[] = dropdownItems;
 
     const onClick: MenuProps["onClick"] = async ({ key }) => {
-        setSelected(
-            items.find((item) => {
-                setLabel(item.icon);
-                return item.key === key;
-            })
-        );
+        const selectedItem = items.find((item) => item.key === key);
+        setSelected(selectedItem);
+        setLabel(selectedItem?.icon);
+
         const data = await fetchNFTs(address as string, chainId, key);
         setNftsDisplayed(data);
     };
@@ -49,7 +49,6 @@ const CollectionSelector: FC<CollectionSelectorProps> = ({ setNftsDisplayed }) =
                         <span className={styles.collectionName}>{selected?.label}</span>
                     </div>
                 )}
-
                 <DownOutlined />
             </Button>
         </Dropdown>
@@ -57,3 +56,11 @@ const CollectionSelector: FC<CollectionSelectorProps> = ({ setNftsDisplayed }) =
 };
 
 export default CollectionSelector;
+
+export function IconToShow(collec: string, userNFTs: Nfts, resolveLink: (nft: NFTinDB) => NFTinDB) {
+    const randomNft = userNFTs?.nfts.find((item) => item.token_address.toLowerCase() === collec.toLowerCase());
+    if (randomNft) {
+        const nft = resolveLink(randomNft);
+        return <img className={styles.thumbnail} src={nft.image} alt={nft.name ?? "nft_image"} />;
+    } else return <>Loading...</>;
+}

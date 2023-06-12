@@ -1,4 +1,4 @@
-import { getContract } from "viem";
+import { Address, PublicClient, getContract } from "viem";
 import { usePublicClient } from "wagmi";
 
 import { useUserData } from "../context/UserContextProvider";
@@ -7,22 +7,22 @@ import { getContractAddress } from "../data/constant";
 
 export const useReadContract = () => {
     const { address, chainId } = useUserData();
-    const publicClient = usePublicClient();
+    const publicClient: PublicClient = usePublicClient();
     const mmw = getContractAddress(chainId);
 
     /* Check if existing allowance of ERC20 token :
      ***********************************************/
-    const checkTokenAllowance = async (token: string) => {
-        if (!publicClient || !mmw) return 0;
+    const checkTokenAllowance = async (token: Address) => {
+        if (!publicClient || !mmw || !address) return 0;
 
-        const tokenInstance: any = getContract({
+        const tokenInstance = getContract({
+            address: token,
             abi: ERC20_ABI,
-            address: token as `0x${string}`,
-            publicClient: publicClient,
+            publicClient,
         });
 
         try {
-            const allowance = await tokenInstance.allowance(address, mmw);
+            const allowance = await tokenInstance.read.allowance([address, mmw]);
             return allowance;
         } catch (error: any) {
             console.error(error.reason ?? error.message);
@@ -32,17 +32,17 @@ export const useReadContract = () => {
 
     /* Check if existing allowance of NFT 1155 :
      ***********************************************/
-    const checkNftAllowance = async (nft: string) => {
+    const checkNftAllowance = async (nft: Address) => {
         if (!publicClient || !mmw) return false;
 
-        const nftInstance: any = getContract({
+        const nftInstance = getContract({
             abi: NFT_ABI,
-            address: nft as `0x${string}`,
+            address: nft,
             publicClient: publicClient,
         });
 
         try {
-            const allowance = await nftInstance.isApprovedForAll(address, mmw);
+            const allowance = await nftInstance.read.isApprovedForAll([address, mmw]);
             return allowance;
         } catch (error: any) {
             console.error(error.reason ?? error.message);

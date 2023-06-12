@@ -1,7 +1,9 @@
+import { useState, useEffect } from "react";
+
 import { FileSearchOutlined } from "@ant-design/icons";
 import { BigNumber } from "ethers";
-import { getContract } from "viem";
-import { useWalletClient } from "wagmi";
+import { PublicClient, WalletClient, getContract, parseAbiItem } from "viem";
+import { usePublicClient, useWalletClient } from "wagmi";
 
 import { useUserData } from "../context/UserContextProvider";
 import { MMW_ABI, ERC20_ABI, NFT_ABI } from "../data/abis";
@@ -9,30 +11,32 @@ import { getContractAddress } from "../data/constant";
 import { getExplorer } from "../utils/getExplorerByChain";
 import { openNotification } from "../utils/notifications";
 
-
 export const useWriteContract = () => {
     const { address, chainId } = useUserData();
     const mmw = getContractAddress(chainId);
+    const publicClient: PublicClient = usePublicClient();
+    const { data: walletClient, isError, isLoading } = useWalletClient();
+    const [signer, setSigner] = useState<WalletClient>();
 
-    const { data: walletClient } = useWalletClient();
-    if (!walletClient) {
-        throw new Error("WalletClient not found");
-    }
+    useEffect(() => {
+        if (!isLoading && !isError && walletClient) {
+            setSigner(walletClient);
+        }
+    }, [isLoading, isError, walletClient]);
 
-    const mmwInstance: any = getContract({ abi: MMW_ABI, address: mmw as `0x${string}`, walletClient: walletClient });
+    const mmwInstance = getContract({ abi: MMW_ABI, address: mmw as `0x${string}`, walletClient: signer });
 
     /* Set Token Allowance:
      ***************************/
     const approveToken = async (token: string, allowance: BigNumber) => {
-        const tokenInstance: any = getContract({
+        const tokenInstance = getContract({
             abi: ERC20_ABI,
             address: token as `0x${string}`,
-            walletClient: walletClient,
+            walletClient: signer,
         });
 
         try {
-            const tx = await tokenInstance.approve(mmw, allowance);
-            await tx.wait(2);
+            await tokenInstance.write.approve([mmw, allowance]);
             const value = parseInt(allowance.toString()) / 10 ** 18;
             const title = "Token Approval set";
             const msg = `Allowance succesfully set to ${value}.`;
@@ -49,15 +53,14 @@ export const useWriteContract = () => {
     /* Set Token Allowance:
      ***************************/
     const approveNft = async (nft: string) => {
-        const nftInstance: any = getContract({
+        const nftInstance = getContract({
             abi: NFT_ABI,
             address: nft as `0x${string}`,
-            walletClient: walletClient,
+            walletClient: signer,
         });
 
         try {
-            const tx = await nftInstance.setApprovalForAll(mmw, true);
-            await tx.wait(2);
+            await nftInstance.write.setApprovalForAll([mmw, true]);
             const title = "NFT Approval set";
             const msg = `Allowance succesfully set.`;
             openNotification("success", title, msg);
@@ -72,50 +75,60 @@ export const useWriteContract = () => {
 
     const executeBundle = async (addresses: string[], numbers: (string | number)[]) => {
         try {
-            const tx = await mmwInstance.safeMint(address as string, addresses, numbers);
-            const receipt = await tx.wait(2);
-            const eventArr = receipt.events;
+            const hash = await mmwInstance.write.safeMint([address, addresses, numbers]);
 
-            if (eventArr) {
-                const assemblyEvent = eventArr.filter((event: any) => event.event === "AssemblyAsset");
+            return new Promise((resolve, reject) => {
+                publicClient.watchEvent({
+                    address: mmw as `0x${string}`,
+                    event: parseAbiItem(
+                        "event AssemblyAsset(address indexed firstHolder, uint256 indexed tokenId, uint256 salt, address[] addresses, uint256[] numbers)"
+                    ),
+                    args: {
+                        firstHolder: address,
+                    },
+                    onLogs: (logs: any) => {
+                        console.log("logs", logs);
+                        const data: AssemblyEventData = {
+                            addresses: logs[0].args?.addresses,
+                            blockHash: logs[0].blockHash,
+                            blockNumber: Number(logs[0].blockNumber),
+                            chainId: chainId,
+                            numbers: logs[0].args?.numbers.map((item: BigNumber) => item.toString()),
+                            ownerOf: logs[0].args?.firstHolder.toLowerCase(),
+                            salt: Number(logs[0].args?.salt),
+                            tokenId: logs[0].args?.tokenId.toString(),
+                            transactionHash: hash,
+                        };
 
-                const data: AssemblyEventData = {
-                    addresses: assemblyEvent[0].args?.addresses,
-                    blockHash: assemblyEvent[0].blockHash,
-                    blockNumber: Number(assemblyEvent[0].blockNumber),
-                    chainId: chainId,
-                    numbers: assemblyEvent[0].args?.numbers.map((item: BigNumber) => item.toString()),
-                    ownerOf: assemblyEvent[0].args?.firstHolder.toLowerCase(),
-                    salt: Number(assemblyEvent[0].args?.salt),
-                    tokenId: assemblyEvent[0].args?.tokenId.toString(),
-                    transactionHash: assemblyEvent[0].transactionHash,
-                };
+                        const title = "Bundle Created";
+                        const link = `${getExplorer(chainId)}tx/${hash}`;
+                        const msg = (
+                            <>
+                                Your bundle has been successfully created!
+                                <br></br>
+                                <a href={link} target="_blank" rel="noreferrer noopener">
+                                    View in explorer: &nbsp;
+                                    <FileSearchOutlined style={{ transform: "scale(1.3)", color: "purple" }} />
+                                </a>
+                            </>
+                        );
+                        openNotification("success", title, msg);
+                        resolve({
+                            success: true,
+                            data,
+                        });
 
-                const title = "Bundle Created";
-                const link = `${getExplorer(chainId)}tx/${receipt.transactionHash}`;
-                const msg = (
-                    <>
-                        Your bundle has been successfully created!
-                        <br></br>
-                        <a href={link} target="_blank" rel="noreferrer noopener">
-                            View in explorer: &nbsp;
-                            <FileSearchOutlined style={{ transform: "scale(1.3)", color: "purple" }} />
-                        </a>
-                    </>
-                );
-                openNotification("success", title, msg);
-                return {
-                    success: true,
-                    data,
-                };
-            }
+                        // Add code to stop watching for events here
+                    },
+                });
+            });
         } catch (error: any) {
             console.error(error.reason);
             const title = "Unexpected error";
             const msg = `Oops, something went wrong while bundling your assets. \n 
             Reason: ${error.reason}`;
             openNotification("error", title, msg);
-            return { success: false, data: null };
+            return Promise.resolve({ success: false, data: null });
         }
     };
 
@@ -127,10 +140,11 @@ export const useWriteContract = () => {
         numbers: (string | number)[]
     ) => {
         try {
-            const tx = await mmwInstance.burn(receiver, tokenId, salt, addresses, numbers);
-            const receipt = await tx.wait(2);
-
-            const link = `${getExplorer(chainId)}tx/${receipt.transactionHash}`;
+            const hash = await mmwInstance.write.burn([receiver, tokenId, salt, addresses, numbers]);
+            const transaction = await publicClient.getTransactionReceipt({
+                hash: hash,
+            });
+            const link = `${getExplorer(chainId)}tx/${hash}`;
             const title = "Assets unpacked!";
             const msg = (
                 <>
@@ -143,7 +157,7 @@ export const useWriteContract = () => {
                 </>
             );
             openNotification("success", title, msg);
-            return { success: true, data: null };
+            return { success: true, data: transaction };
         } catch (error: any) {
             console.error(error.reason);
             const title = "Unexpected error";

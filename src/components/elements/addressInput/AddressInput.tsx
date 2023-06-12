@@ -2,11 +2,11 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { SearchOutlined } from "@ant-design/icons";
 import { Input, InputRef } from "antd";
+import { isAddress } from "viem";
 import { useEnsResolver } from "wagmi";
 
 import Jazzicons from "./Jazzicons";
 import { useUserData } from "../../../context/UserContextProvider";
-import { isAddress } from "viem";
 
 const AddressInput: React.FC<{
     placeholder?: string;
