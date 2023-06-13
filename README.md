@@ -13,8 +13,7 @@
 
 Cross-chain Dapp deployed on Ethereum, Binance Smart-Chain and Polygon. Allow any user to quickly and simply transfer all assets (ERC20, ERC721 and ERC1155) from one address to another.
 
--   Website: https://www.movemynft.com/
--   Dapp: https://app.movemynft.com/
+-   Website: https://movemynft.com/
     <br></br>
 
 ![Preview](./public/images/preview.gif)

@@ -7,7 +7,7 @@ import Link from "next/link";
 import styles from "./HeaderPage.module.css";
 
 import movemynft_logo_transparent from "/public/images/movemynft_logo_transparent.png";
-import movemynft_logo_transparent_small from "/public/android-chrome-192x192.png";
+import movemynft_logo_transparent_small from "/public/images/movemynft_logo_square_transparent.png";
 
 import { useWindowWidthAndHeight } from "../../../hooks";
 

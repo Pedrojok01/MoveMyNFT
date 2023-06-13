@@ -23,19 +23,19 @@
 
 @media (width < 1050px) {
     .header {
-        padding: 15px 10px !important;
+        padding: 15px 30px 0 0 !important;
     }
     .headerRight {
         gap: 0.5rem;
     }
     .logo {
-        width: 200px;
+        width: 10vw;
     }
 }
 
 @media (width < 550px) {
     .header {
-        padding: 15px 5px !important;
+        padding: 15px 30px !important;
     }
     .logo {
         min-width: 50px;
