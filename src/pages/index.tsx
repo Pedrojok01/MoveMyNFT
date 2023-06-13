@@ -8,7 +8,7 @@ const MainPage: NextPage = () => {
     return (
         <Layout className="layout">
             <Head>
-                <title>Move My Wallet</title>
+                <title>Move My NFT</title>
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
 
                 <link rel="shortcut icon" href="/favicon.ico" />

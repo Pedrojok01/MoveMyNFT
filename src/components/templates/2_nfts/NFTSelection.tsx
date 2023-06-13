@@ -37,6 +37,7 @@ const NFTSelection: FC<NFTProps> = ({ NFTsToTransfer, setNFTsToTransfer }) => {
                 setSelectedNFTs((prev) => [...prev, clickedNFT]);
             }
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [isNFTSelected]
     );
 

@@ -1,5 +1,3 @@
-import { BigNumber } from "ethers";
-
 import { useReadContract } from "./useReadContract";
 import { useWriteContract } from "./useWriteContract";
 
@@ -7,17 +5,17 @@ export function useMultipleApprovals() {
     const { checkTokenAllowance, checkNftAllowance } = useReadContract();
     const { approveToken, approveNft } = useWriteContract();
 
-    const multipleApprove = async (addresses: `0x${string}`[], numbers: (string | number | BigNumber)[]) => {
+    const multipleApprove = async (addresses: `0x${string}`[], numbers: (string | number | bigint)[]) => {
         const numOfERC20 = Number(numbers[1]);
         const uniqueAddresses = [...new Set(addresses.slice(numOfERC20))];
 
         try {
             for (let i = 0; i < addresses.length; i++) {
                 if (i < numOfERC20) {
-                    const toAllow = numbers[i + 4] as BigNumber;
+                    const toAllow = BigInt(numbers[i + 4].toString());
                     const currentAllowance = await checkTokenAllowance(addresses[i]);
 
-                    if (Number(currentAllowance) < Number(toAllow)) {
+                    if (currentAllowance < toAllow) {
                         await approveToken(addresses[i], toAllow);
                     }
                 } else {

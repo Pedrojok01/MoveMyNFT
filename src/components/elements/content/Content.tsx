@@ -22,6 +22,7 @@ const Content: FC = () => {
     const checkOnStart = useCallback(async () => {
         const data = await checkIfBackupOnStart();
         setBundleDataToTransfer(data);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {

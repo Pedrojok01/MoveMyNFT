@@ -19,7 +19,7 @@ function App({ Component, pageProps }: AppProps) {
             <RainbowKitProvider chains={chains}>
                 <UserDataProvider>
                     <NextHead>
-                        <title>Move My wallet</title>
+                        <title>Move My NFT</title>
                     </NextHead>
                     <div style={{ fontFamily: "Sora, sans-serif" }}>{mounted && <Component {...pageProps} />}</div>
                 </UserDataProvider>

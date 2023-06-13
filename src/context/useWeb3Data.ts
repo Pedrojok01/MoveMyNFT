@@ -48,6 +48,7 @@ export const useWeb3Data = (): Web3Data => {
         if (chain?.id && address) {
             fetchWeb3Data();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [chain?.id, address]);
 
     return {

@@ -47,14 +47,14 @@ MONGODB_COLLECTION = collection_name;
 
 ```jsx
 // Production:
-export const MOVE_MY_WALLET_ETHEREUM = "";
-export const MOVE_MY_WALLET_BSC = "";
-export const MOVE_MY_WALLET_POLYGON = "";
+export const MOVE_MY_NFT_ETHEREUM = "";
+export const MOVE_MY_NFT_BSC = "";
+export const MOVE_MY_NFT_POLYGON = "";
 
 // Development:
-export const MOVE_MY_WALLET_GOERLI = "";
-export const MOVE_MY_WALLET_MUMBAI = "";
-export const MOVE_MY_WALLET_BSC_TESTNET = "";
+export const MOVE_MY_NFT_GOERLI = "";
+export const MOVE_MY_NFT_MUMBAI = "";
+export const MOVE_MY_NFT_BSC_TESTNET = "";
 ```
 
 🔎 Locate the ABIs files in the `src/data/abis` folder and edit your ABIs if you've made any changes to the smart-contracts;

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
 import { FileSearchOutlined } from "@ant-design/icons";
-import { BigNumber } from "ethers";
 import { PublicClient, WalletClient, getContract, parseAbiItem } from "viem";
 import { usePublicClient, useWalletClient } from "wagmi";
 
@@ -28,7 +27,7 @@ export const useWriteContract = () => {
 
     /* Set Token Allowance:
      ***************************/
-    const approveToken = async (token: string, allowance: BigNumber) => {
+    const approveToken = async (token: string, allowance: bigint) => {
         const tokenInstance = getContract({
             abi: ERC20_ABI,
             address: token as `0x${string}`,
@@ -36,7 +35,13 @@ export const useWriteContract = () => {
         });
 
         try {
-            await tokenInstance.write.approve([mmw, allowance]);
+            const hash = await tokenInstance.write.approve([mmw, allowance]);
+
+            await publicClient.waitForTransactionReceipt({
+                confirmations: 5,
+                hash: hash,
+            });
+
             const value = parseInt(allowance.toString()) / 10 ** 18;
             const title = "Token Approval set";
             const msg = `Allowance succesfully set to ${value}.`;
@@ -60,15 +65,19 @@ export const useWriteContract = () => {
         });
 
         try {
-            await nftInstance.write.setApprovalForAll([mmw, true]);
+            const hash = await nftInstance.write.setApprovalForAll([mmw, true]);
+            await publicClient.waitForTransactionReceipt({
+                confirmations: 5,
+                hash: hash,
+            });
             const title = "NFT Approval set";
             const msg = `Allowance succesfully set.`;
             openNotification("success", title, msg);
         } catch (error: any) {
-            console.error(error.reason);
+            console.error(error.reason ?? error.message ?? error);
             const title = "NFT Approval denied";
             const msg = ` Something went wrong while setting the allowance.\n 
-            Reason: ${error.reason}`;
+            Reason: ${error.reason ?? error.message ?? error}`;
             openNotification("error", title, msg);
         }
     };
@@ -92,7 +101,7 @@ export const useWriteContract = () => {
                             blockHash: logs[0].blockHash,
                             blockNumber: Number(logs[0].blockNumber),
                             chainId: chainId,
-                            numbers: logs[0].args?.numbers.map((item: BigNumber) => item.toString()),
+                            numbers: logs[0].args?.numbers.map((item: bigint) => item.toString()),
                             ownerOf: logs[0].args?.firstHolder.toLowerCase(),
                             salt: Number(logs[0].args?.salt),
                             tokenId: logs[0].args?.tokenId.toString(),
@@ -125,7 +134,7 @@ export const useWriteContract = () => {
             console.error(error.reason ?? error.message ?? error);
             const title = "Unexpected error";
             const msg = `Oops, something went wrong while bundling your assets. \n 
-            Reason: ${error.reason}`;
+            Reason: ${error.reason ?? error.message ?? error}`;
             openNotification("error", title, msg);
             return Promise.resolve({ success: false, data: null });
         }
@@ -141,6 +150,7 @@ export const useWriteContract = () => {
         try {
             const hash = await mmwInstance.write.burn([receiver, tokenId, salt, addresses, numbers]);
             const transaction = await publicClient.waitForTransactionReceipt({
+                confirmations: 5,
                 hash: hash,
             });
             const link = `${getExplorer(chainId)}tx/${hash}`;
@@ -161,7 +171,7 @@ export const useWriteContract = () => {
             console.error(error.reason ?? error.message ?? error);
             const title = "Unexpected error";
             const msg = `Oops, something went wrong while transfering your assets. \n 
-            Reason: ${error.reason}`;
+            Reason: ${error.reason ?? error.message ?? error}`;
             openNotification("error", title, msg);
             return { success: false, data: null };
         }

@@ -12,8 +12,8 @@ export const useReadContract = () => {
 
     /* Check if existing allowance of ERC20 token :
      ***********************************************/
-    const checkTokenAllowance = async (token: Address) => {
-        if (!publicClient || !mmw || !address) return 0;
+    const checkTokenAllowance = async (token: Address): Promise<bigint> => {
+        if (!publicClient || !mmw || !address) return 0n;
 
         const tokenInstance = getContract({
             address: token,
@@ -23,10 +23,11 @@ export const useReadContract = () => {
 
         try {
             const allowance = await tokenInstance.read.allowance([address, mmw]);
+            if (typeof allowance !== "bigint") throw new Error("allowance is not a bigint");
             return allowance;
         } catch (error: any) {
             console.error(error.reason ?? error.message ?? error);
-            return 0;
+            return 0n;
         }
     };
 
@@ -42,7 +43,7 @@ export const useReadContract = () => {
         });
 
         try {
-            const allowance = await nftInstance.read.isApprovedForAll([address, mmw]);
+            const allowance = await nftInstance.read.isApprovedForAll([address as string, mmw]);
             return allowance;
         } catch (error: any) {
             console.error(error.reason ?? error.message ?? error);

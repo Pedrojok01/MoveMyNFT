@@ -1,5 +1,3 @@
-import { formatBigNumber } from "./format";
-
 export const sortArrayForBundle = (tokens: Token[], NFTs: NFTinDB[]): BundleArrays => {
     const ERC20s = tokens || [];
     const ERC721s = (NFTs || []).filter((nft) => nft.contract_type === "ERC721");
@@ -16,7 +14,7 @@ export const sortArrayForBundle = (tokens: Token[], NFTs: NFTinDB[]): BundleArra
         ERC20s.length,
         ERC721s.length,
         ERC1155s.length,
-        ...ERC20s.map((token) => formatBigNumber(token.balance, token.decimals)),
+        ...ERC20s.map((token) => BigInt(token.balance)),
         ...ERC721s.map((nft) => nft.token_id),
         ...ERC1155s.map((nft) => nft.token_id),
         ...ERC1155s.map((nft) => nft.amount || 0),

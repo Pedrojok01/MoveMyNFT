@@ -9,7 +9,7 @@ const { Meta } = Card;
 const DisplayNFT: FC<DisplayNFTProps> = ({ item, index, isNFTSelected, handleClickCard }) => {
     const { isTablet } = useWindowWidthAndHeight();
     const { resolveLink } = useIPFS();
-    const nft = useMemo(() => resolveLink(item), [item]);
+    const nft = useMemo(() => resolveLink(item), [item, resolveLink]);
 
     return (
         <>

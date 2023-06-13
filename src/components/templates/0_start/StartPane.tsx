@@ -7,10 +7,11 @@ import { useUserData } from "../../../context/UserContextProvider";
 
 const StartPane: FC = () => {
     const { setDisplayPaneMode } = useUserData();
+
     return (
         <div className={styles.startPane}>
             <p className={styles.text}>
-                Welcome to<br></br> <span style={{ fontSize: "60px" }}>Move My Wallet</span>
+                Welcome to<br></br> <span style={{ fontSize: "60px" }}>Move My NFT</span>
             </p>
             <div className={styles.buttonDiv}>
                 <Button className="button-black-big" shape="round" onClick={() => setDisplayPaneMode("tokens")}>

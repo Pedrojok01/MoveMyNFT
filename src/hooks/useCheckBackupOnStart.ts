@@ -29,7 +29,7 @@ export const useCheckBackupOnStart = () => {
                 numbers: result.numbers,
             };
         } else return undefined;
-    }, [address, chainId, findBundle, setDisplayPaneMode]);
+    }, [address, chainId, findBundle, setDisplayPaneMode, switchNetwork]);
 
     return { checkIfBackupOnStart };
 };
