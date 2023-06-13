@@ -3,9 +3,9 @@
 
 <h1><strong> The easiest and fastest way to transfer your NFTs between addresses.</strong></h1>
 
-[![Stargazers](https://img.shields.io/github/stars/Pedrojok01/movemynft-app)](https://github.com/Pedrojok01/movemynft-app/stargazers)
-[![Issues](https://img.shields.io/github/issues/Pedrojok01/movemynft-app)](https://github.com/Pedrojok01/movemynft-app/issues)
-[![MIT License](https://img.shields.io/github/license/Pedrojok01/movemynft-app)](https://github.com/Pedrojok01/movemynft-app/blob/main/License)
+[![Stargazers](https://img.shields.io/github/stars/Pedrojok01/movemynft)](https://github.com/Pedrojok01/movemynft-app/stargazers)
+[![Issues](https://img.shields.io/github/issues/Pedrojok01/movemynft)](https://github.com/Pedrojok01/movemynft-app/issues)
+[![MIT License](https://img.shields.io/github/license/Pedrojok01/movemynft)](https://github.com/Pedrojok01/movemynft-app/blob/main/License)
 
 </div>
 
