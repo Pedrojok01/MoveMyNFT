@@ -5,6 +5,11 @@
     border: 1px solid var(--light-white);
 }
 
+.selector {
+    height: 60%;
+    overflow: auto;
+}
+
 .selectorTitle {
     margin-left: 5px;
 }

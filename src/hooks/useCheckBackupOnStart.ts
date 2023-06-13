@@ -4,7 +4,6 @@ import { useSwitchNetwork } from "wagmi";
 
 import { useMongoDB } from "./useMongoDB";
 import { useUserData } from "../context/UserContextProvider";
-import { toHexString } from "../utils/format";
 import { openNotification } from "../utils/notifications";
 
 export const useCheckBackupOnStart = () => {

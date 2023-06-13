@@ -21,7 +21,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await connectToDb(mongodbUri);
 
         const bundleToDelete = await BundleSchema.find({ tokenId: tokenId });
-        await bundleToDelete[0].remove();
+        await bundleToDelete[0].deleteOne();
 
         disconnectFromDb();
         return res.status(200).json({ success: true, message: "Bundle removed successfully from DB" });

@@ -6,7 +6,6 @@ import styles from "./Done.module.css";
 
 const Done: FC<DoneProps> = ({ address, onReset }) => {
     return (
-        // <div className={styles.container}>
         <div className="small-pane">
             <p className={styles.title}>Done !</p>
             <p className={styles.text}>

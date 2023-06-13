@@ -47,12 +47,16 @@ a {
     display: flex;
     height: 100%;
     min-width: 350px;
+    border-radius: 20px;
+    box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.4);
 }
 
 .display-pane {
     flex: 2;
     height: 100%;
     min-width: 550px;
+    border-radius: 20px;
+    box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.4);
 }
 
 .pane {
@@ -75,13 +79,10 @@ a {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
     flex-direction: column;
     padding: 30px;
-
     border-radius: 20px;
     width: 90%;
-
     text-align: center;
     margin: auto;
     background: linear-gradient(
@@ -90,6 +91,7 @@ a {
         rgba(159, 161, 198, 0.4) 50%,
         rgba(223, 223, 228, 0.3) 100%
     );
+    box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.4);
 }
 
 .pane-content {

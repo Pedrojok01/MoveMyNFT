@@ -87,7 +87,6 @@ export const useWriteContract = () => {
                         firstHolder: address,
                     },
                     onLogs: (logs: any) => {
-                        console.log("logs", logs);
                         const data: AssemblyEventData = {
                             addresses: logs[0].args?.addresses,
                             blockHash: logs[0].blockHash,
@@ -123,7 +122,7 @@ export const useWriteContract = () => {
                 });
             });
         } catch (error: any) {
-            console.error(error.reason);
+            console.error(error.reason ?? error.message ?? error);
             const title = "Unexpected error";
             const msg = `Oops, something went wrong while bundling your assets. \n 
             Reason: ${error.reason}`;
@@ -141,7 +140,7 @@ export const useWriteContract = () => {
     ) => {
         try {
             const hash = await mmwInstance.write.burn([receiver, tokenId, salt, addresses, numbers]);
-            const transaction = await publicClient.getTransactionReceipt({
+            const transaction = await publicClient.waitForTransactionReceipt({
                 hash: hash,
             });
             const link = `${getExplorer(chainId)}tx/${hash}`;
@@ -159,7 +158,7 @@ export const useWriteContract = () => {
             openNotification("success", title, msg);
             return { success: true, data: transaction };
         } catch (error: any) {
-            console.error(error.reason);
+            console.error(error.reason ?? error.message ?? error);
             const title = "Unexpected error";
             const msg = `Oops, something went wrong while transfering your assets. \n 
             Reason: ${error.reason}`;

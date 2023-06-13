@@ -57,8 +57,20 @@ const NFTSelection: FC<NFTProps> = ({ NFTsToTransfer, setNFTsToTransfer }) => {
         setDisplayPaneMode("tokens");
     };
 
-    const alertMessage =
-        "Approving a smart-contract comes with risks. We make our best to filter all scam NFTs, but some might still be left behind. Make sure not to approve any undesired NFTs.";
+    const UserAlerts: FC<{ total: number }> = ({ total }) => {
+        const alertMessage =
+            "Approving a smart-contract comes with risks. We make our best to filter all scam NFTs, but some might still be left behind. Make sure not to approve any undesired NFTs.";
+
+        if (total > 0) {
+            return <Alert type="warning" closable={true} showIcon message={alertMessage} />;
+        }
+
+        if (total === 0) {
+            return <Alert type="info" showIcon message={"No NFTs found on this account"} />;
+        }
+
+        return null;
+    };
 
     return (
         <div className="pane-content">
@@ -68,23 +80,7 @@ const NFTSelection: FC<NFTProps> = ({ NFTsToTransfer, setNFTsToTransfer }) => {
                     <CollectionSelector setNftsDisplayed={setNftsDisplayed} />
                 </div>
             </div>
-
-            {userNFTs?.total > 0 && <Alert type="warning" closable={true} showIcon message={alertMessage} />}
-
-            {/* {userNFTs && userNFTs.total > 500 && (
-                <Alert
-                    type="info"
-                    closable={true}
-                    showIcon
-                    message={`You can only move the first 500 NFTs shown here. You will have to carry out another transfer for the rest.`}
-                />
-            )} */}
-
-            {userNFTs && userNFTs.total === 0 && (
-                <>
-                    <Alert type="info" showIcon message={"No NFTs found on this account"} />
-                </>
-            )}
+            <UserAlerts total={userNFTs?.total} />
 
             <div className={styles.NFTs} style={{ overflowY: "scroll" }}>
                 {nftsDisplayed?.map((nft, index) => {

@@ -45,8 +45,10 @@ export const useWeb3Data = (): Web3Data => {
     }, [address, chain]);
 
     useEffect(() => {
-        fetchWeb3Data();
-    }, []);
+        if (chain?.id && address) {
+            fetchWeb3Data();
+        }
+    }, [chain?.id, address]);
 
     return {
         address,

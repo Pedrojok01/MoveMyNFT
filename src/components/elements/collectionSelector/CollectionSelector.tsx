@@ -27,10 +27,8 @@ const CollectionSelector: FC<CollectionSelectorProps> = ({ setNftsDisplayed }) =
         [collections, userNFTs, resolveLink]
     );
 
-    const items: Item[] = dropdownItems;
-
-    const onClick: MenuProps["onClick"] = async ({ key }) => {
-        const selectedItem = items.find((item) => item.key === key);
+    const handleMenuClick: MenuProps["onClick"] = async ({ key }) => {
+        const selectedItem = dropdownItems.find((item) => item.key === key);
         setSelected(selectedItem);
         setLabel(selectedItem?.icon);
 
@@ -38,18 +36,27 @@ const CollectionSelector: FC<CollectionSelectorProps> = ({ setNftsDisplayed }) =
         setNftsDisplayed(data);
     };
 
+    const itemsProps = {
+        items: dropdownItems,
+        onClick: handleMenuClick,
+    };
+
     return (
-        <Dropdown menu={{ items, onClick }} trigger={["click"]}>
+        <Dropdown menu={itemsProps} overlayClassName={styles.selector}>
             <Button className={styles.button}>
-                {!selected ? (
-                    <span className={styles.selectorTitle}>Select Collections</span>
-                ) : (
-                    <div className={styles.collectionItem}>
-                        <span className={styles.collectionLogo}>{label}</span>
-                        <span className={styles.collectionName}>{selected?.label}</span>
-                    </div>
-                )}
-                <DownOutlined />
+                <>
+                    {!selected ? (
+                        <>
+                            <span className={styles.selectorTitle}>Select Collections</span>
+                            <DownOutlined />
+                        </>
+                    ) : (
+                        <div className={styles.collectionItem}>
+                            <span className={styles.collectionLogo}>{label}</span>
+                            <span className={styles.collectionName}>{selected?.label}</span>
+                        </div>
+                    )}
+                </>
             </Button>
         </Dropdown>
     );
