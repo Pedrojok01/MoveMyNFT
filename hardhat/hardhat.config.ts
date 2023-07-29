@@ -1,20 +1,19 @@
+/** @type import('hardhat/config').HardhatUserConfig */
 import dotenv from "dotenv";
 dotenv.config();
+import { HardhatUserConfig } from "hardhat/types";
 import "@nomicfoundation/hardhat-toolbox";
-import "@nomiclabs/hardhat-etherscan";
-import { HardhatUserConfig } from "hardhat/config";
 import "hardhat-contract-sizer";
-// require("hardhat-docgen");
 
 const privateKey: string | undefined = process.env.PRIVATE_KEY;
 
 const config: HardhatUserConfig = {
     solidity: {
-        version: "0.8.18",
+        version: "0.8.19",
         settings: {
             optimizer: {
                 enabled: true,
-                runs: 1000,
+                runs: 500,
             },
         },
     },
@@ -53,7 +52,7 @@ const config: HardhatUserConfig = {
         },
     },
     gasReporter: {
-        enabled: process.env.REPORT_GAS ? true : false,
+        enabled: true,
     },
     contractSizer: {
         runOnCompile: true,

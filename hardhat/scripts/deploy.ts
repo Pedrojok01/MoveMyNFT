@@ -1,17 +1,14 @@
 import hre, { ethers } from "hardhat";
 import fs from "fs";
 
-const name = "MoveMyNFT";
-const symbol = "MMW";
-const uri = "ipfs://QmUhMMtsyLNPCcjCCsst715Qm5JyqkCdvQqu65aDT95QJh";
-
 async function main() {
     const MoveMyNFT = await ethers.getContractFactory("MoveMyNFT");
-    const moveMyNFT = await MoveMyNFT.deploy(name, symbol, uri);
-    await moveMyNFT.deployed();
+    const moveMyNFT = await MoveMyNFT.deploy();
+    await moveMyNFT.waitForDeployment();
+    const contractAddress = await moveMyNFT.getAddress();
 
     console.log("\n");
-    console.log("MoveMyNFT deployed to: ", moveMyNFT.address);
+    console.log("MoveMyNFT deployed to: ", contractAddress);
     console.log("\n");
 
     // Get Staking Contract ABI
@@ -23,15 +20,11 @@ async function main() {
     console.log(abi);
     console.log("\n");
 
-    /** WAITING:
-     ************/
-    await moveMyNFT.deployTransaction.wait(5);
-
     /** VERIFICATION:
      *****************/
     await hre.run("verify:verify", {
-        address: moveMyNFT.address,
-        constructorArguments: [name, symbol, uri],
+        address: contractAddress,
+        constructorArguments: [],
     });
 }
 
