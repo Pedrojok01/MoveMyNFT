@@ -39,6 +39,39 @@ const config: HardhatUserConfig = {
             accounts: privateKey !== undefined ? [privateKey] : [],
             chainId: 80001,
         },
+        // Optimism networks
+        optimism: {
+            url: `${process.env.API_NODE_OPTIMISM}`,
+            accounts: privateKey !== undefined ? [privateKey] : [],
+            chainId: 10,
+        },
+        optimismGoerli: {
+            url: `${process.env.API_NODE_OPTIMISM_TEST}`,
+            accounts: privateKey !== undefined ? [privateKey] : [],
+            chainId: 420,
+        },
+        // Abitrum networks
+        arbitrum: {
+            url: `${process.env.API_NODE_ARBITRUM}`,
+            accounts: privateKey !== undefined ? [privateKey] : [],
+            chainId: 42161,
+        },
+        arbitrumGoerli: {
+            url: `${process.env.API_NODE_ARBITRUM_TEST}`,
+            accounts: privateKey !== undefined ? [privateKey] : [],
+            chainId: 421613,
+        },
+        // Fantom networks
+        fantom: {
+            url: `${process.env.API_NODE_FANTOM}`,
+            accounts: privateKey !== undefined ? [privateKey] : [],
+            chainId: 250,
+        },
+        fantomTestnet: {
+            url: `${process.env.API_NODE_FANTOM_TEST}`,
+            accounts: privateKey !== undefined ? [privateKey] : [],
+            chainId: 4002,
+        },
         // BNB Chain networks
         bsc: {
             url: `${process.env.API_NODE_BSC}`,
@@ -64,11 +97,16 @@ const config: HardhatUserConfig = {
             goerli: process.env.ETHERSCAN_API_KEY ?? "",
             polygonMumbai: process.env.POLYGONSCAN_API_KEY ?? "",
             polygon: process.env.POLYGONSCAN_API_KEY ?? "",
+            optimism: process.env.OPTIMISM_API_KEY ?? "",
+            optimismGoerli: process.env.OPTIMISM_API_KEY ?? "",
+            arbitrum: process.env.ARBITRUM_API_KEY ?? "",
+            arbitrumGoerli: process.env.ARBITRUM_API_KEY ?? "",
+            fantom: process.env.FATOMSCAN_API_KEY ?? "",
+            fantomTestnet: process.env.FATOMSCAN_API_KEY ?? "",
             bsc: process.env.BSCSCAN_API_KEY ?? "",
             bscTestnet: process.env.BSCSCAN_API_KEY ?? "",
         },
     },
-
     // docgen: {
     //   path: "./docs",
     //   clear: true,
