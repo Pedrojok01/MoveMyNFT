@@ -1,7 +1,7 @@
 {
     "name": "move_my_nft",
-    "version": "1.0.1",
-    "author": "Pedrojok01",
+    "version": "1.0.2",
+    "author": "Pedrojok01 <pedrojok@pm.me>",
     "license": "MIT",
     "private": true,
     "scripts": {
@@ -15,7 +15,6 @@
         "@ant-design/icons": "5.1.4",
         "@rainbow-me/rainbowkit": "1.0.1",
         "antd": "5.6.1",
-        "mongoose": "7.2.4",
         "moralis": "2.22.2",
         "next": "13.4.5",
         "react": "18.2.0",

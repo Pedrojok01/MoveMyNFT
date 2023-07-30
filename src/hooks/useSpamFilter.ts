@@ -11,23 +11,26 @@ export const useSpamFilter = () => {
         return Array.from(new Set(nfts?.map((nft) => nft.token_address)));
     };
 
-    const getAllSpamCollection = async (collections: string[]): Promise<string[]> => {
-        const res = await fetch(`${URL}api/getSpamContract/`, {
-            method: "POST",
-            headers: {
-                accept: "application/json",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                account: address,
-                chainId: chainId,
-                contracts: collections,
-            }),
-        });
+    const getAllSpamCollection = useCallback(
+        async (collections: string[]): Promise<string[]> => {
+            const res = await fetch(`${URL}api/getSpamContract/`, {
+                method: "POST",
+                headers: {
+                    accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    account: address,
+                    chainId: chainId,
+                    contracts: collections,
+                }),
+            });
 
-        const data = await res.json();
-        return data.data;
-    };
+            const data = await res.json();
+            return data.data;
+        },
+        [address, chainId]
+    );
 
     const removeSpamNFT = useCallback(async () => {
         const uniqueAddress = getAllCollectionAddresses(userNFTs?.nfts);
@@ -38,7 +41,7 @@ export const useSpamFilter = () => {
             setNfts({ nfts: filteredNfts, total: filteredNfts?.length });
         } else setNfts(userNFTs);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [userNFTs]);
 
     useEffect(() => {
         removeSpamNFT();

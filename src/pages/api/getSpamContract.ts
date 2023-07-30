@@ -1,5 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
+export const config = {
+    api: {
+        responseLimit: false,
+    },
+};
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { account, chainId, contracts } = req.body;
 

@@ -5,7 +5,7 @@ import { PublicClient, WalletClient, getContract, parseAbiItem } from "viem";
 import { usePublicClient, useWalletClient } from "wagmi";
 
 import { useUserData } from "../context/UserContextProvider";
-import { MMW_ABI, ERC20_ABI, NFT_ABI } from "../data/abis";
+import { MMNFT_ABI, ERC20_ABI, NFT_ABI } from "../data/abis";
 import { getContractAddress } from "../data/constant";
 import { getExplorer } from "../utils/getExplorerByChain";
 import { openNotification } from "../utils/notifications";
@@ -23,7 +23,7 @@ export const useWriteContract = () => {
         }
     }, [isLoading, isError, walletClient]);
 
-    const mmwInstance = getContract({ abi: MMW_ABI, address: mmw as `0x${string}`, walletClient: signer });
+    const mmwInstance = getContract({ abi: MMNFT_ABI, address: mmw as `0x${string}`, walletClient: signer });
 
     /* Set Token Allowance:
      ***************************/
