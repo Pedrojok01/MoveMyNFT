@@ -9,6 +9,12 @@ interface ERC1155Partial {
     function safeTransferFrom(address from, address to, uint256 id, uint256 value, bytes calldata data) external;
 }
 
+/**
+ * @title MoveMyNFT
+ * @author Pedrojok01
+ * @notice Simple & efficient way to batch transfer ERC721 & ERC1155 NFTs.
+ */
+
 contract MoveMyNFT {
     uint256 public immutable MAX_BATCH_SIZE = 500;
 
@@ -20,16 +26,10 @@ contract MoveMyNFT {
         _;
     }
 
-    function _batchSizeOK(uint256 _batchSize) private pure {
-        if (_batchSize > MAX_BATCH_SIZE) {
-            revert BatchTooLarge({batchLength: _batchSize, maxBatchSize: MAX_BATCH_SIZE});
-        }
-    }
-
     /**
      * @dev batchTransferERC721
-     * @notice Transfer ERC721 tokens from the caller to a recipient.
-     * @notice Don't forget to execute setApprovalForAll first to authorize this contract.
+     * @notice Batch transfer one/many/all ERC721 tokens of a collection from the caller to a recipient.
+     * @notice Remember to call setApprovalForAll first to authorize this contract.
      * @param tokenContract Address of the ERC721 contract;
      * @param recipient Address of the recipient;
      * @param tokenIds IDs of the tokens to be transferred;
@@ -49,8 +49,8 @@ contract MoveMyNFT {
 
     /**
      * @dev batchTransferERC1155
-     * @notice Transfer ERC1155 tokens from the caller to a recipient.
-     * @notice Don't forget to execute setApprovalForAll first to authorize this contract.
+     * @notice Batch transfer one/many/all ERC1155 tokens of a collection from the caller to a recipient.
+     * @notice Remember to call setApprovalForAll first to authorize this contract.
      * @param tokenContract Address of the ERC1155 contract;
      * @param recipient Address of the recipient;
      * @param tokenIds IDs of the tokens to be transferred;
@@ -71,6 +71,12 @@ contract MoveMyNFT {
             unchecked {
                 i++;
             }
+        }
+    }
+
+    function _batchSizeOK(uint256 _batchSize) private pure {
+        if (_batchSize > MAX_BATCH_SIZE) {
+            revert BatchTooLarge({batchLength: _batchSize, maxBatchSize: MAX_BATCH_SIZE});
         }
     }
 }

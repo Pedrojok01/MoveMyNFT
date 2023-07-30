@@ -20,6 +20,10 @@ async function main() {
     console.log(abi);
     console.log("\n");
 
+    /** WAIT BEFORE VERIF:
+     **********************/
+    await moveMyNFT.deploymentTransaction()?.wait(10);
+
     /** VERIFICATION:
      *****************/
     await hre.run("verify:verify", {

@@ -40,18 +40,18 @@ const config: HardhatUserConfig = {
             chainId: 80001,
         },
         // Optimism networks
-        optimism: {
+        optimisticEthereum: {
             url: `${process.env.API_NODE_OPTIMISM}`,
             accounts: privateKey !== undefined ? [privateKey] : [],
             chainId: 10,
         },
-        optimismGoerli: {
+        optimisticGoerli: {
             url: `${process.env.API_NODE_OPTIMISM_TEST}`,
             accounts: privateKey !== undefined ? [privateKey] : [],
             chainId: 420,
         },
         // Abitrum networks
-        arbitrum: {
+        arbitrumOne: {
             url: `${process.env.API_NODE_ARBITRUM}`,
             accounts: privateKey !== undefined ? [privateKey] : [],
             chainId: 42161,
@@ -62,12 +62,12 @@ const config: HardhatUserConfig = {
             chainId: 421613,
         },
         // Fantom networks
-        fantom: {
+        opera: {
             url: `${process.env.API_NODE_FANTOM}`,
             accounts: privateKey !== undefined ? [privateKey] : [],
             chainId: 250,
         },
-        fantomTestnet: {
+        ftmTestnet: {
             url: `${process.env.API_NODE_FANTOM_TEST}`,
             accounts: privateKey !== undefined ? [privateKey] : [],
             chainId: 4002,
@@ -97,12 +97,12 @@ const config: HardhatUserConfig = {
             goerli: process.env.ETHERSCAN_API_KEY ?? "",
             polygonMumbai: process.env.POLYGONSCAN_API_KEY ?? "",
             polygon: process.env.POLYGONSCAN_API_KEY ?? "",
-            optimism: process.env.OPTIMISM_API_KEY ?? "",
-            optimismGoerli: process.env.OPTIMISM_API_KEY ?? "",
-            arbitrum: process.env.ARBITRUM_API_KEY ?? "",
+            optimisticEthereum: process.env.OPTIMISM_API_KEY ?? "",
+            optimisticGoerli: process.env.OPTIMISM_API_KEY ?? "",
+            arbitrumOne: process.env.ARBITRUM_API_KEY ?? "",
             arbitrumGoerli: process.env.ARBITRUM_API_KEY ?? "",
-            fantom: process.env.FATOMSCAN_API_KEY ?? "",
-            fantomTestnet: process.env.FATOMSCAN_API_KEY ?? "",
+            opera: process.env.FATOMSCAN_API_KEY ?? "",
+            ftmTestnet: process.env.FATOMSCAN_API_KEY ?? "",
             bsc: process.env.BSCSCAN_API_KEY ?? "",
             bscTestnet: process.env.BSCSCAN_API_KEY ?? "",
         },
