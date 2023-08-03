@@ -23,7 +23,7 @@ Cross-chain Dapp deployed on Ethereum, Binance Smart-Chain and Polygon. Allow an
 💿 Clone the repo and install all dependencies:
 
 ```sh
-git clone https://github.com/superultra-io/movemynft-app.git
+git clone https://github.com/Pedrojok01/MoveMyNFT.git
 cd movemynft-App
 yarn install
 ```
