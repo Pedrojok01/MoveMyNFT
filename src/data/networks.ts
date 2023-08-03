@@ -228,7 +228,7 @@ export const bnb_test: Chain = {
     testnet: true,
 };
 
-export const networks = [
+export const networks = {
     ethereum,
     goerli,
     optimism,
@@ -241,4 +241,4 @@ export const networks = [
     mumbai,
     bnb,
     bnb_test,
-];
+};

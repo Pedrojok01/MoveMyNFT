@@ -1,20 +1,32 @@
-import { ethereum, goerli, bnb, bnb_test, mumbai, polygon } from "../data/networks";
+import { networks } from "../data/networks";
 
 export const getExplorer = (chainId: number) => {
     switch (chainId) {
         case 1:
-            return ethereum.blockExplorers?.default.url;
+            return networks.ethereum.blockExplorers?.default.url;
         case 5:
-            return goerli.blockExplorers?.default.url;
+            return networks.goerli.blockExplorers?.default.url;
+        case 10:
+            return networks.optimism.blockExplorers?.default.url;
         case 56:
-            return bnb.blockExplorers?.default.url;
+            return networks.bnb.blockExplorers?.default.url;
         case 97:
-            return bnb_test.blockExplorers?.default.url;
+            return networks.bnb_test.blockExplorers?.default.url;
         case 137:
-            return polygon.blockExplorers?.default.url;
+            return networks.polygon.blockExplorers?.default.url;
+        case 250:
+            return networks.fantom.blockExplorers?.default.url;
+        case 420:
+            return networks.optimismGoerli.blockExplorers?.default.url;
+        case 4002:
+            return networks.fantomTestnet.blockExplorers?.default.url;
+        case 42161:
+            return networks.arbitrum.blockExplorers?.default.url;
         case 80001:
-            return mumbai.blockExplorers?.default.url;
+            return networks.mumbai.blockExplorers?.default.url;
+        case 421613:
+            return networks.arbitrumGoerli.blockExplorers?.default.url;
         default:
-            return ethereum.blockExplorers?.default.url;
+            return networks.ethereum.blockExplorers?.default.url;
     }
 };

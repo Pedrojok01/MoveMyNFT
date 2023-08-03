@@ -8,7 +8,7 @@ import { useStore } from "@/store/store";
 import styles from "./StepsPane.module.css";
 
 const StepsPane: FC = () => {
-    const { displayPaneMode, NftsToTransfer } = useStore();
+    const { displayPaneMode, nftsToTransfer } = useStore();
     const { isMobileOnly, isTablet } = useWindowWidthAndHeight();
 
     const switchStep = () => {
@@ -28,7 +28,7 @@ const StepsPane: FC = () => {
         }
     };
 
-    const nfts = NftsToTransfer?.length;
+    const nfts = nftsToTransfer?.length;
 
     const items = [
         {

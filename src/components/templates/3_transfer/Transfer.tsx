@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 import { LoadingOutlined, SendOutlined } from "@ant-design/icons";
 import { Button, Spin } from "antd";
@@ -10,14 +10,18 @@ import { useStore } from "@/store/store";
 import styles from "./Transfer.module.css";
 
 const Transfer: FC<TransferProps> = ({ collectionAddress, getAddressFromTransfer }) => {
-    const { setDisplayPaneMode, NftsToTransfer, loading, error } = useStore();
+    const { setDisplayPaneMode, nftsToTransfer, loading, error, setError } = useStore();
     const { approve, transfer } = useContractExecution();
-    const [receiver, setReceiver] = useState<string>("");
+    const [receiver, setReceiver] = useState<string | undefined>(undefined);
     const [buttonText, setButtonText] = useState<string>("APPROVE");
 
     const antIcon = <LoadingOutlined style={{ fontSize: 30 }} spin />;
 
     if (!collectionAddress) throw new Error("Collection address is missing");
+
+    useEffect(() => {
+        setError(null);
+    }, []);
 
     const setAddress = (value: any) => {
         setReceiver(value);
@@ -25,17 +29,22 @@ const Transfer: FC<TransferProps> = ({ collectionAddress, getAddressFromTransfer
     };
 
     const handleTransfer = async () => {
+        if (!receiver) {
+            setError("Please enter a valid address");
+            return;
+        }
+
         const approved = await approve(collectionAddress);
 
         if (approved) {
             setButtonText("TRANSFER");
             await transfer(
                 collectionAddress,
-                NftsToTransfer[0].contract_type,
+                nftsToTransfer[0].contract_type,
                 receiver,
-                NftsToTransfer.map((nft) => nft.token_id),
-                NftsToTransfer[0].contract_type === "ERC1155"
-                    ? NftsToTransfer.map((nft) => Number(nft.amount))
+                nftsToTransfer.map((nft) => nft.token_id),
+                nftsToTransfer[0].contract_type === "ERC1155"
+                    ? nftsToTransfer.map((nft) => Number(nft.amount))
                     : undefined
             );
         }
@@ -49,8 +58,8 @@ const Transfer: FC<TransferProps> = ({ collectionAddress, getAddressFromTransfer
         <Spin spinning={loading} indicator={antIcon} size="large">
             <div className={styles.content}>
                 <div style={{ margin: "auto", width: "80%" }}>
-                    <p className={styles.text}>Transfer my assets</p>
-                    <AddressInput autoFocus placeholder="Receiver" address={receiver} setAddress={setAddress} />
+                    <p className={styles.text}>Transfer my NFTs</p>
+                    <AddressInput autoFocus placeholder="Receiver" address={receiver ?? ""} setAddress={setAddress} />
 
                     {error && <p className="error-text">{error}</p>}
 

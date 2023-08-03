@@ -8,10 +8,10 @@ import { useStore } from "@/store/store";
 import styles from "./CollectionSelection.module.css";
 
 const CollectionSelection: FC<CollectionSelectionProps> = ({ setCollection }) => {
-    const { setDisplayPaneMode, collections, setNftsToTransfer, loading } = useStore();
+    const { setDisplayPaneMode, collections, setnftsToTransfer, loading } = useStore();
 
     useEffect(() => {
-        setNftsToTransfer([]);
+        setnftsToTransfer([]);
     }, []);
 
     const handleClickCard = (card: CollectionExtended) => {
@@ -57,7 +57,6 @@ const CollectionSelection: FC<CollectionSelectionProps> = ({ setCollection }) =>
                 >
                     back
                 </Button>
-                <div></div>
             </div>
         </div>
     );

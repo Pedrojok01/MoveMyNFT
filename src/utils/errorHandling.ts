@@ -1,4 +1,4 @@
-import { ErrorMessages } from "@/data/errorMessages";
+import { errorMessages } from "@/data/errorMessages";
 
 export const handleErrors = (err: any, contractInstance: any) => {
     let message = err.details ?? err.reason ?? err.message ?? err;
@@ -17,7 +17,7 @@ export const handleErrors = (err: any, contractInstance: any) => {
     }
 
     // Check if a user-friendly error message exists
-    const userFriendlyMessage = ErrorMessages[message as keyof typeof ErrorMessages];
+    const userFriendlyMessage = errorMessages[message as keyof typeof errorMessages];
     if (userFriendlyMessage) {
         message = userFriendlyMessage;
     }

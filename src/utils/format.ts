@@ -4,13 +4,9 @@
  * @param {number} n number of chars to keep at front/end
  * @returns {string}
  */
-export const getEllipsisTxt = (str: string, n = 6) => {
-    if (str) {
+export const getEllipsisTxt = (str: string | undefined, n = 6): string => {
+    if (str && str !== undefined) {
         return `${str.slice(0, n)}...${str.slice(str.length - n)}`;
     }
     return "";
-};
-
-export const toHexString = (num: number): string => {
-    return "0x" + num.toString(16);
 };

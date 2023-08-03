@@ -5,11 +5,11 @@ import { useUserData } from "@/context/UserContextProvider";
 import { useSuportedChains } from "@/hooks";
 import { useStore } from "@/store/store";
 
-import { StepsPane, Verification } from "..";
+import { StepsPane, Verification } from "@/components/elements";
 
 const Content: FC = () => {
     const { isConnected } = useUserData();
-    const { setNftsToTransfer, displayPaneMode, resetDisplayPane } = useStore();
+    const { setnftsToTransfer, displayPaneMode, resetDisplayPane } = useStore();
     const isSupportedChain = useSuportedChains();
 
     const [collection, setCollection] = useState<CollectionExtended | undefined>(undefined);
@@ -20,7 +20,7 @@ const Content: FC = () => {
     };
 
     const onReset = () => {
-        setNftsToTransfer([]);
+        setnftsToTransfer([]);
         resetDisplayPane();
     };
 

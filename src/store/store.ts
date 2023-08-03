@@ -3,8 +3,8 @@ import { create } from "zustand";
 interface StoreData {
     collections: Collections;
     setCollections: (collections: Collections) => void;
-    NftsToTransfer: Nft[];
-    setNftsToTransfer: (NftsToTransfer: Nft[]) => void;
+    nftsToTransfer: Nft[];
+    setnftsToTransfer: (nftsToTransfer: Nft[]) => void;
     displayPaneMode: DisplayPane;
     setDisplayPaneMode: (displayPaneMode: DisplayPane) => void;
     resetDisplayPane: () => void;
@@ -17,8 +17,8 @@ interface StoreData {
 const useStore = create<StoreData>((set) => ({
     collections: [],
     setCollections: (collections) => set({ collections }),
-    NftsToTransfer: [],
-    setNftsToTransfer: (NftsToTransfer) => set({ NftsToTransfer }),
+    nftsToTransfer: [],
+    setnftsToTransfer: (nftsToTransfer) => set({ nftsToTransfer }),
     displayPaneMode: "start",
     setDisplayPaneMode: (displayPaneMode) => set({ displayPaneMode }),
     resetDisplayPane: () => set({ displayPaneMode: "start" }),
