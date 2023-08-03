@@ -9,10 +9,9 @@ import { StepsPane, Verification } from "..";
 
 const Content: FC = () => {
     const { isConnected } = useUserData();
-    const { displayPaneMode, resetDisplayPane } = useStore();
+    const { setNftsToTransfer, displayPaneMode, resetDisplayPane } = useStore();
     const isSupportedChain = useSuportedChains();
 
-    const [NFTsToTransfer, setNFTsToTransfer] = useState<Nft[]>([]);
     const [collection, setCollection] = useState<CollectionExtended | undefined>(undefined);
     const [addressTotransfer, setAddressTotransfer] = useState<string>("");
 
@@ -21,14 +20,14 @@ const Content: FC = () => {
     };
 
     const onReset = () => {
-        setNFTsToTransfer([]);
+        setNftsToTransfer([]);
         resetDisplayPane();
     };
 
     return (
         <>
             <div className="steps-pane">
-                <StepsPane NFTsToTransfer={NFTsToTransfer} />
+                <StepsPane />
             </div>
 
             <div className="display-pane">
@@ -39,17 +38,10 @@ const Content: FC = () => {
                             {displayPaneMode === "selectCollection" && (
                                 <CollectionSelection setCollection={setCollection} />
                             )}
-                            {displayPaneMode === "nfts" && collection && (
-                                <NFTSelection
-                                    collection={collection}
-                                    NFTsToTransfer={NFTsToTransfer}
-                                    setNFTsToTransfer={setNFTsToTransfer}
-                                />
-                            )}
+                            {displayPaneMode === "nfts" && collection && <NFTSelection collection={collection} />}
                             {displayPaneMode === "transfer" && (
                                 <Transfer
                                     collectionAddress={collection?.token_address}
-                                    NFTsToTransfer={NFTsToTransfer}
                                     getAddressFromTransfer={getAddressFromTransfer}
                                 />
                             )}

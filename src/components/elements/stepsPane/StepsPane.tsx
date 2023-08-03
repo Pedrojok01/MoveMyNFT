@@ -7,8 +7,8 @@ import { useStore } from "@/store/store";
 
 import styles from "./StepsPane.module.css";
 
-const StepsPane: FC<StepsPaneProps> = ({ NFTsToTransfer }) => {
-    const { displayPaneMode } = useStore();
+const StepsPane: FC = () => {
+    const { displayPaneMode, NftsToTransfer } = useStore();
     const { isMobileOnly, isTablet } = useWindowWidthAndHeight();
 
     const switchStep = () => {
@@ -28,7 +28,7 @@ const StepsPane: FC<StepsPaneProps> = ({ NFTsToTransfer }) => {
         }
     };
 
-    const nfts = NFTsToTransfer?.length;
+    const nfts = NftsToTransfer?.length;
 
     const items = [
         {
@@ -46,9 +46,8 @@ const StepsPane: FC<StepsPaneProps> = ({ NFTsToTransfer }) => {
                     : "Select some of your NFTs, or all, and click on OK when you're done.",
         },
         {
-            title: "Transfer",
-            description:
-                isTablet && !isMobileOnly ? "" : "Get all your assets ready and waiting for you in your new wallet!",
+            title: "Approve & Transfer",
+            description: isTablet && !isMobileOnly ? "" : "Batch transfer all your NFTs in your new wallet in one go!",
         },
     ];
 

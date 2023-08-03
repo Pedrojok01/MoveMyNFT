@@ -7,9 +7,9 @@ import { useStore } from "@/store/store";
 
 import styles from "./NFTSelection.module.css";
 
-const NFTSelection: FC<NFTSelectionProps> = ({ collection, NFTsToTransfer, setNFTsToTransfer }) => {
-    const { setDisplayPaneMode } = useStore();
-    const [selectedNFTs, setSelectedNFTs] = useState(NFTsToTransfer ?? []);
+const NFTSelection: FC<NFTSelectionProps> = ({ collection }) => {
+    const { setDisplayPaneMode, NftsToTransfer, setNftsToTransfer } = useStore();
+    const [selectedNFTs, setSelectedNFTs] = useState<Nft[]>(NftsToTransfer ?? []);
 
     const isNFTSelected = useCallback(
         (currentNft: Nft) =>
@@ -46,7 +46,7 @@ const NFTSelection: FC<NFTSelectionProps> = ({ collection, NFTsToTransfer, setNF
     }, [selectedNFTs, collection.nfts]);
 
     const onValidateNFTSelection = () => {
-        setNFTsToTransfer(selectedNFTs);
+        setNftsToTransfer(selectedNFTs);
         setDisplayPaneMode("transfer");
     };
 

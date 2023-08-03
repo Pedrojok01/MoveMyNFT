@@ -9,10 +9,11 @@ import { useStore } from "@/store/store";
 
 import styles from "./Transfer.module.css";
 
-const Transfer: FC<TransferProps> = ({ collectionAddress, NFTsToTransfer, getAddressFromTransfer }) => {
-    const { setDisplayPaneMode, loading, error } = useStore();
-    const { transfer } = useContractExecution();
+const Transfer: FC<TransferProps> = ({ collectionAddress, getAddressFromTransfer }) => {
+    const { setDisplayPaneMode, NftsToTransfer, loading, error } = useStore();
+    const { approve, transfer } = useContractExecution();
     const [receiver, setReceiver] = useState<string>("");
+    const [buttonText, setButtonText] = useState<string>("APPROVE");
 
     const antIcon = <LoadingOutlined style={{ fontSize: 30 }} spin />;
 
@@ -24,12 +25,20 @@ const Transfer: FC<TransferProps> = ({ collectionAddress, NFTsToTransfer, getAdd
     };
 
     const handleTransfer = async () => {
-        await transfer(
-            collectionAddress,
-            NFTsToTransfer[0].contract_type,
-            receiver,
-            NFTsToTransfer.map((nft) => nft.token_id)
-        );
+        const approved = await approve(collectionAddress);
+
+        if (approved) {
+            setButtonText("TRANSFER");
+            await transfer(
+                collectionAddress,
+                NftsToTransfer[0].contract_type,
+                receiver,
+                NftsToTransfer.map((nft) => nft.token_id),
+                NftsToTransfer[0].contract_type === "ERC1155"
+                    ? NftsToTransfer.map((nft) => Number(nft.amount))
+                    : undefined
+            );
+        }
     };
 
     const onBackClick = () => {
@@ -54,7 +63,7 @@ const Transfer: FC<TransferProps> = ({ collectionAddress, NFTsToTransfer, getAdd
                             back
                         </Button>
                         <Button className={styles.transferButton} shape="round" onClick={handleTransfer}>
-                            TRANSFER <SendOutlined style={{ padding: "0 20px", fontSize: "18px" }} />
+                            {buttonText} <SendOutlined style={{ padding: "0 20px", fontSize: "18px" }} />
                         </Button>
                     </div>
                 </div>

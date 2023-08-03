@@ -32,6 +32,26 @@ export const useContractExecution = () => {
         finalizeTransferSuccess();
     };
 
+    const approve = async (collectionAddress: string): Promise<boolean> => {
+        setLoading(true);
+        setError(null);
+        let success = false;
+
+        try {
+            const approval: boolean = await checkNftAllowance(collectionAddress as `0x${string}`);
+            if (!approval) {
+                const approvalStatus = await approveNft(collectionAddress);
+                if (!approvalStatus.success) throw new Error(`Approval failed: ${approvalStatus.error}`);
+            }
+            success = true;
+        } catch (err: any) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+            return success;
+        }
+    };
+
     const transfer = async (
         collectionAddress: string,
         collectionType: string,
@@ -43,14 +63,6 @@ export const useContractExecution = () => {
         setError(null);
 
         try {
-            // 1. Handle approval:
-            const approval: boolean = await checkNftAllowance(collectionAddress as `0x${string}`);
-            if (!approval) {
-                const approvalStatus = await approveNft(collectionAddress);
-                if (!approvalStatus.success) throw new Error("Approval failed. Please try again.");
-            }
-
-            // 2. Handle batch transfer:
             const type = collectionType.toLowerCase();
             if (type === "erc721") {
                 await handleErc721Transfer(collectionAddress, to, tokenIds);
@@ -61,11 +73,11 @@ export const useContractExecution = () => {
                 throw new Error(`Unsupported collection type: ${collectionType}`);
             }
         } catch (err: any) {
-            setError(err);
+            setError(err.message ?? err);
         } finally {
             setLoading(false);
         }
     };
 
-    return { transfer };
+    return { approve, transfer };
 };

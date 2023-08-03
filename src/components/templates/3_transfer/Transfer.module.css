@@ -29,6 +29,7 @@
     justify-content: space-around;
     width: 95%;
     gap: 2rem;
+    color: var(--black);
 }
 
 .backButton {
@@ -42,9 +43,7 @@
     border: none;
     text-align: center;
     letter-spacing: 1px;
-    margin: auto;
     background-color: var(--white);
-    color: var(--black);
     font-size: 16px;
     font-weight: 700;
 }

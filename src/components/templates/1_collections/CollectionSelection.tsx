@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 
 import { Alert, Button, Spin } from "antd";
 
@@ -8,7 +8,11 @@ import { useStore } from "@/store/store";
 import styles from "./CollectionSelection.module.css";
 
 const CollectionSelection: FC<CollectionSelectionProps> = ({ setCollection }) => {
-    const { setDisplayPaneMode, collections, loading } = useStore();
+    const { setDisplayPaneMode, collections, setNftsToTransfer, loading } = useStore();
+
+    useEffect(() => {
+        setNftsToTransfer([]);
+    }, []);
 
     const handleClickCard = (card: CollectionExtended) => {
         setCollection(card);

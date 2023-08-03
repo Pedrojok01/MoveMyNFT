@@ -113,10 +113,6 @@ type Nfts = {
                         TEMPLATE PROPS
 ***********************************************************/
 
-interface StepsPaneProps {
-    NFTsToTransfer: Nft[];
-}
-
 interface CollectionSelectionProps {
     setCollection: Dispatch<SetStateAction<CollectionExtended | undefined>>;
 }
@@ -131,13 +127,10 @@ type DisplayedNFT = Nft | CollectionExtended;
 
 interface NFTSelectionProps {
     collection: CollectionExtended;
-    NFTsToTransfer: Nft[];
-    setNFTsToTransfer: Dispatch<SetStateAction<Nft[]>>;
 }
 
 interface TransferProps {
     collectionAddress: string | undefined;
-    NFTsToTransfer: Nft[];
     getAddressFromTransfer: (value: SetStateAction<string>) => void;
 }
 

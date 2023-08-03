@@ -56,7 +56,7 @@ export const useWriteContract = () => {
         try {
             const hash = await MOVE_MY_NFTInstance.write[method](params);
             const transaction = await publicClient.waitForTransactionReceipt({
-                confirmations: 3,
+                confirmations: 4,
                 hash: hash,
             });
             notifySuccess(hash, chainId);
