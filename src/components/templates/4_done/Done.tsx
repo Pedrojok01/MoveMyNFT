@@ -2,10 +2,11 @@ import { FC } from "react";
 
 import { Button, Divider } from "antd";
 
-import styles from "./Done.module.css";
-import { useStore } from "@/store/store";
 import { useWindowWidthAndHeight } from "@/hooks";
+import { useStore } from "@/store/store";
 import { getEllipsisTxt } from "@/utils/format";
+
+import styles from "./Done.module.css";
 
 const Done: FC<DoneProps> = ({ address, onReset }) => {
     const { nftsToTransfer } = useStore();

@@ -8,10 +8,11 @@ import { useStore } from "@/store/store";
 import styles from "./CollectionSelection.module.css";
 
 const CollectionSelection: FC<CollectionSelectionProps> = ({ setCollection }) => {
-    const { setDisplayPaneMode, collections, setnftsToTransfer, loading } = useStore();
+    const { setDisplayPaneMode, collections, setNftsToTransfer, loading } = useStore();
 
     useEffect(() => {
-        setnftsToTransfer([]);
+        setNftsToTransfer([]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleClickCard = (card: CollectionExtended) => {
