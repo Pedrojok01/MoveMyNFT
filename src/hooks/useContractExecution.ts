@@ -1,8 +1,8 @@
 import { useStore } from "@/store/store";
 
+import { useReadContract } from "./useReadContract";
 import { useWriteContract } from "./useWriteContract";
 import { useUserData } from "../context/UserContextProvider";
-import { useReadContract } from "./useReadContract";
 
 export const useContractExecution = () => {
     const { setDisplayPaneMode, setLoading, setError } = useStore();
@@ -44,7 +44,7 @@ export const useContractExecution = () => {
 
         try {
             // 1. Handle approval:
-            let approval: boolean = await checkNftAllowance(collectionAddress as `0x${string}`);
+            const approval: boolean = await checkNftAllowance(collectionAddress as `0x${string}`);
             if (!approval) {
                 const approvalStatus = await approveNft(collectionAddress);
                 if (!approvalStatus.success) throw new Error("Approval failed. Please try again.");

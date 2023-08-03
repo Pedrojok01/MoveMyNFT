@@ -4,8 +4,8 @@ import { usePublicClient, useWalletClient } from "wagmi";
 import { useUserData } from "@/context/UserContextProvider";
 import { MMNFT_ABI, NFT_721_ABI } from "@/data/abis";
 import { MOVE_MY_NFT } from "@/data/constant";
-import { notifyError, notifySuccess, openNotification } from "@/utils/notifications";
 import { handleErrors } from "@/utils/errorHandling";
+import { notifyError, notifySuccess, openNotification } from "@/utils/notifications";
 
 export const useWriteContract = () => {
     const { chainId } = useUserData();

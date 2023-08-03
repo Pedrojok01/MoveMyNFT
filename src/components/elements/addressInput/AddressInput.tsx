@@ -94,11 +94,7 @@ const AddressInput: React.FC<{
                 disabled={isAddress(userInput)}
                 style={{ backgroundColor: "white", gap: "0.5rem" }}
             />
-            {displayError && (
-                <p style={{ color: "red", marginBlock: "15px", fontSize: "12px", backgroundColor: "white" }}>
-                    {displayError}
-                </p>
-            )}
+            {displayError && <p className="error-text">{displayError}</p>}
         </>
     );
 };

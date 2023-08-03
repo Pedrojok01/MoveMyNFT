@@ -1,8 +1,9 @@
 import { ReactNode } from "react";
 
-import { notification } from "antd";
-import { getExplorer } from "./getExplorerByChain";
 import { FileSearchOutlined } from "@ant-design/icons";
+import { notification } from "antd";
+
+import { getExplorer } from "./getExplorerByChain";
 
 type NotificationType = "success" | "info" | "warning" | "error";
 

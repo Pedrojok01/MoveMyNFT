@@ -3,10 +3,11 @@ import { FC, useState } from "react";
 import { LoadingOutlined, SendOutlined } from "@ant-design/icons";
 import { Button, Spin } from "antd";
 
-import styles from "./Transfer.module.css";
-import { useContractExecution } from "@/hooks";
 import { AddressInput } from "@/components/elements/addressInput";
+import { useContractExecution } from "@/hooks";
 import { useStore } from "@/store/store";
+
+import styles from "./Transfer.module.css";
 
 const Transfer: FC<TransferProps> = ({ collectionAddress, NFTsToTransfer, getAddressFromTransfer }) => {
     const { setDisplayPaneMode, loading, error } = useStore();
@@ -41,6 +42,9 @@ const Transfer: FC<TransferProps> = ({ collectionAddress, NFTsToTransfer, getAdd
                 <div style={{ margin: "auto", width: "80%" }}>
                     <p className={styles.text}>Transfer my assets</p>
                     <AddressInput autoFocus placeholder="Receiver" address={receiver} setAddress={setAddress} />
+
+                    {error && <p className="error-text">{error}</p>}
+
                     <div className={styles.buttonDiv}>
                         <Button
                             className={`button-small black ${styles.backButton}`}

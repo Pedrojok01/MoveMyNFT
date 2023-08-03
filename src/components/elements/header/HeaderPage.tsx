@@ -4,7 +4,6 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Layout } from "antd";
 import Link from "next/link";
 
-
 import movemynft_logo_transparent from "/public/images/movemynft_logo_transparent.png";
 import movemynft_logo_transparent_small from "/public/images/movemynft_logo_square_transparent.png";
 

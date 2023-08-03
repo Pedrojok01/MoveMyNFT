@@ -126,6 +126,13 @@ a {
     text-align: center;
 }
 
+.error-text {
+    color: red;
+    margin-block: 15px;
+    font-size: 12px;
+    background-color: white;
+}
+
 @media (width < 1050px) {
     .steps-pane {
         display: block;

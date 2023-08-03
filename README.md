@@ -34,12 +34,10 @@ Example:
 ```jsx
 NEXT_PUBLIC_NODE_ENV = development;
 NEXT_PUBLIC_ALCHEMY_API_KEY = api_key_here;
+NEXT_PUBLIC_URL = "http://localhost:3000/";
 NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID = api_key_here;
-
 MORALIS_API_KEY = api_key_here;
 ALCHEMY_API_KEY = api_key_here;
-MONGODB_URI = uri_here;
-MONGODB_COLLECTION = collection_name;
 ```
 
 🔎 Locate the file constant.js in `src/data/constant.ts` and paste your smart-contracts addresses;
