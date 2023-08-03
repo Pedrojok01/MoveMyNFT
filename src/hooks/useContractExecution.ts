@@ -1,70 +1,71 @@
-import { useState } from "react";
+import { useStore } from "@/store/store";
 
-import { useMongoDB } from "./useMongoDB";
-import { useMultipleApprovals } from "./useMultipleApprovals";
 import { useWriteContract } from "./useWriteContract";
 import { useUserData } from "../context/UserContextProvider";
+import { useReadContract } from "./useReadContract";
 
 export const useContractExecution = () => {
-    const { setDisplayPaneMode, fetchWeb3Data } = useUserData();
-    const { executeBundle, executeTransfer } = useWriteContract();
-    const { updateBundle } = useMongoDB();
-    const multipleApprove = useMultipleApprovals();
+    const { setDisplayPaneMode, setLoading, setError } = useStore();
+    const { fetchWeb3Data } = useUserData();
+    const { checkNftAllowance } = useReadContract();
+    const { approveNft, executeTransfer721, executeTransfer1155 } = useWriteContract();
 
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<Error | null>(null);
+    const finalizeTransferSuccess = async () => {
+        fetchWeb3Data();
+        setDisplayPaneMode("done");
+    };
 
-    const bundle = async (addresses: `0x${string}`[], numbers: (string | number)[]) => {
-        setLoading(true);
-        setError(null);
+    const handleErc721Transfer = async (collectionAddress: string, to: string, tokenIds: string[]) => {
+        const res = await executeTransfer721(collectionAddress, to, tokenIds);
+        if (!res.success) throw new Error(res.error);
+        finalizeTransferSuccess();
+    };
 
-        try {
-            await multipleApprove(addresses, numbers);
-            const res: any = await executeBundle(addresses, numbers);
-            if (res?.success) {
-                if (res?.data) {
-                    updateBundle(res.data);
-                }
-                fetchWeb3Data();
-                setDisplayPaneMode("transfer");
-                return res?.data;
-            } else {
-                return null;
-            }
-        } catch (err: any) {
-            setError(err);
-            return null;
-        } finally {
-            setLoading(false);
-        }
+    const handleErc1155Transfer = async (
+        collectionAddress: string,
+        to: string,
+        tokenIds: string[],
+        tokenAmounts: number[]
+    ) => {
+        const res = await executeTransfer1155(collectionAddress, to, tokenIds, tokenAmounts);
+        if (!res.success) throw new Error(res.error);
+        finalizeTransferSuccess();
     };
 
     const transfer = async (
-        receiver: string,
-        tokenId: string,
-        salt: number,
-        addresses: string[],
-        numbers: (string | number)[]
+        collectionAddress: string,
+        collectionType: string,
+        to: string,
+        tokenIds: string[],
+        tokenAmounts?: number[]
     ) => {
         setLoading(true);
         setError(null);
 
         try {
-            const res = await executeTransfer(receiver, tokenId, salt, addresses, numbers);
-            if (res.success) {
-                fetchWeb3Data();
-                setDisplayPaneMode("done");
-                return true;
+            // 1. Handle approval:
+            let approval: boolean = await checkNftAllowance(collectionAddress as `0x${string}`);
+            if (!approval) {
+                const approvalStatus = await approveNft(collectionAddress);
+                if (!approvalStatus.success) throw new Error("Approval failed. Please try again.");
+            }
+
+            // 2. Handle batch transfer:
+            const type = collectionType.toLowerCase();
+            if (type === "erc721") {
+                await handleErc721Transfer(collectionAddress, to, tokenIds);
+            } else if (type === "erc1155") {
+                if (!tokenAmounts) throw new Error("Token amounts are required for ERC1155 transfer");
+                await handleErc1155Transfer(collectionAddress, to, tokenIds, tokenAmounts);
             } else {
-                return false;
+                throw new Error(`Unsupported collection type: ${collectionType}`);
             }
         } catch (err: any) {
             setError(err);
-            return false;
         } finally {
             setLoading(false);
         }
     };
 
-    return { bundle, transfer, loading, error };
+    return { transfer };
 };

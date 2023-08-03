@@ -1,38 +1,26 @@
-import { useState, useEffect, FC, SetStateAction, useCallback } from "react";
+import { useState, FC, SetStateAction } from "react";
+
+import { StartPane, CollectionSelection, NFTSelection, Transfer, Done } from "@/components/templates";
+import { useUserData } from "@/context/UserContextProvider";
+import { useSuportedChains } from "@/hooks";
+import { useStore } from "@/store/store";
 
 import { StepsPane, Verification } from "..";
-import { useUserData } from "../../../context/UserContextProvider";
-import { useSuportedChains, useCheckBackupOnStart } from "../../../hooks";
-import { BundlePane, NFTSelection, StartPane, TokenSelection, Transfer, Done } from "../../templates";
 
 const Content: FC = () => {
-    const { isConnected, displayPaneMode, resetDisplayPane } = useUserData();
+    const { isConnected } = useUserData();
+    const { displayPaneMode, resetDisplayPane } = useStore();
     const isSupportedChain = useSuportedChains();
-    const { checkIfBackupOnStart } = useCheckBackupOnStart();
 
-    const [tokensToTransfer, setTokensToTransfer] = useState<Token[]>([]);
-    const [NFTsToTransfer, setNFTsToTransfer] = useState<NFTinDB[]>([]);
-    const [bundleDataToTransfer, setBundleDataToTransfer] = useState<TokenData | undefined>();
-    const [addressTotransfer, setAddressTotransfer] = useState("");
+    const [NFTsToTransfer, setNFTsToTransfer] = useState<Nft[]>([]);
+    const [collection, setCollection] = useState<CollectionExtended | undefined>(undefined);
+    const [addressTotransfer, setAddressTotransfer] = useState<string>("");
 
     const getAddressFromTransfer = (value: SetStateAction<string>) => {
         setAddressTotransfer(value);
     };
 
-    const checkOnStart = useCallback(async () => {
-        const data = await checkIfBackupOnStart();
-        setBundleDataToTransfer(data);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useEffect(() => {
-        if (isConnected) {
-            checkOnStart();
-        }
-    }, [isConnected, checkOnStart]);
-
     const onReset = () => {
-        setTokensToTransfer([]);
         setNFTsToTransfer([]);
         resetDisplayPane();
     };
@@ -40,7 +28,7 @@ const Content: FC = () => {
     return (
         <>
             <div className="steps-pane">
-                <StepsPane tokensToTransfer={tokensToTransfer} NFTsToTransfer={NFTsToTransfer} />
+                <StepsPane NFTsToTransfer={NFTsToTransfer} />
             </div>
 
             <div className="display-pane">
@@ -48,26 +36,20 @@ const Content: FC = () => {
                     {isConnected && isSupportedChain ? (
                         <>
                             {displayPaneMode === "start" && <StartPane />}
-                            {displayPaneMode === "tokens" && (
-                                <TokenSelection
-                                    tokensToTransfer={tokensToTransfer}
-                                    setTokensToTransfer={setTokensToTransfer}
-                                />
+                            {displayPaneMode === "selectCollection" && (
+                                <CollectionSelection setCollection={setCollection} />
                             )}
-                            {displayPaneMode === "nfts" && (
-                                <NFTSelection NFTsToTransfer={NFTsToTransfer} setNFTsToTransfer={setNFTsToTransfer} />
-                            )}
-                            {displayPaneMode === "bundle" && (
-                                <BundlePane
-                                    onReset={onReset}
-                                    setBundleDataToTransfer={setBundleDataToTransfer}
-                                    tokensToTransfer={tokensToTransfer}
+                            {displayPaneMode === "nfts" && collection && (
+                                <NFTSelection
+                                    collection={collection}
                                     NFTsToTransfer={NFTsToTransfer}
+                                    setNFTsToTransfer={setNFTsToTransfer}
                                 />
                             )}
                             {displayPaneMode === "transfer" && (
                                 <Transfer
-                                    bundleDataToTransfer={bundleDataToTransfer}
+                                    collectionAddress={collection?.token_address}
+                                    NFTsToTransfer={NFTsToTransfer}
                                     getAddressFromTransfer={getAddressFromTransfer}
                                 />
                             )}

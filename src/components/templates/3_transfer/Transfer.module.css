@@ -3,13 +3,12 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
     display: flex;
     align-items: center;
     margin: auto;
     height: 300px;
     width: 90%;
-    color: white;
+    color: var(--white);
     background: black;
     border-radius: 20px;
 }
@@ -24,8 +23,17 @@
 }
 
 .buttonDiv {
-    margin-top: 20px;
     display: inline-flex;
+    align-items: center;
+    margin-top: 40px;
+    justify-content: space-around;
+    width: 95%;
+    gap: 2rem;
+}
+
+.backButton {
+    background-color: var(--white);
+    color: var(--black);
 }
 
 .transferButton {
@@ -35,8 +43,8 @@
     text-align: center;
     letter-spacing: 1px;
     margin: auto;
-    background: white;
-    color: black;
-    margin-top: 20px;
+    background-color: var(--white);
+    color: var(--black);
+    font-size: 16px;
     font-weight: 700;
 }

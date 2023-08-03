@@ -1,50 +1,28 @@
 import { Address, PublicClient, getContract } from "viem";
 import { usePublicClient } from "wagmi";
 
-import { useUserData } from "../context/UserContextProvider";
-import { ERC20_ABI, NFT_ABI } from "../data/abis";
-import { getContractAddress } from "../data/constant";
+import { useUserData } from "@/context/UserContextProvider";
+import { NFT_721_ABI } from "@/data/abis";
+import { MOVE_MY_NFT } from "@/data/constant";
 
 export const useReadContract = () => {
-    const { address, chainId } = useUserData();
+    const { address } = useUserData();
     const publicClient: PublicClient = usePublicClient();
-    const mmw = getContractAddress(chainId);
 
-    /* Check if existing allowance of ERC20 token :
-     ***********************************************/
-    const checkTokenAllowance = async (token: Address): Promise<bigint> => {
-        if (!publicClient || !mmw || !address) return 0n;
-
-        const tokenInstance = getContract({
-            address: token,
-            abi: ERC20_ABI,
-            publicClient,
-        });
-
-        try {
-            const allowance = await tokenInstance.read.allowance([address, mmw]);
-            if (typeof allowance !== "bigint") throw new Error("allowance is not a bigint");
-            return allowance;
-        } catch (error: any) {
-            console.error(error.reason ?? error.message ?? error);
-            return 0n;
-        }
-    };
-
-    /* Check if existing allowance of NFT 1155 :
-     ***********************************************/
-    const checkNftAllowance = async (nft: Address) => {
-        if (!publicClient || !mmw) return false;
+    /* Check existing allowance of an NFT collection (both ERC721 or ERC1155):
+     **************************************************************************/
+    const checkNftAllowance = async (nft: Address): Promise<boolean> => {
+        if (!publicClient) throw new Error("Public client not initialized");
 
         const nftInstance = getContract({
-            abi: NFT_ABI,
+            abi: NFT_721_ABI,
             address: nft,
             publicClient: publicClient,
         });
 
         try {
-            const allowance = await nftInstance.read.isApprovedForAll([address as string, mmw]);
-            return allowance;
+            const allowance = await nftInstance.read.isApprovedForAll([address as string, MOVE_MY_NFT]);
+            return allowance as boolean;
         } catch (error: any) {
             console.error(error.reason ?? error.message ?? error);
             return false;
@@ -52,7 +30,6 @@ export const useReadContract = () => {
     };
 
     return {
-        checkTokenAllowance,
         checkNftAllowance,
     };
 };

@@ -15,7 +15,7 @@
 }
 
 .title {
-    color: white;
+    color: var(--white);
     text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4);
     font-weight: 600;
     font-size: 40px;
@@ -23,16 +23,16 @@
 }
 
 .text {
-    color: black;
+    color: var(--black);
     font-size: 20px;
     margin-top: 10px;
 }
 
 .resetButton {
-    background: white;
+    background: var(--white);
     margin: 20px auto 0px auto;
     padding: 5px 40px;
     border: 0;
-    color: black;
+    color: var(--black);
     font-weight: 600;
 }

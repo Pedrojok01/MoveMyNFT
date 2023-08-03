@@ -1,8 +1,9 @@
 import { FC } from "react";
 
+import { useUserData } from "@/context/UserContextProvider";
+import { useSuportedChains } from "@/hooks";
+
 import styles from "./Verification.module.css";
-import { useUserData } from "../../../context/UserContextProvider";
-import { useSuportedChains } from "../../../hooks";
 
 const Verification: FC = () => {
     const { isConnected } = useUserData();

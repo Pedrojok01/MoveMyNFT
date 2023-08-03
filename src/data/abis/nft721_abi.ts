@@ -1,6 +1,6 @@
 import { Abi } from "viem";
 
-export const NFT_ABI = [
+export const NFT_721_ABI = [
     { inputs: [], stateMutability: "nonpayable", type: "constructor" },
     {
         anonymous: false,

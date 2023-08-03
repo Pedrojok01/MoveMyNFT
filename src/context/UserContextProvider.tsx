@@ -1,20 +1,68 @@
-import React, { FC, ReactNode, useContext } from "react";
+import React, { FC, ReactNode, useCallback, useContext, useEffect } from "react";
 
-import { useNetwork } from "wagmi";
+import { v4 as uuidv4 } from "uuid";
+import { useAccount, useNetwork } from "wagmi";
+
+import { useFetchNFTs } from "@/hooks";
+import { useStore } from "@/store/store";
 
 import UserContext from "./context";
-import { useDisplayPane } from "./useDisplayPane";
-import { useWeb3Data } from "./useWeb3Data";
 
 type Props = {
     children: ReactNode;
 };
 
 const UserDataProvider: FC<Props> = ({ children }) => {
-    const { address, isConnected, data, loading, error, fetchWeb3Data } = useWeb3Data();
-    const { displayPaneMode, setDisplayPaneMode, resetDisplayPane } = useDisplayPane();
+    const { address, isConnected } = useAccount();
+    const { setCollections, setLoading, setError } = useStore();
+    const { fetchNFTs } = useFetchNFTs();
     const { chain } = useNetwork();
     const chainId: number = chain !== undefined ? chain.id : 1;
+
+    const fetchWeb3Data = useCallback(async () => {
+        setLoading(true);
+
+        try {
+            const fetchedData: FetchedData = await fetchNFTs(address as string, chainId);
+
+            let collections: CollectionExtended[] = fetchedData.data.collections;
+            collections = collections.filter((collection) => !collection.possible_spam);
+            const nfts: EvmNft[] = fetchedData.data.userNfts.nfts;
+
+            nfts.forEach((nft: EvmNft) => {
+                const collection: CollectionExtended | undefined = collections.find(
+                    (coll: Collection) => coll.token_address.toLowerCase() === nft.token_address.toLowerCase()
+                );
+
+                if (collection) {
+                    collection.uuid = uuidv4();
+
+                    if (!collection.image && nft.normalized_metadata.image) {
+                        collection.image = nft.normalized_metadata.image;
+                    }
+
+                    if (!collection.nfts) {
+                        collection.nfts = []; // initialize the array if it doesn't exist
+                    }
+                    collection.nfts.push(nft);
+                }
+            });
+
+            setCollections(collections);
+        } catch (error: any) {
+            console.error(error);
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [address, chainId]);
+
+    useEffect(() => {
+        if (address) {
+            fetchWeb3Data();
+        }
+    }, [address, fetchWeb3Data]);
 
     return (
         <UserContext.Provider
@@ -22,15 +70,7 @@ const UserDataProvider: FC<Props> = ({ children }) => {
                 address,
                 chainId,
                 isConnected,
-                balances: { native: data?.nativeBalance, token: data?.tokenBalance },
-                userNFTs: data?.userNfts,
-                collections: data?.collections,
                 fetchWeb3Data,
-                displayPaneMode,
-                setDisplayPaneMode,
-                resetDisplayPane,
-                loading,
-                error,
             }}
         >
             {children}

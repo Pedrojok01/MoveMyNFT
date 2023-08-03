@@ -1,6 +1,5 @@
 export { StartPane } from "./0_start";
-export { TokenSelection } from "./1_tokens";
+export { CollectionSelection } from "./1_collections";
 export { NFTSelection } from "./2_nfts";
-export { BundlePane } from "./3_bundle";
-export { Transfer } from "./4_transfer";
-export { Done } from "./5_done";
+export { Transfer } from "./3_transfer";
+export { Done } from "./4_done";

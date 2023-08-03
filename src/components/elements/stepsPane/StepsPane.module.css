@@ -18,5 +18,5 @@
     min-width: 350px;
     padding: 40px;
     height: 100%;
-    color: white;
+    color: var(--white);
 }

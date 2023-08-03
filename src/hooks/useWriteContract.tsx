@@ -1,186 +1,86 @@
-import { useState, useEffect } from "react";
-
-import { FileSearchOutlined } from "@ant-design/icons";
-import { PublicClient, WalletClient, getContract, parseAbiItem } from "viem";
+import { PublicClient, getContract } from "viem";
 import { usePublicClient, useWalletClient } from "wagmi";
 
-import { useUserData } from "../context/UserContextProvider";
-import { MMNFT_ABI, ERC20_ABI, NFT_ABI } from "../data/abis";
-import { getContractAddress } from "../data/constant";
-import { getExplorer } from "../utils/getExplorerByChain";
-import { openNotification } from "../utils/notifications";
+import { useUserData } from "@/context/UserContextProvider";
+import { MMNFT_ABI, NFT_721_ABI } from "@/data/abis";
+import { MOVE_MY_NFT } from "@/data/constant";
+import { notifyError, notifySuccess, openNotification } from "@/utils/notifications";
+import { handleErrors } from "@/utils/errorHandling";
 
 export const useWriteContract = () => {
-    const { address, chainId } = useUserData();
-    const mmw = getContractAddress(chainId);
+    const { chainId } = useUserData();
     const publicClient: PublicClient = usePublicClient();
-    const { data: walletClient, isError, isLoading } = useWalletClient();
-    const [signer, setSigner] = useState<WalletClient>();
+    const { data: walletClient } = useWalletClient();
 
-    useEffect(() => {
-        if (!isLoading && !isError && walletClient) {
-            setSigner(walletClient);
-        }
-    }, [isLoading, isError, walletClient]);
-
-    const mmwInstance = getContract({ abi: MMNFT_ABI, address: mmw as `0x${string}`, walletClient: signer });
-
-    /* Set Token Allowance:
-     ***************************/
-    const approveToken = async (token: string, allowance: bigint) => {
-        const tokenInstance = getContract({
-            abi: ERC20_ABI,
-            address: token as `0x${string}`,
-            walletClient: signer,
-        });
-
-        try {
-            const hash = await tokenInstance.write.approve([mmw, allowance]);
-
-            await publicClient.waitForTransactionReceipt({
-                confirmations: 5,
-                hash: hash,
-            });
-
-            const value = parseInt(allowance.toString()) / 10 ** 18;
-            const title = "Token Approval set";
-            const msg = `Allowance succesfully set to ${value}.`;
-            openNotification("success", title, msg);
-        } catch (error: any) {
-            console.error(error.reason);
-            const title = "Token Approval denied";
-            const msg = ` Something went wrong while setting the allowance. \n 
-            Reason: ${error.reason}`;
-            openNotification("error", title, msg);
-        }
-    };
-
-    /* Set Token Allowance:
-     ***************************/
+    /* Approve an NFT collection (both ERC721 and ERC1155):
+     *******************************************************/
     const approveNft = async (nft: string) => {
+        if (!walletClient) throw new Error("Wallet client not initialized");
+
         const nftInstance = getContract({
-            abi: NFT_ABI,
+            abi: NFT_721_ABI, // Same for ERC1155
             address: nft as `0x${string}`,
-            walletClient: signer,
+            walletClient: walletClient,
         });
 
         try {
-            const hash = await nftInstance.write.setApprovalForAll([mmw, true]);
+            const hash = await nftInstance.write.setApprovalForAll([MOVE_MY_NFT, true]);
             await publicClient.waitForTransactionReceipt({
-                confirmations: 5,
+                confirmations: 3,
                 hash: hash,
             });
-            const title = "NFT Approval set";
-            const msg = `Allowance succesfully set.`;
-            openNotification("success", title, msg);
+            openNotification("success", "NFT Approval set", "Allowance successfully set.");
+            return { success: true, data: hash, error: null };
         } catch (error: any) {
-            console.error(error.reason ?? error.message ?? error);
-            const title = "NFT Approval denied";
-            const msg = ` Something went wrong while setting the allowance.\n 
-            Reason: ${error.reason ?? error.message ?? error}`;
-            openNotification("error", title, msg);
+            const message = handleErrors(error, MMNFT_ABI);
+            notifyError(message);
+            return { success: false, data: null, error: message };
         }
     };
 
-    const executeBundle = async (addresses: string[], numbers: (string | number)[]) => {
+    /* Execute a batch transfer:
+     ****************************/
+
+    type Method = "batchTransferERC721" | "batchTransferERC1155";
+    type Params = [string, string, string[], number[]?];
+
+    const executeTransfer = async (method: Method, params: Params) => {
+        if (!walletClient) throw new Error("Wallet client not initialized");
+
+        const MOVE_MY_NFTInstance = getContract({
+            abi: MMNFT_ABI,
+            address: MOVE_MY_NFT as `0x${string}`,
+            walletClient: walletClient,
+        });
+
         try {
-            const hash = await mmwInstance.write.safeMint([address, addresses, numbers]);
-
-            return new Promise((resolve, reject) => {
-                publicClient.watchEvent({
-                    address: mmw as `0x${string}`,
-                    event: parseAbiItem(
-                        "event AssemblyAsset(address indexed firstHolder, uint256 indexed tokenId, uint256 salt, address[] addresses, uint256[] numbers)"
-                    ),
-                    args: {
-                        firstHolder: address,
-                    },
-                    onLogs: (logs: any) => {
-                        const data: AssemblyEventData = {
-                            addresses: logs[0].args?.addresses,
-                            blockHash: logs[0].blockHash,
-                            blockNumber: Number(logs[0].blockNumber),
-                            chainId: chainId,
-                            numbers: logs[0].args?.numbers.map((item: bigint) => item.toString()),
-                            ownerOf: logs[0].args?.firstHolder.toLowerCase(),
-                            salt: Number(logs[0].args?.salt),
-                            tokenId: logs[0].args?.tokenId.toString(),
-                            transactionHash: hash,
-                        };
-
-                        const title = "Bundle Created";
-                        const link = `${getExplorer(chainId)}tx/${hash}`;
-                        const msg = (
-                            <>
-                                Your bundle has been successfully created!
-                                <br></br>
-                                <a href={link} target="_blank" rel="noreferrer noopener">
-                                    View in explorer: &nbsp;
-                                    <FileSearchOutlined style={{ transform: "scale(1.3)", color: "purple" }} />
-                                </a>
-                            </>
-                        );
-                        openNotification("success", title, msg);
-                        resolve({
-                            success: true,
-                            data,
-                        });
-
-                        // Add code to stop watching for events here
-                    },
-                });
-            });
-        } catch (error: any) {
-            console.error(error.reason ?? error.message ?? error);
-            const title = "Unexpected error";
-            const msg = `Oops, something went wrong while bundling your assets. \n 
-            Reason: ${error.reason ?? error.message ?? error}`;
-            openNotification("error", title, msg);
-            return Promise.resolve({ success: false, data: null });
-        }
-    };
-
-    const executeTransfer = async (
-        receiver: string,
-        tokenId: string,
-        salt: number,
-        addresses: string[],
-        numbers: (string | number)[]
-    ) => {
-        try {
-            const hash = await mmwInstance.write.burn([receiver, tokenId, salt, addresses, numbers]);
+            const hash = await MOVE_MY_NFTInstance.write[method](params);
             const transaction = await publicClient.waitForTransactionReceipt({
-                confirmations: 5,
+                confirmations: 3,
                 hash: hash,
             });
-            const link = `${getExplorer(chainId)}tx/${hash}`;
-            const title = "Assets unpacked!";
-            const msg = (
-                <>
-                    Your assets has been succesfully transfered!
-                    <br></br>
-                    <a href={link} target="_blank" rel="noreferrer noopener">
-                        View in explorer: &nbsp;
-                        <FileSearchOutlined style={{ transform: "scale(1.3)", color: "purple" }} />
-                    </a>
-                </>
-            );
-            openNotification("success", title, msg);
-            return { success: true, data: transaction };
+            notifySuccess(hash, chainId);
+            return { success: true, data: transaction, error: null };
         } catch (error: any) {
-            console.error(error.reason ?? error.message ?? error);
-            const title = "Unexpected error";
-            const msg = `Oops, something went wrong while transfering your assets. \n 
-            Reason: ${error.reason ?? error.message ?? error}`;
-            openNotification("error", title, msg);
-            return { success: false, data: null };
+            const message = handleErrors(error, MMNFT_ABI);
+            notifyError(message);
+            return { success: false, data: null, error: message };
         }
     };
+
+    const executeTransfer721 = (collectionAddress: string, receiver: string, tokenIds: string[]) =>
+        executeTransfer("batchTransferERC721", [collectionAddress, receiver, tokenIds]);
+
+    const executeTransfer1155 = (
+        collectionAddress: string,
+        receiver: string,
+        tokenIds: string[],
+        tokenAmounts: number[]
+    ) => executeTransfer("batchTransferERC1155", [collectionAddress, receiver, tokenIds, tokenAmounts]);
 
     return {
-        approveToken,
         approveNft,
-        executeBundle,
-        executeTransfer,
+        executeTransfer721,
+        executeTransfer1155,
     };
 };

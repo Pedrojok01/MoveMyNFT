@@ -4,20 +4,30 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Layout } from "antd";
 import Link from "next/link";
 
-import styles from "./HeaderPage.module.css";
 
 import movemynft_logo_transparent from "/public/images/movemynft_logo_transparent.png";
 import movemynft_logo_transparent_small from "/public/images/movemynft_logo_square_transparent.png";
 
-import { useWindowWidthAndHeight } from "../../../hooks";
+import { useWindowWidthAndHeight } from "@/hooks";
+import { useStore } from "@/store/store";
+
+import styles from "./HeaderPage.module.css";
 
 const { Header } = Layout;
 
 const HeaderPage: FC = () => {
+    const { setDisplayPaneMode } = useStore();
+
+    const handleClick = () => {
+        setDisplayPaneMode("start");
+    };
+
     return (
         <Header className={styles.header}>
             <Link href="/">
-                <Logo />
+                <div onClick={handleClick}>
+                    <Logo />
+                </div>
             </Link>
 
             <div className={styles.headerRight}>

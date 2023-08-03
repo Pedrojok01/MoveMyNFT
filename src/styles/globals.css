@@ -1,3 +1,15 @@
+:root {
+    --navy-blue: #004080;
+    --light-gray: #d3d3d3;
+    --charcoal: #4f4f4f;
+    --dark-gray: #111111;
+    --black: #000000;
+    --white: #ffffff;
+    --light-white: #d9d9d9;
+}
+
+/* Use: color: var(--light-white); */
+
 * {
     box-sizing: border-box;
     padding: 0;
@@ -100,7 +112,7 @@ a {
     justify-content: space-between;
     align-items: center;
     margin: auto;
-    padding: 30px;
+    padding: 15px 30px;
     height: 100%;
 }
 

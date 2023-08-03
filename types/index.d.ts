@@ -6,42 +6,21 @@ interface UserContext {
     address?: `0x${string}` | undefined;
     chainId: number;
     isConnected: boolean;
-    balances: UserBalances;
-    userNFTs: Nfts;
-    collections: Collections;
-    fetchWeb3Data: () => void;
-    displayPaneMode: DisplayPane;
-    setDisplayPaneMode: Dispatch<SetStateAction<DisplayPane>>;
-    resetDisplayPane: () => void;
-    loading: boolean;
-    error: string | null;
-}
-
-interface Web3Data {
-    address: `0x${string}` | undefined;
-    isConnected: boolean;
-    data: any;
-    loading: boolean;
-    error: string | null;
     fetchWeb3Data: () => void;
 }
 
-interface UserBalances {
-    native: string;
-    token: Token[];
-}
+type DisplayPane = "start" | "selectCollection" | "nfts" | "transfer" | "done";
 
-type DisplayPane = "start" | "tokens" | "nfts" | "bundle" | "transfer" | "done";
-
-interface Token {
-    key: string;
-    balance: number;
-    decimals: number;
-    logo: string | null;
-    name: string;
-    symbol: string;
-    thumbnail: string | null;
-    token_address: string;
+interface FetchedData {
+    data: {
+        collections: CollectionExtended[];
+        userNfts: {
+            nfts: EvmNft[];
+            total: number;
+        };
+    };
+    message: string;
+    success: boolean;
 }
 
 /**********************************************************
@@ -69,139 +48,96 @@ type DisconnectModalProps = {
 };
 
 /**********************************************************
-                           NFT
+                        Collections
+***********************************************************/
+
+interface Collection {
+    contract_type: string;
+    name: string;
+    possible_spam: boolean;
+    symbol: string;
+    token_address: string;
+    verified_collection: boolean;
+}
+
+interface CollectionExtended extends Collection {
+    image: string | undefined;
+    uuid: string;
+    nfts: nft[];
+}
+
+type Collections = CollectionExtended[];
+
+/**********************************************************
+                           NFTs
 ***********************************************************/
 
 interface EvmNft {
-    amount: number | undefined;
-    blockNumber: BigNumber | undefined;
-    blockNumberMinted: BigNumber | undefined;
-    chain: EvmChain;
-    contractType: string | undefined;
-    lastMetadataSync: Date | undefined;
-    lastTokenUriSync: Date | undefined;
-    metadata?: any;
-    name: string | undefined;
-    ownerOf: EvmAddress | undefined;
-    symbol: string | undefined;
-    tokenAddress: EvmAddress | undefined;
-    tokenHash: string | undefined;
-    tokenId: string | number;
-    tokenUri: string | undefined;
-}
-
-interface NftsOwners {
-    _id: ObjectId;
-    amount: number;
-    blockNumber: string | undefined;
-    blockNumberMinted: string | undefined;
-    chain: string | number;
-    contractType: string | undefined;
-    lastMetadataSync: string | undefined;
-    lastTokenUriSync: string | undefined;
-    name: string | undefined;
-    ownerOf: string | undefined;
-    symbol: string | undefined;
-    tokenAddress: string;
-    tokenHash: string | undefined;
-    tokenId: number;
-    tokenUri: string | undefined;
-    isStaked: boolean;
-}
-
-type Nfts = {
-    nfts: NFTinDB[];
-    total: number;
-};
-
-interface Nft {
     amount: string;
     block_number: string;
     block_number_minted: string;
     contract_type: string;
-    image: string;
     last_metadata_sync: string;
     last_token_uri_sync: string;
-    metadata: NftMetadata;
+    metadata: string;
     name: string;
+    normalized_metadata: NormalizedMetadata;
     owner_of: string;
+    possible_spam: boolean;
     symbol: string;
     token_address: string;
     token_hash: string;
     token_id: string;
     token_uri: string;
-    image?: string;
+    verified_collection: boolean;
 }
 
-interface NftMetadata {
-    attributes: NftAttributes;
+type NormalizedMetadata = {
+    animation_url: string | null;
+    attributes: any[];
     description: string;
+    external_link: string | null;
     image: string;
     name: string;
-}
-
-interface NftAttributes {
-    display_type?: string;
-    trait_type?: string;
-    value?: string;
-    boost: string;
-    rarity: string;
-}
-
-type NFTinDB = {
-    amount: string;
-    block_number: string;
-    block_number_minted: string;
-    chainId?: string;
-    collectionName?: string;
-    contract_type: string;
-    createdAt?: string;
-    image: string;
-    itemId?: number | undefined;
-    last_metadata_sync: string;
-    last_token_uri_sync: string;
-    metadata: NftMetadata;
-    normalized_metadata: any;
-    objectId?: string;
-    owner: string;
-    name: string;
-    owner_of: string;
-    price?: number;
-    seller?: string;
-    sold?: boolean;
-    symbol?: string;
-    synced_at: string;
-    tokenId: string;
-    token_address: string;
-    token_hash: string;
-    token_id: string;
-    token_uri: string;
-    updatedAt: string;
 };
 
+interface Nft extends EvmNft {
+    image: string;
+}
+
+type Nfts = {
+    nfts: EvmNft[];
+    total: number;
+};
 /**********************************************************
                         TEMPLATE PROPS
 ***********************************************************/
 
-interface TokenProps {
-    tokensToTransfer: Token[];
-    setTokensToTransfer: Dispatch<SetStateAction<Token[]>>;
+interface StepsPaneProps {
+    NFTsToTransfer: Nft[];
 }
 
-interface NFTProps {
-    NFTsToTransfer: NFTinDB[];
-    setNFTsToTransfer: Dispatch<SetStateAction<NFTinDB[]>>;
+interface CollectionSelectionProps {
+    setCollection: Dispatch<SetStateAction<CollectionExtended | undefined>>;
 }
 
-interface BundleProps {
-    setBundleDataToTransfer: Dispatch<SetStateAction<TokenData>>;
-    tokensToTransfer: Token[];
-    NFTsToTransfer: NFTinDB[];
-    onReset: () => void;
+interface DisplayNFTProps {
+    item: DisplayedNFT;
+    index: number;
+    isNFTSelected: (currentNft: DisplayedNFT) => boolean;
+    handleClickCard: (clickedNFT: DisplayedNFT) => void;
+}
+type DisplayedNFT = Nft | CollectionExtended;
+
+interface NFTSelectionProps {
+    collection: CollectionExtended;
+    NFTsToTransfer: Nft[];
+    setNFTsToTransfer: Dispatch<SetStateAction<Nft[]>>;
 }
 
 interface TransferProps {
-    bundleDataToTransfer: TokenData | undefined;
+    collectionAddress: string | undefined;
+    NFTsToTransfer: Nft[];
     getAddressFromTransfer: (value: SetStateAction<string>) => void;
 }
 
@@ -214,51 +150,6 @@ interface DoneProps {
                         DIVERS
 ***********************************************************/
 
-interface StepsPaneProps {
-    tokensToTransfer: Token[];
-    NFTsToTransfer: NFTinDB[];
-}
-
-interface DisplayNFTProps {
-    item: NFTinDB;
-    index: number;
-    isNFTSelected: (currentNft: NFTinDB) => boolean;
-    handleClickCard: (clickedNFT: NFTinDB) => void;
-}
-
-interface BundleArrays {
-    addressesArray: `0x${string}`[];
-    numbersArray: (number | string | BigNumber)[];
-}
-
-interface AssemblyEventData {
-    addresses: string[];
-    blockHash: string;
-    blockNumber: number;
-    chainId: number;
-    numbers: string[];
-    ownerOf: string;
-    salt: number;
-    tokenId: string;
-    transactionHash: string;
-}
-
-interface TokenData {
-    tokenId: string;
-    salt: number;
-    addresses: string[];
-    numbers: string[];
-}
-
-interface Collection {
-    token_address: string;
-    contract_type: string;
-    name: string;
-    symbol: string;
-}
-
-type Collections = Collection[];
-
 type MenuItem = Required<MenuProps>["items"][number];
 
 interface Item {
@@ -268,7 +159,7 @@ interface Item {
 }
 
 interface CollectionSelectorProps {
-    setNftsDisplayed: React.Dispatch<React.SetStateAction<NFTinDB[]>>;
+    setNftsDisplayed: React.Dispatch<React.SetStateAction<Nft[]>>;
 }
 
 interface AddEthereumChainParameter {

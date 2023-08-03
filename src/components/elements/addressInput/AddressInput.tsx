@@ -5,8 +5,9 @@ import { Input, InputRef } from "antd";
 import { isAddress } from "viem";
 import { useEnsResolver } from "wagmi";
 
+import { useUserData } from "@/context/UserContextProvider";
+
 import Jazzicons from "./Jazzicons";
-import { useUserData } from "../../../context/UserContextProvider";
 
 const AddressInput: React.FC<{
     placeholder?: string;
