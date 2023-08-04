@@ -34,7 +34,7 @@ const StepsPane: FC = () => {
         {
             title: isTablet ? "Select Collection" : "Select the collection to transfer from",
             description:
-                isTablet && !isMobileOnly ? "" : "Select the collection you wish to transfer some of all NFTs from.",
+                isTablet && !isMobileOnly ? "" : "Select the collection you wish to transfer some, or all NFTs from.",
         },
         {
             title: isTablet ? "Select NFTs" : "Choose the NFTs to transfer",
