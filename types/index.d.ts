@@ -131,7 +131,8 @@ interface NFTSelectionProps {
 
 interface TransferProps {
     collectionAddress: string | undefined;
-    getAddressFromTransfer: (value: SetStateAction<string>) => void;
+    address: string;
+    setAddress: Dispatch<SetStateAction<string>>;
 }
 
 interface DoneProps {

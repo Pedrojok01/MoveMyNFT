@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { Analytics } from "@vercel/analytics/react";
 import type { AppProps } from "next/app";
 import NextHead from "next/head";
 import { WagmiConfig } from "wagmi";
@@ -22,6 +23,7 @@ function App({ Component, pageProps }: AppProps) {
                         <title>Move My NFT</title>
                     </NextHead>
                     <div style={{ fontFamily: "Sora, sans-serif" }}>{mounted && <Component {...pageProps} />}</div>
+                    <Analytics />
                 </UserDataProvider>
             </RainbowKitProvider>
         </WagmiConfig>

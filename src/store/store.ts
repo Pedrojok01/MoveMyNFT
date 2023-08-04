@@ -7,7 +7,7 @@ interface StoreData {
     setNftsToTransfer: (nftsToTransfer: Nft[]) => void;
     displayPaneMode: DisplayPane;
     setDisplayPaneMode: (displayPaneMode: DisplayPane) => void;
-    resetDisplayPane: () => void;
+    reset: () => void;
     loading: boolean;
     setLoading: (loading: boolean) => void;
     error: string | null;
@@ -21,7 +21,7 @@ const useStore = create<StoreData>((set) => ({
     setNftsToTransfer: (nftsToTransfer) => set({ nftsToTransfer }),
     displayPaneMode: "start",
     setDisplayPaneMode: (displayPaneMode) => set({ displayPaneMode }),
-    resetDisplayPane: () => set({ displayPaneMode: "start" }),
+    reset: () => set({ displayPaneMode: "start", nftsToTransfer: [], error: null, loading: false }),
     loading: false,
     setLoading: (loading) => set({ loading }),
     error: null,

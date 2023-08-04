@@ -8,20 +8,15 @@ import { useStore } from "@/store/store";
 
 const Content: FC = () => {
     const { isConnected } = useUserData();
-    const { setNftsToTransfer, displayPaneMode, resetDisplayPane } = useStore();
+    const { displayPaneMode, reset } = useStore();
     const isSupportedChain = useSuportedChains();
 
     const [collection, setCollection] = useState<CollectionExtended | undefined>(undefined);
     const [addressTotransfer, setAddressTotransfer] = useState<string>("");
 
-    const getAddressFromTransfer = (value: SetStateAction<string>) => {
-        setAddressTotransfer(value);
-    };
-
     const onReset = () => {
-        setNftsToTransfer([]);
+        reset();
         setCollection(undefined);
-        resetDisplayPane();
     };
 
     return (
@@ -42,7 +37,8 @@ const Content: FC = () => {
                             {displayPaneMode === "transfer" && (
                                 <Transfer
                                     collectionAddress={collection?.token_address}
-                                    getAddressFromTransfer={getAddressFromTransfer}
+                                    address={addressTotransfer}
+                                    setAddress={setAddressTotransfer}
                                 />
                             )}
                             {displayPaneMode === "done" && <Done address={addressTotransfer} onReset={onReset} />}

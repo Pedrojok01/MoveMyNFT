@@ -9,10 +9,9 @@ import { useStore } from "@/store/store";
 
 import styles from "./Transfer.module.css";
 
-const Transfer: FC<TransferProps> = ({ collectionAddress, getAddressFromTransfer }) => {
+const Transfer: FC<TransferProps> = ({ collectionAddress, address, setAddress }) => {
     const { setDisplayPaneMode, nftsToTransfer, loading, error, setError } = useStore();
     const { approve, transfer } = useContractExecution();
-    const [receiver, setReceiver] = useState<string | undefined>(undefined);
     const [buttonText, setButtonText] = useState<string>("APPROVE");
 
     const antIcon = <LoadingOutlined style={{ fontSize: 30 }} spin />;
@@ -21,15 +20,11 @@ const Transfer: FC<TransferProps> = ({ collectionAddress, getAddressFromTransfer
 
     useEffect(() => {
         setError(null);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const setAddress = (value: any) => {
-        setReceiver(value);
-        getAddressFromTransfer(value);
-    };
-
     const handleTransfer = async () => {
-        if (!receiver) {
+        if (!address) {
             setError("Please enter a valid address");
             return;
         }
@@ -41,7 +36,7 @@ const Transfer: FC<TransferProps> = ({ collectionAddress, getAddressFromTransfer
             await transfer(
                 collectionAddress,
                 nftsToTransfer[0].contract_type,
-                receiver,
+                address,
                 nftsToTransfer.map((nft) => nft.token_id),
                 nftsToTransfer[0].contract_type === "ERC1155"
                     ? nftsToTransfer.map((nft) => Number(nft.amount))
@@ -59,7 +54,7 @@ const Transfer: FC<TransferProps> = ({ collectionAddress, getAddressFromTransfer
             <div className={styles.content}>
                 <div style={{ margin: "auto", width: "80%" }}>
                     <p className={styles.text}>Transfer my NFTs</p>
-                    <AddressInput autoFocus placeholder="Receiver" address={receiver ?? ""} setAddress={setAddress} />
+                    <AddressInput autoFocus placeholder="Receiver" address={address ?? ""} setAddress={setAddress} />
 
                     {error && <p className="error-text">{error}</p>}
 

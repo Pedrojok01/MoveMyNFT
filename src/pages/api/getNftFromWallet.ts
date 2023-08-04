@@ -37,6 +37,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             chain: moralisChain,
             disableTotal: false,
             normalizeMetadata: true,
+            // mediaItems: true,
         });
 
         const nfts = tx.raw.result ? [...tx.raw.result] : [];

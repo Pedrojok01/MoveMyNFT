@@ -14,13 +14,13 @@ type Props = {
 
 const UserDataProvider: FC<Props> = ({ children }) => {
     const { address, isConnected } = useAccount();
-    const { setCollections, setLoading, setError, resetDisplayPane } = useStore();
+    const { setCollections, setLoading, setError, reset } = useStore();
     const { fetchNFTs } = useFetchNFTs();
     const { chain } = useNetwork();
     const chainId: number = chain !== undefined ? chain.id : 1;
 
     useEffect(() => {
-        resetDisplayPane();
+        reset();
     }, [chainId]);
 
     const fetchWeb3Data = useCallback(async () => {
@@ -66,6 +66,7 @@ const UserDataProvider: FC<Props> = ({ children }) => {
         if (address && chainId) {
             fetchWeb3Data();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [address, chainId]);
 
     return (
