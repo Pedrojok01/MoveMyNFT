@@ -20,6 +20,7 @@ const Content: FC = () => {
 
     const onReset = () => {
         setNftsToTransfer([]);
+        setCollection(undefined);
         resetDisplayPane();
     };
 
