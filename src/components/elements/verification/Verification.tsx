@@ -6,31 +6,31 @@ import { useSuportedChains } from "@/hooks";
 import styles from "./Verification.module.css";
 
 const Verification: FC = () => {
-    const { isConnected } = useUserData();
-    const isSupportedChain = useSuportedChains();
+  const { isConnected } = useUserData();
+  const isSupportedChain = useSuportedChains();
 
-    const notConnected = "Connect your wallet to get started";
-    const unupportedChain = `This chain is not supported, \n
+  const notConnected = "Connect your wallet to get started";
+  const unupportedChain = `This chain is not supported, \n
     please select a different chain`;
 
-    let message = "";
-    if (!isConnected) {
-        message = notConnected;
-    } else if (!isSupportedChain) {
-        message = unupportedChain;
-    }
+  let message = "";
+  if (!isConnected) {
+    message = notConnected;
+  } else if (!isSupportedChain) {
+    message = unupportedChain;
+  }
 
-    return (
-        <>
-            {message !== "" && (
-                <div className="small-pane">
-                    <div className={styles.smallContainer}>
-                        <div className={styles.text}>{message}</div>
-                    </div>
-                </div>
-            )}
-        </>
-    );
+  return (
+    <>
+      {message !== "" && (
+        <div className="small-pane">
+          <div className={styles.smallContainer}>
+            <div className={styles.text}>{message}</div>
+          </div>
+        </div>
+      )}
+    </>
+  );
 };
 
 export default Verification;

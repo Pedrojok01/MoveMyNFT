@@ -5,8 +5,8 @@
  * @returns {string}
  */
 export const getEllipsisTxt = (str: string | undefined, n = 6): string => {
-    if (str && str !== undefined) {
-        return `${str.slice(0, n)}...${str.slice(str.length - n)}`;
-    }
-    return "";
+  if (str && str !== undefined) {
+    return `${str.slice(0, n)}...${str.slice(str.length - n)}`;
+  }
+  return "";
 };

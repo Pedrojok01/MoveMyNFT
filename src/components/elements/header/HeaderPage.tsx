@@ -15,36 +15,36 @@ import styles from "./HeaderPage.module.css";
 const { Header } = Layout;
 
 const HeaderPage: FC = () => {
-    const { setDisplayPaneMode } = useStore();
+  const { setDisplayPaneMode } = useStore();
 
-    const handleClick = () => {
-        setDisplayPaneMode("start");
-    };
+  const handleClick = () => {
+    setDisplayPaneMode("start");
+  };
 
-    return (
-        <Header className={styles.header}>
-            <Link href="/">
-                <div onClick={handleClick}>
-                    <Logo />
-                </div>
-            </Link>
+  return (
+    <Header className={styles.header}>
+      <Link href="/">
+        <div onClick={handleClick}>
+          <Logo />
+        </div>
+      </Link>
 
-            <div className={styles.headerRight}>
-                <ConnectButton />
-            </div>
-        </Header>
-    );
+      <div className={styles.headerRight}>
+        <ConnectButton />
+      </div>
+    </Header>
+  );
 };
 
 export const Logo = () => {
-    const { isMobileOnly } = useWindowWidthAndHeight();
-    return (
-        <img
-            src={isMobileOnly ? movemynft_logo_transparent_small.src : movemynft_logo_transparent.src}
-            alt="movemynft_logo_transparent"
-            className={styles.logo}
-        />
-    );
+  const { isMobileOnly } = useWindowWidthAndHeight();
+  return (
+    <img
+      src={isMobileOnly ? movemynft_logo_transparent_small.src : movemynft_logo_transparent.src}
+      alt="movemynft_logo_transparent"
+      className={styles.logo}
+    />
+  );
 };
 
 export default HeaderPage;
