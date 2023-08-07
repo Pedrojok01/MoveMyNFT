@@ -4,7 +4,7 @@ import { LoadingOutlined, SendOutlined } from "@ant-design/icons";
 import { Button, Spin } from "antd";
 
 import { AddressInput } from "@/components/elements/addressInput";
-import { useContractExecution } from "@/hooks";
+import { useContractExecution, useReadContract } from "@/hooks";
 import { useStore } from "@/store/store";
 
 import styles from "./Transfer.module.css";
@@ -12,14 +12,23 @@ import styles from "./Transfer.module.css";
 const Transfer: FC<TransferProps> = ({ collectionAddress, address, setAddress }) => {
     const { setDisplayPaneMode, nftsToTransfer, loading, error, setError } = useStore();
     const { approve, transfer } = useContractExecution();
+    const { checkNftAllowance } = useReadContract();
     const [buttonText, setButtonText] = useState<string>("APPROVE");
 
     const antIcon = <LoadingOutlined style={{ fontSize: 30 }} spin />;
 
     if (!collectionAddress) throw new Error("Collection address is missing");
 
+    const isAlreadyApproved = async () => {
+        const res = await checkNftAllowance(collectionAddress as `0x${string}`);
+        if (res) {
+            setButtonText("TRANSFER");
+        }
+    };
+
     useEffect(() => {
         setError(null);
+        isAlreadyApproved();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

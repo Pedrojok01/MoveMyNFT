@@ -21,7 +21,7 @@ const UserDataProvider: FC<Props> = ({ children }) => {
 
     useEffect(() => {
         reset();
-    }, [chainId]);
+    }, [chainId, reset]);
 
     const fetchWeb3Data = useCallback(async () => {
         setLoading(true);

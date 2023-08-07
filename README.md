@@ -22,10 +22,16 @@ Cross-chain Dapp deployed on Ethereum, Binance Smart-Chain and Polygon. Allow an
 
 💿 Clone the repo and install all dependencies:
 
-```sh
-git clone https://github.com/Pedrojok01/MoveMyNFT.git
-cd movemynft-App
-yarn install
+Start by cloning the repo:
+
+```bash
+git clone https://github.com/Pedrojok01/MoveMyNFT.git .
+```
+
+Then install all dependencies:
+
+```bash
+yarn
 ```
 
 ✏ Edit the `.env.example` file in the main folder with all required info. Don't forget to remove `.example` !
@@ -43,15 +49,7 @@ ALCHEMY_API_KEY = api_key_here;
 🔎 Locate the file constant.js in `src/data/constant.ts` and paste your smart-contracts addresses;
 
 ```jsx
-// Production:
-export const MOVE_MY_NFT_ETHEREUM = "";
-export const MOVE_MY_NFT_BSC = "";
-export const MOVE_MY_NFT_POLYGON = "";
-
-// Development:
-export const MOVE_MY_NFT_GOERLI = "";
-export const MOVE_MY_NFT_MUMBAI = "";
-export const MOVE_MY_NFT_BSC_TESTNET = "";
+export const MOVE_MY_NFT = "0x505E76dd375DEd411101eD80E23DEb93db4c323A";
 ```
 
 🔎 Locate the ABIs files in the `src/data/abis` folder and edit your ABIs if you've made any changes to the smart-contracts;
@@ -64,13 +62,13 @@ export const NFT_ABI = ["NFT ABI here...];
 
 Dev. mode:
 
-```sh
+```bash
 yarn dev
 ```
 
 Prod. mode:
 
-```sh
+```bash
 yarn start
 ```
 
@@ -80,6 +78,11 @@ yarn start
 
 ```sh
 cd hardhat
+```
+
+Then install all dependencies:
+
+```sh
 yarn install
 ```
 
@@ -99,6 +102,12 @@ yarn install
 
 ```sh
 yarn test
+```
+
+💿 Run Slither analyzer:
+
+```sh
+yarn slither
 ```
 
 💿 Deploy your contracts:

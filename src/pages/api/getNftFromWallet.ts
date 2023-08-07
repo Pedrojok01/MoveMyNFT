@@ -35,25 +35,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const tx = await Moralis.EvmApi.nft.getWalletNFTs({
             address: account,
             chain: moralisChain,
-            disableTotal: false,
             normalizeMetadata: true,
-            // mediaItems: true,
         });
 
         const nfts = tx.raw.result ? [...tx.raw.result] : [];
-        const total = tx.raw.total ?? 0;
+        let currentTx = tx;
 
-        if (total > 100) {
-            let currentTx = tx;
-            for (let i = 0; i < Math.min(total, 500) / 100 - 1; i++) {
-                const nextTx = await currentTx.next();
-                if (nextTx.raw.result) {
-                    nfts.push(...nextTx.raw.result);
-                }
-                currentTx = nextTx;
+        while (currentTx.hasNext()) {
+            const nextTx = await currentTx.next();
+            if (nextTx.raw.result) {
+                nfts.push(...nextTx.raw.result);
             }
+            currentTx = nextTx;
         }
 
+        const total = nfts.length;
         const userNfts = { nfts, total };
 
         // Fetch all NFT collection owned by user

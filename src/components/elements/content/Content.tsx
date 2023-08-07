@@ -1,4 +1,4 @@
-import { useState, FC, SetStateAction } from "react";
+import { useState, FC } from "react";
 
 import { StepsPane, Verification } from "@/components/elements";
 import { StartPane, CollectionSelection, NFTSelection, Transfer, Done } from "@/components/templates";
