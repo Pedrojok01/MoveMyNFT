@@ -6,6 +6,7 @@
 [![Stargazers](https://img.shields.io/github/stars/Pedrojok01/movemynft)](https://github.com/Pedrojok01/movemynft-app/stargazers)
 [![Issues](https://img.shields.io/github/issues/Pedrojok01/movemynft)](https://github.com/Pedrojok01/movemynft-app/issues)
 [![MIT License](https://img.shields.io/github/license/Pedrojok01/movemynft)](https://github.com/Pedrojok01/movemynft-app/blob/main/License)
+[![codecov](https://codecov.io/github/Pedrojok01/movemynft/branch/main/graph/badge.svg?token=XBKTMGRQ5S)](https://codecov.io/github/Pedrojok01/movemynft)
 
 </div>
 
@@ -13,8 +14,8 @@
 
 Cross-chain Dapp deployed on Ethereum, Binance Smart-Chain and Polygon. Allow any user to quickly and simply transfer all assets (ERC20, ERC721 and ERC1155) from one address to another.
 
--   Website: https://movemynft.com/
-    <br></br>
+- Website: https://movemynft.com/
+  <br></br>
 
 ![Preview](./public/images/preview.gif)
 
