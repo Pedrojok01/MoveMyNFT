@@ -9,11 +9,24 @@
   z-index: 10;
 }
 
+.logoDiv {
+  display: inline-flex;
+  height: 100px;
+  gap: 5px;
+}
+
 .logo {
-  width: 6.5vw;
-  min-width: 80px;
-  height: auto;
+  width: 100px;
+  height: 100px;
   padding-top: 1.5rem;
+}
+
+.title {
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+  padding-top: 28px;
 }
 
 .headerRight {

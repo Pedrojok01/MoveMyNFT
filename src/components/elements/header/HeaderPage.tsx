@@ -7,6 +7,7 @@ import Link from "next/link";
 
 import movemynft_logo_transparent from "/public/images/movemynft_logo_transparent.png";
 
+import { useWindowWidthAndHeight } from "@/hooks";
 import { useStore } from "@/store/store";
 
 import styles from "./HeaderPage.module.css";
@@ -15,6 +16,7 @@ const { Header } = Layout;
 
 const HeaderPage: FC = () => {
   const { setDisplayPaneMode } = useStore();
+  const { isMobileOnly } = useWindowWidthAndHeight();
 
   const handleClick = () => {
     setDisplayPaneMode("start");
@@ -23,8 +25,8 @@ const HeaderPage: FC = () => {
   return (
     <Header className={styles.header}>
       <Link href="/">
-        <div onClick={handleClick}>
-          <Logo />
+        <div onClick={handleClick} className={styles.logoDiv}>
+          <Logo /> {!isMobileOnly && <h1 className={styles.title}>Move My NFT</h1>}
         </div>
       </Link>
 

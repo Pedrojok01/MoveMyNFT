@@ -1,12 +1,20 @@
 import { Layout } from "antd";
 import { NextPage } from "next";
+import { Rubik } from "next/font/google";
 import Head from "next/head";
+
 
 import { Content, HeaderPage } from "../components/elements/";
 
+const rubik = Rubik({
+  subsets: ["latin"],
+  variable: "--font-rubik",
+  display: "swap",
+});
+
 const MainPage: NextPage = () => {
   return (
-    <Layout className="layout">
+    <Layout className={`layout ${rubik.variable}`}>
       <Head>
         <title>Move My NFT</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
