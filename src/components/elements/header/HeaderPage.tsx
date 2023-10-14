@@ -2,12 +2,11 @@ import { FC } from "react";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Layout } from "antd";
+import Image from "next/image";
 import Link from "next/link";
 
 import movemynft_logo_transparent from "/public/images/movemynft_logo_transparent.png";
-import movemynft_logo_transparent_small from "/public/images/movemynft_logo_square_transparent.png";
 
-import { useWindowWidthAndHeight } from "@/hooks";
 import { useStore } from "@/store/store";
 
 import styles from "./HeaderPage.module.css";
@@ -37,12 +36,13 @@ const HeaderPage: FC = () => {
 };
 
 export const Logo = () => {
-  const { isMobileOnly } = useWindowWidthAndHeight();
   return (
-    <img
-      src={isMobileOnly ? movemynft_logo_transparent_small.src : movemynft_logo_transparent.src}
+    <Image
+      src={movemynft_logo_transparent.src}
       alt="movemynft_logo_transparent"
       className={styles.logo}
+      width={500}
+      height={500}
     />
   );
 };

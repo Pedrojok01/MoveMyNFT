@@ -1,45 +1,42 @@
 .header {
-    position: fixed;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 35px 0 0;
-    background: transparent !important;
-    z-index: 10;
+  position: fixed;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 35px 0 0;
+  background: transparent !important;
+  z-index: 10;
 }
 
 .logo {
-    width: 11vw;
-    min-width: 120px;
-    height: auto;
-    padding-top: 50px;
+  width: 6.5vw;
+  min-width: 80px;
+  height: auto;
+  padding-top: 1.5rem;
 }
 
 .headerRight {
-    display: inline-flex;
-    gap: 1rem;
+  display: inline-flex;
+  gap: 1rem;
 }
 
 @media (width < 1050px) {
-    .header {
-        padding: 10px 30px 0 0 !important;
-    }
-    .headerRight {
-        gap: 0.5rem;
-    }
-    .logo {
-        width: 10vw;
-    }
+  .header {
+    padding: 10px 30px 0 0 !important;
+  }
+  .headerRight {
+    gap: 0.5rem;
+  }
 }
 
 @media (width < 550px) {
-    .header {
-        padding: 15px 30px 15px 5px !important;
-    }
-    .logo {
-        min-width: 50px;
-        width: 60px;
-        padding-top: 26px;
-    }
+  .header {
+    padding: 15px 30px 15px 5px !important;
+  }
+  .logo {
+    min-width: 70px;
+    width: 70px;
+    padding-top: 26px;
+  }
 }

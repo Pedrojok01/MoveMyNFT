@@ -1,7 +1,9 @@
 <div align="center">
-<img src="./public/images/movemynft_logo_transparent.png"  width="500px" />
+<img src="./public/images/movemynft_logo_transparent.png"  width="200px" />
 
-<h1><strong> The easiest and fastest way to transfer your NFTs between addresses.</strong></h1>
+<h1><strong>Move My NFT</strong>
+<br></br>
+ The easiest and fastest way to transfer your NFTs between addresses.</h1>
 
 [![Stargazers](https://img.shields.io/github/stars/Pedrojok01/movemynft)](https://github.com/Pedrojok01/movemynft-app/stargazers)
 [![Issues](https://img.shields.io/github/issues/Pedrojok01/movemynft)](https://github.com/Pedrojok01/movemynft-app/issues)
