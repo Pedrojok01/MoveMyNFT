@@ -3,7 +3,6 @@ import { NextPage } from "next";
 import { Rubik } from "next/font/google";
 import Head from "next/head";
 
-
 import { Content, HeaderPage } from "../components/elements/";
 
 const rubik = Rubik({
