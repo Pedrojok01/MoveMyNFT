@@ -1,7 +1,8 @@
+"use client";
 import React, { FC, ReactNode, useCallback, useContext, useEffect } from "react";
 
 import { v4 as uuidv4 } from "uuid";
-import { useAccount, useNetwork } from "wagmi";
+import { useAccount } from "wagmi";
 
 import { useFetchNFTs } from "@/hooks";
 import { useStore } from "@/store/store";
@@ -13,10 +14,9 @@ type Props = {
 };
 
 const UserDataProvider: FC<Props> = ({ children }) => {
-  const { address, isConnected } = useAccount();
+  const { address, isConnected, chain } = useAccount();
   const { setCollections, setLoading, setError, reset } = useStore();
   const { fetchNFTs } = useFetchNFTs();
-  const { chain } = useNetwork();
   const chainId: number = chain !== undefined ? chain.id : 1;
 
   useEffect(() => {
@@ -53,21 +53,19 @@ const UserDataProvider: FC<Props> = ({ children }) => {
       });
 
       setCollections(collections);
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
-      setError(error.message);
+      setError((error as Error).message ?? error);
     } finally {
       setLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address, chainId]);
+  }, [address, chainId, fetchNFTs, setCollections, setLoading, setError]);
 
   useEffect(() => {
     if (address && chainId) {
       fetchWeb3Data();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address, chainId]);
+  }, [address, chainId, fetchWeb3Data]);
 
   return (
     <UserContext.Provider

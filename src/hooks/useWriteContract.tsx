@@ -1,4 +1,4 @@
-import { PublicClient, getContract } from "viem";
+import { getContract } from "viem";
 import { usePublicClient, useWalletClient } from "wagmi";
 
 import { useUserData } from "@/context/UserContextProvider";
@@ -9,18 +9,18 @@ import { notifyError, notifySuccess, openNotification } from "@/utils/notificati
 
 export const useWriteContract = () => {
   const { chainId } = useUserData();
-  const publicClient: PublicClient = usePublicClient();
+  const publicClient = usePublicClient();
   const { data: walletClient } = useWalletClient();
 
   /* Approve an NFT collection (both ERC721 and ERC1155):
    *******************************************************/
   const approveNft = async (nft: string) => {
-    if (!walletClient) throw new Error("Wallet client not initialized");
+    if (!walletClient || !publicClient) throw new Error("Client not initialized");
 
     const nftInstance = getContract({
       abi: NFT_721_ABI, // Same for ERC1155
       address: nft as `0x${string}`,
-      walletClient: walletClient,
+      client: walletClient,
     });
 
     try {
@@ -31,7 +31,7 @@ export const useWriteContract = () => {
       });
       openNotification("success", "NFT Approval set", "Allowance successfully set.");
       return { success: true, data: hash, error: null };
-    } catch (error: any) {
+    } catch (error) {
       const message = handleErrors(error, MMNFT_ABI);
       notifyError(message);
       return { success: false, data: null, error: message };
@@ -45,12 +45,12 @@ export const useWriteContract = () => {
   type Params = [string, string, string[], number[]?];
 
   const executeTransfer = async (method: Method, params: Params) => {
-    if (!walletClient) throw new Error("Wallet client not initialized");
+    if (!walletClient || !publicClient) throw new Error("Client not initialized");
 
     const MOVE_MY_NFTInstance = getContract({
       abi: MMNFT_ABI,
       address: MOVE_MY_NFT as `0x${string}`,
-      walletClient: walletClient,
+      client: walletClient,
     });
 
     try {
@@ -61,7 +61,7 @@ export const useWriteContract = () => {
       });
       notifySuccess(hash, chainId);
       return { success: true, data: transaction, error: null };
-    } catch (error: any) {
+    } catch (error) {
       const message = handleErrors(error, MMNFT_ABI);
       notifyError(message);
       return { success: false, data: null, error: message };

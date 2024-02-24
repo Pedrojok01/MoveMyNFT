@@ -48,8 +48,8 @@ export const useContractExecution = () => {
         if (!approvalStatus.success) throw new Error(`Approval failed: ${approvalStatus.error}`);
       }
       success = true;
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError((err as Error).message ?? err);
     } finally {
       setLoading(false);
       return success;
@@ -76,8 +76,8 @@ export const useContractExecution = () => {
       } else {
         throw new Error(`Unsupported collection type: ${collectionType}`);
       }
-    } catch (err: any) {
-      setError(err.message ?? err);
+    } catch (err) {
+      setError((err as Error).message ?? err);
     } finally {
       setLoading(false);
     }

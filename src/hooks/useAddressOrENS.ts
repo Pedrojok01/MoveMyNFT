@@ -8,8 +8,13 @@ export const useAddressOrENS = () => {
   const [account, setAccount] = useState<string>("");
 
   useEffect(() => {
-    if (ensName) setAccount(ensName);
-    else setAccount(address as string);
+    if (address === undefined || address === null) {
+      setAccount("");
+    } else if (ensName) {
+      setAccount(ensName);
+    } else {
+      setAccount(address);
+    }
   }, [address, ensName]);
 
   return account;

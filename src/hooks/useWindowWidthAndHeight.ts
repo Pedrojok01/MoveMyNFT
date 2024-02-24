@@ -1,20 +1,23 @@
 import { useEffect, useState } from "react";
 
+const MOBILE_MAX_WIDTH = 549;
+const TABLET_MAX_WIDTH = 768;
+const SMALL_SCREEN_MAX_WIDTH = 1050;
+
 export const useWindowWidthAndHeight = () => {
-  const windowInnerSize = [window.innerWidth, window.innerHeight];
-  const [windowSize, setWidowSize] = useState<number[]>(windowInnerSize);
+  const [windowSize, setWindowSize] = useState<number[]>([window.innerWidth, window.innerHeight]);
 
   useEffect(() => {
     const changeWindowSize = () => {
-      setWidowSize([window.innerWidth, window.innerHeight]);
+      setWindowSize([window.innerWidth, window.innerHeight]);
     };
     window.addEventListener("resize", changeWindowSize);
     return () => window.removeEventListener("resize", changeWindowSize);
   }, []);
 
-  const isMobileOnly = windowSize[0] <= 549;
-  const isMobile = windowSize[0] <= 768;
-  const isTablet = windowSize[0] <= 1050;
+  const isMobile = windowSize[0] <= MOBILE_MAX_WIDTH;
+  const isTablet = windowSize[0] <= TABLET_MAX_WIDTH;
+  const isSmallScreen = windowSize[0] <= SMALL_SCREEN_MAX_WIDTH;
 
-  return { windowSize, isMobileOnly, isMobile, isTablet };
+  return { windowSize, isMobile, isTablet, isSmallScreen };
 };

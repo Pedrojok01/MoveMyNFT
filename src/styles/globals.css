@@ -127,10 +127,12 @@ a {
 }
 
 .error-text {
-  color: red;
+  color: white;
   margin-block: 15px;
-  font-size: 12px;
-  background-color: white;
+  font-size: 13px;
+  padding: 3px;
+  background-color: red;
+  border-radius: 4px;
 }
 
 @media (width < 1050px) {

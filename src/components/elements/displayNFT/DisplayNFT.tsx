@@ -7,7 +7,7 @@ import { useIPFS, useWindowWidthAndHeight } from "@/hooks";
 const { Meta } = Card;
 
 const DisplayNFT: FC<DisplayNFTProps> = ({ item, index, isNFTSelected, handleClickCard }) => {
-  const { isTablet } = useWindowWidthAndHeight();
+  const { isSmallScreen } = useWindowWidthAndHeight();
   const { resolveLink } = useIPFS();
   const nft = useMemo(() => resolveLink(item), [item, resolveLink]);
 
@@ -17,7 +17,7 @@ const DisplayNFT: FC<DisplayNFTProps> = ({ item, index, isNFTSelected, handleCli
       size="small"
       hoverable
       style={{
-        width: isTablet ? 150 : 190,
+        width: isSmallScreen ? 150 : 190,
         border: isNFTSelected(nft) ? "8px solid #e7e779" : undefined,
         opacity: isNFTSelected(nft) ? "1" : "0.9",
         transform: isNFTSelected(nft) ? undefined : "scale(0.9)",
@@ -27,7 +27,7 @@ const DisplayNFT: FC<DisplayNFTProps> = ({ item, index, isNFTSelected, handleCli
           preview={false}
           src={nft?.image}
           alt=""
-          style={{ height: isTablet ? "150px" : "190px" }}
+          style={{ height: isSmallScreen ? "150px" : "190px" }}
         />
       }
       key={index}

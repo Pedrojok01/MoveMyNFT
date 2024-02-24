@@ -9,7 +9,7 @@ import styles from "./StepsPane.module.css";
 
 const StepsPane: FC = () => {
   const { displayPaneMode, nftsToTransfer } = useStore();
-  const { isMobileOnly, isTablet } = useWindowWidthAndHeight();
+  const { isMobile, isSmallScreen } = useWindowWidthAndHeight();
 
   const switchStep = () => {
     switch (displayPaneMode) {
@@ -32,25 +32,25 @@ const StepsPane: FC = () => {
 
   const items = [
     {
-      title: isTablet ? "Select Collection" : "Select the collection to transfer from",
+      title: isSmallScreen ? "Select Collection" : "Select the collection to transfer from",
       description:
-        isTablet && !isMobileOnly
+        isSmallScreen && !isMobile
           ? ""
           : "Select the collection you wish to transfer some, or all NFTs from.",
     },
     {
-      title: isTablet ? "Select NFTs" : "Choose the NFTs to transfer",
+      title: isSmallScreen ? "Select NFTs" : "Choose the NFTs to transfer",
       description:
-        isTablet && !isMobileOnly
+        isSmallScreen && !isMobile
           ? ""
           : nfts > 0
-          ? `${nfts} NFT${nfts > 1 ? "s" : ""} selected`
-          : "Select some of your NFTs, or all, and click on OK when you're done.",
+            ? `${nfts} NFT${nfts > 1 ? "s" : ""} selected`
+            : "Select some of your NFTs, or all, and click on OK when you're done.",
     },
     {
       title: "Approve & Transfer",
       description:
-        isTablet && !isMobileOnly
+        isSmallScreen && !isMobile
           ? ""
           : "Batch transfer all your NFTs in your new wallet in one go!",
     },
@@ -59,7 +59,7 @@ const StepsPane: FC = () => {
   return (
     <div className={styles.steps}>
       <Steps
-        direction={isTablet ? "horizontal" : "vertical"}
+        direction={isSmallScreen ? "horizontal" : "vertical"}
         current={switchStep()}
         items={items}
         className={styles.stepsContent}

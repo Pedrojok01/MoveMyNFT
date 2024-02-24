@@ -10,9 +10,9 @@ import styles from "./Done.module.css";
 
 const Done: FC<DoneProps> = ({ address, onReset }) => {
   const { nftsToTransfer } = useStore();
-  const { isMobile } = useWindowWidthAndHeight();
+  const { isTablet } = useWindowWidthAndHeight();
 
-  const addressToShow = isMobile ? getEllipsisTxt(address, 8) : address;
+  const addressToShow = isTablet ? getEllipsisTxt(address, 8) : address;
 
   return (
     <div className="small-pane">

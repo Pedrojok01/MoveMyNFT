@@ -1,4 +1,4 @@
-import { Address, PublicClient, getContract } from "viem";
+import { Address, getContract } from "viem";
 import { usePublicClient } from "wagmi";
 
 import { useUserData } from "@/context/UserContextProvider";
@@ -7,7 +7,7 @@ import { MOVE_MY_NFT } from "@/data/constant";
 
 export const useReadContract = () => {
   const { address } = useUserData();
-  const publicClient: PublicClient = usePublicClient();
+  const publicClient = usePublicClient();
 
   /* Check existing allowance of an NFT collection (both ERC721 or ERC1155):
    **************************************************************************/
@@ -17,7 +17,7 @@ export const useReadContract = () => {
     const nftInstance = getContract({
       abi: NFT_721_ABI,
       address: nft,
-      publicClient: publicClient,
+      client: publicClient,
     });
 
     try {

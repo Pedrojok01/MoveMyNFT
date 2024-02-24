@@ -1,3 +1,4 @@
+"use client";
 import { FC } from "react";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
@@ -16,7 +17,7 @@ const { Header } = Layout;
 
 const HeaderPage: FC = () => {
   const { setDisplayPaneMode } = useStore();
-  const { isMobileOnly } = useWindowWidthAndHeight();
+  const { isMobile } = useWindowWidthAndHeight();
 
   const handleClick = () => {
     setDisplayPaneMode("start");
@@ -26,7 +27,7 @@ const HeaderPage: FC = () => {
     <Header className={styles.header}>
       <Link href="/">
         <div onClick={handleClick} className={styles.logoDiv}>
-          <Logo /> {!isMobileOnly && <h1 className={styles.title}>Move My NFT</h1>}
+          <Logo /> {!isMobile && <h1 className={styles.title}>Move My NFT</h1>}
         </div>
       </Link>
 

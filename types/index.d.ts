@@ -3,7 +3,7 @@
 ***********************************************************/
 
 interface UserContext {
-  address?: `0x${string}` | undefined;
+  address?: `0x${string}`;
   chainId: number;
   isConnected: boolean;
   fetchWeb3Data: () => void;
@@ -92,9 +92,14 @@ interface EvmNft {
   verified_collection: boolean;
 }
 
+interface Attribute {
+  key: string;
+  value: string;
+}
+
 type NormalizedMetadata = {
   animation_url: string | null;
-  attributes: any[];
+  attributes: Attribute[];
   description: string;
   external_link: string | null;
   image: string;
@@ -143,8 +148,6 @@ interface DoneProps {
 /**********************************************************
                         DIVERS
 ***********************************************************/
-
-type MenuItem = Required<MenuProps>["items"][number];
 
 interface Item {
   label: string;

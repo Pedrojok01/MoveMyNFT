@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { SearchOutlined } from "@ant-design/icons";
 import { Input, InputRef } from "antd";
 import { isAddress } from "viem";
+import { normalize } from "viem/ens";
 import { useEnsResolver } from "wagmi";
 
 import { useUserData } from "@/context/UserContextProvider";
@@ -26,7 +27,6 @@ const AddressInput: React.FC<{
   const { data: resolvedAddress, isError: isResolverError } = useEnsResolver({
     name: userInput,
     chainId: 1,
-    enabled: isDomain && isSupportedENSNetwork,
   });
 
   const updateAddress = useCallback(
@@ -43,11 +43,11 @@ const AddressInput: React.FC<{
   );
 
   useEffect(() => {
-    if (resolvedAddress && isDomain) {
+    if (resolvedAddress && isDomain && isSupportedENSNetwork) {
       setAddress(resolvedAddress);
-      setUserInput(resolvedAddress);
+      setUserInput(normalize(resolvedAddress));
     }
-  }, [resolvedAddress, setAddress, isDomain]);
+  }, [resolvedAddress, isSupportedENSNetwork, setAddress, isDomain]);
 
   const displayError = error || (isResolverError ? "Error fetching ENS address" : null);
 
