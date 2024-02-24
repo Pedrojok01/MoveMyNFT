@@ -125,7 +125,7 @@ export const polygon: Chain = {
   },
   rpcUrls: {
     default: { http: ["https://polygon-rpc.com"] },
-    public: { http: ["https://poly-rpc.gateway.pokt.network"] },
+    public: { http: [`https://polygon-bor-rpc.publicnode.com`] },
   },
   blockExplorers: {
     default: { name: "", url: "https://polygonscan.com/" },
