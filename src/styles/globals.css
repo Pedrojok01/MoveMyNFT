@@ -71,9 +71,8 @@ a {
   box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.4);
 }
 
-.pane {
-  position: relative;
-  background: rgb(118, 123, 223);
+.pane,
+.small-pane {
   background: linear-gradient(
     315deg,
     rgba(69, 75, 205, 1) 0%,
@@ -81,6 +80,11 @@ a {
     rgba(223, 223, 228, 0.3) 100%
   );
   border-radius: 20px;
+  box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.4);
+}
+
+.pane {
+  position: relative;
   height: 100%;
   margin: auto;
   text-align: center;
@@ -93,17 +97,9 @@ a {
   transform: translate(-50%, -50%);
   flex-direction: column;
   padding: 30px;
-  border-radius: 20px;
   width: 90%;
   text-align: center;
   margin: auto;
-  background: linear-gradient(
-    315deg,
-    rgb(69, 75, 205) 0%,
-    rgba(159, 161, 198, 0.4) 50%,
-    rgba(223, 223, 228, 0.3) 100%
-  );
-  box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.4);
 }
 
 .pane-content {
@@ -127,7 +123,7 @@ a {
 }
 
 .error-text {
-  color: white;
+  color: var(--white);
   margin-block: 15px;
   font-size: 13px;
   padding: 3px;
@@ -164,17 +160,16 @@ a {
   height: 50px;
   margin: 20px 20px;
   border: 0;
-  background: black;
+  background: var(--black);
   min-width: 250px;
-  color: white;
+  color: var(--white);
   font-size: 25px;
   font-weight: 600;
   transition: all 0.3s ease-in-out;
 }
 .button-black-big:hover {
   transform: scale(1.02);
-  transition: all 0.3s ease-in-out;
-  color: white !important;
+  color: var(--white) !important;
 }
 
 .button-small {
@@ -187,13 +182,13 @@ a {
 }
 
 .black {
-  background: black;
-  color: white;
+  background: var(--black);
+  color: var(--white);
 }
 
 .white {
-  background: white;
-  color: black;
+  background: var(--white);
+  color: var(--black);
 }
 
 .button-align-right {
@@ -213,7 +208,7 @@ a {
 
 .ant-steps-item-title {
   font-size: 20px !important;
-  color: white !important;
+  color: var(--white) !important;
 }
 
 @media (width < 900px) {
@@ -235,7 +230,7 @@ a {
 
 .ant-steps-item-description {
   font-size: 14px !important;
-  color: black !important;
+  color: var(--black) !important;
 }
 
 @media (width < 549px) {
@@ -245,14 +240,14 @@ a {
 }
 
 .ant-steps-item-icon {
-  background-color: white !important;
+  background-color: var(--white) !important;
   border-color: transparent !important;
 }
 
 .ant-steps-icon {
   font-size: medium;
   font-weight: 600 !important;
-  color: black !important;
+  color: var(--black) !important;
 }
 
 .ant-steps-item-wait .ant-steps-item-icon {
@@ -260,30 +255,30 @@ a {
 }
 
 .ant-steps-item-process .ant-steps-item-icon {
-  background-color: black !important;
+  background-color: var(--black) !important;
   border-color: rgb(37, 21, 252) !important;
 }
 
 .ant-steps-item-process .ant-steps-icon {
-  color: white !important;
+  color: var(--white) !important;
 }
 
 .ant-steps-item-finish .ant-steps-item-icon {
-  background-color: black !important;
+  background-color: var(--black) !important;
 }
 
 .ant-steps-item-finish .ant-steps-icon {
-  color: white !important;
+  color: var(--white) !important;
 }
 
 .ant-steps-item-tail::after {
-  background-color: white !important;
+  background-color: var(--white) !important;
 }
 
 /* Antd transfer */
 .ant-transfer-list-header {
   background: transparent !important;
-  color: #fff !important;
+  color: var(--white) !important;
   border: 0 !important;
 }
 
@@ -292,7 +287,7 @@ a {
   height: 100%;
   margin-top: 35px;
   text-align: center;
-  color: white !important;
+  color: var(--white) !important;
 }
 
 .ant-transfer-list-content-item-remove {
@@ -323,7 +318,6 @@ a {
   display: flex !important;
   justify-content: center !important;
   padding: 1rem !important;
-
   top: 50% !important;
   left: 50% !important;
   transform: translate(-50%, -50%) !important;
