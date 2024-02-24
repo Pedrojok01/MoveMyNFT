@@ -26,12 +26,19 @@
                 "./public/*"
             ]
         },
+        "plugins": [
+            {
+                "name": "next"
+            }
+        ]
     },
     "include": [
         "next-env.d.ts",
         "types/index.d.ts",
         "**/*.ts",
         "**/*.tsx",
+        ".next/types/**/*.ts",
+        "src/app/pagetsx"
     ],
     "exclude": [
         "node_modules",

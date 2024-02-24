@@ -1,9 +1,8 @@
-import { Chain } from "wagmi";
+import { Chain } from "viem";
 
 export const ethereum: Chain = {
   id: 1,
   name: "Ethereum",
-  network: "Ethereum",
   nativeCurrency: {
     name: "ETH",
     symbol: "ETH",
@@ -22,7 +21,6 @@ export const ethereum: Chain = {
 export const goerli: Chain = {
   id: 5,
   name: "Goerli",
-  network: "Goerli",
   nativeCurrency: {
     name: "ETH",
     symbol: "ETH",
@@ -41,7 +39,6 @@ export const goerli: Chain = {
 export const optimism: Chain = {
   id: 10,
   name: "Optimism",
-  network: "optimism",
   nativeCurrency: {
     name: "Ether",
     symbol: "ETH",
@@ -60,7 +57,6 @@ export const optimism: Chain = {
 export const optimismGoerli: Chain = {
   id: 420,
   name: "Optimism Goerli",
-  network: "optimism-goerli",
   nativeCurrency: {
     name: "Goerli Ether",
     symbol: "ETH",
@@ -79,7 +75,6 @@ export const optimismGoerli: Chain = {
 export const arbitrum: Chain = {
   id: 42161,
   name: "Arbitrum One",
-  network: "arbitrum",
   nativeCurrency: {
     name: "Ether",
     symbol: "ETH",
@@ -98,7 +93,6 @@ export const arbitrum: Chain = {
 export const arbitrumGoerli: Chain = {
   id: 421613,
   name: "Arbitrum Goerli",
-  network: "arbitrum-goerli",
   nativeCurrency: {
     name: "Arbitrum Goerli Ether",
     symbol: "FTM",
@@ -117,7 +111,6 @@ export const arbitrumGoerli: Chain = {
 export const polygon: Chain = {
   id: 137,
   name: "Polygon network",
-  network: "Polygon",
   nativeCurrency: {
     name: "MATIC",
     symbol: "MATIC",
@@ -136,7 +129,6 @@ export const polygon: Chain = {
 export const mumbai: Chain = {
   id: 80001,
   name: "Mumbai Testnet",
-  network: "Mumbai",
   nativeCurrency: {
     name: "MATIC",
     symbol: "MATIC",
@@ -155,7 +147,6 @@ export const mumbai: Chain = {
 export const fantom: Chain = {
   id: 250,
   name: "Fantom",
-  network: "fantom",
   nativeCurrency: {
     name: "Fantom",
     symbol: "FTM",
@@ -174,7 +165,6 @@ export const fantom: Chain = {
 export const fantomTestnet: Chain = {
   id: 4002,
   name: "Fantom Testnet",
-  network: "fantom-testnet",
   nativeCurrency: {
     name: "Fantom",
     symbol: "FTM",
@@ -193,7 +183,6 @@ export const fantomTestnet: Chain = {
 export const bnb: Chain = {
   id: 56,
   name: "BNB_Chain",
-  network: "BNB_Chain",
   nativeCurrency: {
     name: "BNB",
     symbol: "BNB",
@@ -212,7 +201,6 @@ export const bnb: Chain = {
 export const bnb_test: Chain = {
   id: 97,
   name: "BNB_Testnet",
-  network: "BNB_Testnet",
   nativeCurrency: {
     name: "BNB",
     symbol: "BNB",

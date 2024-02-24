@@ -1,7 +1,14 @@
 import Moralis from "moralis";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from "next/server";
 
 import { getMoralisChain } from "@/utils/getMoralisChain";
+
+type RequestBody = {
+  account: `0x${string}`;
+  chainId: number;
+};
+
+export const runtime = "nodejs";
 
 const MORALIS_API_KEY = process.env.MORALIS_API_KEY;
 
@@ -16,16 +23,17 @@ if (!Moralis.Core.isStarted) {
   });
 }
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { account, chainId } = req.body;
+export async function POST(request: NextRequest): Promise<NextResponse> {
+  const { account, chainId } = (await request.json()) as RequestBody;
+
   const moralisChain = getMoralisChain(chainId);
 
   if (!account || !chainId) {
-    return res.status(400).json({ success: false, message: "Missing parameters" });
+    return NextResponse.json({ success: false, message: "Missing parameters" }, { status: 400 });
   }
 
   if (!moralisChain) {
-    return res.status(400).json({ success: false, message: "moralisChain missing" });
+    return NextResponse.json({ success: false, message: "moralisChain missing" }, { status: 400 });
   }
 
   try {
@@ -60,7 +68,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const collections = response_collections.raw.result;
 
-    res.status(200).json({
+    return NextResponse.json({
       success: true,
       message: "NFTs fetched successfully!",
       data: {
@@ -68,14 +76,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         collections,
       },
     });
-  } catch (error: any) {
-    console.error(error);
-    res.status(400).json({
-      success: false,
-      message: `An error occured while fetching the NFTs: ${error.message}`,
-      data: null,
-    });
-  }
-};
+  } catch (error) {
+    const errorMessage = (error as Error).message ?? "Unknown error occurred";
+    console.error("Error in Moralis data fetching:", errorMessage);
 
-export default handler;
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Server error occurred",
+        error: errorMessage,
+        data: null,
+      },
+      { status: 500 }
+    );
+  }
+}

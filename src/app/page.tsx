@@ -1,9 +1,10 @@
+"use client";
 import { Layout } from "antd";
 import { NextPage } from "next";
 import { Rubik } from "next/font/google";
 import Head from "next/head";
 
-import { Content, HeaderPage } from "../components/elements/";
+import { Content, HeaderPage } from "../components/elements";
 
 const rubik = Rubik({
   subsets: ["latin"],
@@ -27,9 +28,9 @@ const MainPage: NextPage = () => {
 
       <HeaderPage />
 
-      <div className="content">
+      <main className="content">
         <Content />
-      </div>
+      </main>
     </Layout>
   );
 };

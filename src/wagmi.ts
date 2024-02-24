@@ -1,6 +1,16 @@
-import "@rainbow-me/rainbowkit/styles.css";
-import { getDefaultWallets } from "@rainbow-me/rainbowkit";
-import { configureChains, createConfig } from "wagmi";
+import { connectorsForWallets } from "@rainbow-me/rainbowkit";
+import {
+  argentWallet,
+  coinbaseWallet,
+  ledgerWallet,
+  metaMaskWallet,
+  rabbyWallet,
+  rainbowWallet,
+  safeWallet,
+  walletConnectWallet,
+} from "@rainbow-me/rainbowkit/wallets";
+import { Transport } from "viem";
+import { createConfig, http } from "wagmi";
 import {
   mainnet,
   goerli,
@@ -15,35 +25,61 @@ import {
   arbitrum,
   arbitrumGoerli,
 } from "wagmi/chains";
-import { alchemyProvider } from "wagmi/providers/alchemy";
-import { publicProvider } from "wagmi/providers/public";
 
 import { isProdEnv } from "./data/constant";
+import fantomLogo from "../public/images/fantom-ftm-logo.png";
 
-const alchemyApiKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
 const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
 
-if (!alchemyApiKey || !projectId) {
-  throw new Error("Some ENV variables are not defined");
+if (!projectId) {
+  throw new Error("WalletConnect Project ID is not defined");
 }
 
-export const { chains, publicClient } = configureChains(
+const connectors = connectorsForWallets(
   [
-    ...(isProdEnv
-      ? [mainnet, optimism, polygon, arbitrum, fantom, bsc]
-      : [goerli, optimismGoerli, polygonMumbai, arbitrumGoerli, fantomTestnet, bscTestnet]),
+    {
+      groupName: "Other",
+      wallets: [
+        metaMaskWallet,
+        rainbowWallet,
+        walletConnectWallet,
+        ledgerWallet,
+        rabbyWallet,
+        coinbaseWallet,
+        argentWallet,
+        safeWallet,
+      ],
+    },
   ],
-  [alchemyProvider({ apiKey: alchemyApiKey }), publicProvider()]
+  { appName: "MoveMyNFT", projectId: projectId }
 );
 
-const { connectors } = getDefaultWallets({
-  appName: "MoveMyNFT",
-  projectId: projectId,
-  chains: chains,
-});
+const customFantom = { ...fantom, iconUrl: fantomLogo.src };
+const customfantomTestnet = { ...fantomTestnet, iconUrl: fantomLogo.src };
+
+const transports: Record<number, Transport> = isProdEnv
+  ? {
+      [mainnet.id]: http(),
+      [polygon.id]: http(),
+      [optimism.id]: http(),
+      [arbitrum.id]: http(),
+      [fantom.id]: http(),
+      [bsc.id]: http(),
+    }
+  : {
+      [goerli.id]: http(),
+      [polygonMumbai.id]: http(),
+      [optimismGoerli.id]: http(),
+      [arbitrumGoerli.id]: http(),
+      [fantomTestnet.id]: http(),
+      [bscTestnet.id]: http(),
+    };
 
 export const wagmiConfig = createConfig({
-  autoConnect: true,
+  chains: isProdEnv
+    ? [mainnet, polygon, optimism, arbitrum, customFantom, bsc]
+    : [goerli, polygonMumbai, optimismGoerli, arbitrumGoerli, customfantomTestnet, bscTestnet],
   connectors,
-  publicClient,
+  transports,
+  ssr: true,
 });
