@@ -1,4 +1,4 @@
-export * from "./useAddressOrENS";
+export * from "./useAddressInput";
 export * from "./useContractExecution";
 export * from "./useIPFS";
 export * from "./useFetchNFTs";

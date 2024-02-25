@@ -74,7 +74,7 @@ const Transfer: FC<TransferProps> = ({ collectionAddress, address, setAddress })
 
           <div className={styles.buttonDiv}>
             <Button
-              className={`button-small black ${styles.backButton}`}
+              className={`button-small white ${styles.backButton}`}
               shape="round"
               onClick={onBackClick}
             >

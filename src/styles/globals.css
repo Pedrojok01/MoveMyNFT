@@ -160,16 +160,14 @@ a {
   height: 50px;
   margin: 20px 20px;
   border: 0;
-  background: var(--black);
   min-width: 250px;
-  color: var(--white);
   font-size: 25px;
   font-weight: 600;
   transition: all 0.3s ease-in-out;
 }
 .button-black-big:hover {
-  transform: scale(1.02);
-  color: var(--white) !important;
+  transform: scale(1.02) !important;
+  transition: all 0.3s ease-in-out !important;
 }
 
 .button-small {
@@ -179,16 +177,23 @@ a {
   border: 0;
   text-align: center;
   font-weight: 600;
+  background: var(--black);
 }
 
-.black {
-  background: var(--black);
-  color: var(--white);
+.button-small:hover {
+  transform: scale(1.02) !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+.black,
+.black:hover {
+  background: var(--black) !important;
+  color: var(--white) !important;
 }
 
 .white {
-  background: var(--white);
-  color: var(--black);
+  background: var(--white) !important;
+  color: var(--black) !important;
 }
 
 .button-align-right {
@@ -312,6 +317,7 @@ a {
 .ant-spin-nested-loading,
 .ant-spin-container {
   height: 100% !important;
+  width: 100% !important;
 }
 
 .ant-spin-nested-loading > div > .ant-spin {

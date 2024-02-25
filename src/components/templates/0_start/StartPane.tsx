@@ -16,7 +16,7 @@ const StartPane: FC = () => {
       </p>
       <div className={styles.buttonDiv}>
         <Button
-          className="button-black-big"
+          className="button-black-big black"
           shape="round"
           onClick={() => setDisplayPaneMode("selectCollection")}
         >
