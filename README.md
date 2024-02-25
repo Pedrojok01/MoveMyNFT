@@ -61,8 +61,6 @@ Example:
 
 ```jsx
 NEXT_PUBLIC_NODE_ENV = development;
-NEXT_PUBLIC_ALCHEMY_API_KEY = api_key_here;
-NEXT_PUBLIC_URL = "http://localhost:3000/";
 NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID = api_key_here;
 MORALIS_API_KEY = api_key_here;
 ALCHEMY_API_KEY = api_key_here;

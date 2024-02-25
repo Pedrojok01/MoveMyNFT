@@ -1,10 +1,8 @@
 import { useCallback } from "react";
 
-import { URL } from "@/data/constant";
-
 export const useFetchNFTs = () => {
   const fetchNFTs = useCallback(async (address: string, chainId: number) => {
-    const res = await fetch(`${URL}api/getNftFromWallet`, {
+    const res = await fetch("/api/getNftFromWallet", {
       method: "POST",
       headers: {
         accept: "application/json",
