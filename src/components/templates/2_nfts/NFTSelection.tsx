@@ -34,8 +34,7 @@ const NFTSelection: FC<NFTSelectionProps> = ({ collection }) => {
         setSelectedNFTs((prev) => [...prev, clickedNFT]);
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [isNFTSelected]
+    [isNFTSelected, selectedNFTs]
   );
 
   const onSelectAllNFTs = useCallback(() => {
@@ -61,17 +60,14 @@ const NFTSelection: FC<NFTSelectionProps> = ({ collection }) => {
         <p className={styles.text}>Select the NFTs to transfer</p>
       </div>
 
-      <div
-        className={styles.NFTs}
-        style={{ overflowY: collection.nfts?.length > 3 ? "scroll" : "hidden" }}
-      >
-        {collection.nfts.map((nft, index) => {
-          nft.image = nft.normalized_metadata.image;
+      <div className={styles.NFTs} style={{ overflowY: "auto" }}>
+        {collection.nfts.map((nft) => {
+          nft.image = nft.normalized_metadata?.image;
           return (
             <DisplayNFT
               key={`${nft.token_id}-${nft.token_address}`}
               item={nft}
-              index={index}
+              index={nft.uuid}
               isNFTSelected={() => isNFTSelected(nft)}
               handleClickCard={() => handleClickCard(nft)}
             />

@@ -25,6 +25,35 @@ const Content: FC = () => {
     setCollection(undefined);
   };
 
+  const renderPane = () => {
+    if (!isConnected || !isSupportedChain) {
+      return <Verification />;
+    }
+
+    switch (displayPaneMode) {
+      case "start":
+        return <StartPane />;
+      case "selectCollection":
+        return <CollectionSelection setCollection={setCollection} />;
+      case "nfts":
+        return collection && <NFTSelection collection={collection} />;
+      case "transfer":
+        return (
+          collection && (
+            <Transfer
+              collectionAddress={collection.token_address}
+              address={addressTotransfer}
+              setAddress={setAddressTotransfer}
+            />
+          )
+        );
+      case "done":
+        return <Done address={addressTotransfer} onReset={onReset} />;
+      default:
+        return <StartPane />;
+    }
+  };
+
   return (
     <>
       <div className="steps-pane">
@@ -32,27 +61,7 @@ const Content: FC = () => {
       </div>
 
       <div className="display-pane">
-        <div className="pane">
-          {isConnected && isSupportedChain ? (
-            <>
-              {displayPaneMode === "start" && <StartPane />}
-              {displayPaneMode === "selectCollection" && (
-                <CollectionSelection setCollection={setCollection} />
-              )}
-              {displayPaneMode === "nfts" && collection && <NFTSelection collection={collection} />}
-              {displayPaneMode === "transfer" && (
-                <Transfer
-                  collectionAddress={collection?.token_address}
-                  address={addressTotransfer}
-                  setAddress={setAddressTotransfer}
-                />
-              )}
-              {displayPaneMode === "done" && <Done address={addressTotransfer} onReset={onReset} />}
-            </>
-          ) : (
-            <Verification />
-          )}
-        </div>
+        <div className="pane">{renderPane()}</div>
       </div>
     </>
   );

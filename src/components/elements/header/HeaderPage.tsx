@@ -38,7 +38,7 @@ const HeaderPage: FC = () => {
   );
 };
 
-export const Logo = () => {
+export const Logo: FC = () => {
   return (
     <Image
       src={movemynft_logo_transparent.src}

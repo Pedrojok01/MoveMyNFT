@@ -61,7 +61,7 @@ interface Collection {
 }
 
 interface CollectionExtended extends Collection {
-  image: string | undefined;
+  image: string;
   uuid: string;
   nfts: nft[];
 }

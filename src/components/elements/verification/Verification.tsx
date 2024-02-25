@@ -5,13 +5,13 @@ import { useSuportedChains } from "@/hooks";
 
 import styles from "./Verification.module.css";
 
+const notConnected = "Connect your wallet to get started";
+const unupportedChain = `This chain is not supported, \n
+    please select a different chain`;
+
 const Verification: FC = () => {
   const { isConnected } = useUserData();
   const isSupportedChain = useSuportedChains();
-
-  const notConnected = "Connect your wallet to get started";
-  const unupportedChain = `This chain is not supported, \n
-    please select a different chain`;
 
   let message = "";
   if (!isConnected) {

@@ -1,31 +1,31 @@
 .title {
-    display: inline-flex;
-    gap: 1rem;
-    width: 95%;
-    justify-content: center;
+  display: inline-flex;
+  gap: 1rem;
+  width: 95%;
+  justify-content: center;
 }
 
 .selector {
-    display: inline-flex;
-    align-items: center;
+  display: inline-flex;
+  align-items: center;
 }
 
 .NFTs {
-    overflow-x: hidden;
-    max-height: 90%;
-    display: flex;
-    flex-wrap: wrap;
-    -webkit-box-pack: start;
-    justify-content: center;
-    margin: 0 auto;
-    max-width: 1000px;
-    gap: 15px;
+  overflow-x: hidden;
+  height: 90%;
+  max-width: 1000px;
+  display: flex;
+  flex-wrap: wrap;
+  -webkit-box-pack: start;
+  justify-content: center;
+  margin: 0 auto;
+  gap: 15px;
 }
 
 .text {
-    color: var(--white);
-    font-weight: 600;
-    letter-spacing: 1px;
-    font-size: 25px;
-    margin-block: 20px;
+  color: var(--white);
+  font-weight: 600;
+  letter-spacing: 1px;
+  font-size: 25px;
+  margin-block: 20px;
 }

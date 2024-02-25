@@ -7,28 +7,28 @@ import { useStore } from "@/store/store";
 
 import styles from "./StepsPane.module.css";
 
+const getStep = (displayPaneMode: string) => {
+  switch (displayPaneMode) {
+    case "start":
+      return -1;
+    case "selectCollection":
+      return 0;
+    case "nfts":
+      return 1;
+    case "transfer":
+      return 2;
+    case "done":
+      return 3;
+    default:
+      return 0;
+  }
+};
+
 const StepsPane: FC = () => {
   const { displayPaneMode, nftsToTransfer } = useStore();
   const { isMobile, isSmallScreen } = useWindowWidthAndHeight();
 
-  const switchStep = () => {
-    switch (displayPaneMode) {
-      case "start":
-        return -1;
-      case "selectCollection":
-        return 0;
-      case "nfts":
-        return 1;
-      case "transfer":
-        return 2;
-      case "done":
-        return 3;
-      default:
-        return 0;
-    }
-  };
-
-  const nfts = nftsToTransfer?.length;
+  const nfts = nftsToTransfer?.length || 0;
 
   const items = [
     {
@@ -60,7 +60,7 @@ const StepsPane: FC = () => {
     <div className={styles.steps}>
       <Steps
         direction={isSmallScreen ? "horizontal" : "vertical"}
-        current={switchStep()}
+        current={getStep(displayPaneMode)}
         items={items}
         className={styles.stepsContent}
       />

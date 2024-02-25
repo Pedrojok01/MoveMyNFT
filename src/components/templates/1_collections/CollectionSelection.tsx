@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useCallback, useEffect } from "react";
 
 import { Alert, Button, Spin } from "antd";
 
@@ -12,17 +12,19 @@ const CollectionSelection: FC<CollectionSelectionProps> = ({ setCollection }) =>
 
   useEffect(() => {
     setNftsToTransfer([]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [setNftsToTransfer]);
 
-  const handleClickCard = (card: CollectionExtended) => {
-    setCollection(card);
-    setDisplayPaneMode("nfts");
-  };
+  const handleClickCard = useCallback(
+    (card: CollectionExtended) => {
+      setCollection(card);
+      setDisplayPaneMode("nfts");
+    },
+    [setCollection, setDisplayPaneMode]
+  );
 
-  const onBackClick = () => {
+  const onBackClick = useCallback(() => {
     setDisplayPaneMode("start");
-  };
+  }, [setDisplayPaneMode]);
 
   return (
     <div className="pane-content">
@@ -33,10 +35,7 @@ const CollectionSelection: FC<CollectionSelectionProps> = ({ setCollection }) =>
           <div className={styles.NFTs} style={{ overflowY: "hidden" }}></div>
         </Spin>
       ) : (
-        <div
-          className={styles.NFTs}
-          style={{ overflowY: collections?.length === 0 ? "hidden" : "scroll" }}
-        >
+        <div className={styles.NFTs} style={{ overflowY: "auto" }}>
           <UserAlerts total={collections?.length} />
           {collections?.map((collection) => {
             return (
