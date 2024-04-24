@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 import type { Metadata } from "next";
 
 import { Providers } from "./providers";
@@ -10,7 +12,7 @@ export const metadata: Metadata = {
     "Batch Transfer NFTs - The easiest and fastest way to transfer some, or all your NFTs from one collection between addresses. ",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
       <body style={{ fontFamily: "Sora, sans-serif" }}>

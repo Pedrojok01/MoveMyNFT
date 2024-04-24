@@ -1,4 +1,4 @@
-export const isProdEnv = process.env.NEXT_PUBLIC_NODE_ENV === "production" ? true : false;
+export const isProdEnv = process.env.NEXT_PUBLIC_NODE_ENV === "production";
 
 export const MAX_INT = 2n ** 256n - 1n;
 

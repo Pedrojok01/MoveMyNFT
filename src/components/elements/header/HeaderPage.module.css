@@ -4,21 +4,21 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 35px 0 0;
+  padding: 15px 35px 0 20px;
   background: transparent !important;
   z-index: 10;
 }
 
 .logoDiv {
   display: inline-flex;
-  height: 100px;
+  height: 64px;
+  align-items: center;
   gap: 5px;
 }
 
 .logo {
-  width: 100px;
-  height: 100px;
-  padding-top: 1.5rem;
+  width: 80px;
+  height: 80px;
 }
 
 .title {
@@ -26,7 +26,6 @@
   font-weight: 600;
   color: #fff;
   margin: 0;
-  padding-top: 28px;
 }
 
 .headerRight {
@@ -50,6 +49,5 @@
   .logo {
     min-width: 70px;
     width: 70px;
-    padding-top: 26px;
   }
 }

@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, ReactNode, useCallback, useContext, useEffect } from "react";
+import React, { FC, ReactNode, useCallback, useContext, useEffect, useMemo } from "react";
 
 import { v4 as uuidv4 } from "uuid";
 import { useAccount } from "wagmi";
@@ -67,18 +67,17 @@ const UserDataProvider: FC<Props> = ({ children }) => {
     }
   }, [address, chainId, fetchWeb3Data]);
 
-  return (
-    <UserContext.Provider
-      value={{
-        address,
-        chainId,
-        isConnected,
-        fetchWeb3Data,
-      }}
-    >
-      {children}
-    </UserContext.Provider>
+  const value = useMemo(
+    () => ({
+      address,
+      chainId,
+      isConnected,
+      fetchWeb3Data,
+    }),
+    [address, chainId, isConnected, fetchWeb3Data]
   );
+
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 
 const useUserData = () => {

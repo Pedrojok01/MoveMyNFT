@@ -24,6 +24,19 @@ const getStep = (displayPaneMode: string) => {
   }
 };
 
+function getDescription(isSmallScreen: boolean, isMobile: boolean, nfts = 0) {
+  if (isSmallScreen && !isMobile) {
+    return "";
+  }
+
+  switch (nfts) {
+    case 0:
+      return "Select some of your NFTs, or all, and click on OK when you're done.";
+    default:
+      return `${nfts} NFT${nfts > 1 ? "s" : ""} selected`;
+  }
+}
+
 const StepsPane: FC = () => {
   const { displayPaneMode, nftsToTransfer } = useStore();
   const { isMobile, isSmallScreen } = useWindowWidthAndHeight();
@@ -40,12 +53,7 @@ const StepsPane: FC = () => {
     },
     {
       title: isSmallScreen ? "Select NFTs" : "Choose the NFTs to transfer",
-      description:
-        isSmallScreen && !isMobile
-          ? ""
-          : nfts > 0
-            ? `${nfts} NFT${nfts > 1 ? "s" : ""} selected`
-            : "Select some of your NFTs, or all, and click on OK when you're done.",
+      description: getDescription(isSmallScreen, isMobile, nfts),
     },
     {
       title: "Approve & Transfer",

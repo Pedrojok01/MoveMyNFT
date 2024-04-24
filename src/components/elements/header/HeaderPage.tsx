@@ -25,10 +25,8 @@ const HeaderPage: FC = () => {
 
   return (
     <Header className={styles.header}>
-      <Link href="/">
-        <div onClick={handleClick} className={styles.logoDiv}>
-          <Logo /> {!isMobile && <h1 className={styles.title}>Move My NFT</h1>}
-        </div>
+      <Link href="/" onClick={handleClick} className={styles.logoDiv}>
+        <Logo /> {!isMobile && <h1 className={styles.title}>Move My NFT</h1>}
       </Link>
 
       <div className={styles.headerRight}>
