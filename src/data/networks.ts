@@ -28,7 +28,7 @@ export const goerli: Chain = {
   },
   rpcUrls: {
     default: { http: ["https://goerli.blockpi.network/v1/rpc/public"] },
-    public: { http: ["https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"] },
+    public: { http: ["https://goerli.blockpi.network/v1/rpc/public"] },
   },
   blockExplorers: {
     default: { name: "", url: "https://goerli.etherscan.io/" },

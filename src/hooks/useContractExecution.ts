@@ -39,20 +39,21 @@ export const useContractExecution = () => {
   const approve = async (collectionAddress: string): Promise<boolean> => {
     setLoading(true);
     setError(null);
-    let success = false;
 
     try {
       const approval: boolean = await checkNftAllowance(collectionAddress as `0x${string}`);
+
       if (!approval) {
         const approvalStatus = await approveNft(collectionAddress);
         if (!approvalStatus.success) throw new Error(`Approval failed: ${approvalStatus.error}`);
       }
-      success = true;
+
+      return true;
     } catch (err) {
       setError((err as Error).message ?? err);
+      return false;
     } finally {
       setLoading(false);
-      return success;
     }
   };
 
