@@ -16,7 +16,7 @@
 
 Multichain Dapp deployed on Ethereum, Optimism, Arbitrum, Polygon, Fantom and Binance Smart-Chain. Allow any user to quickly and simply transfer some, or all NFTs from a collection (either ERC721 or ERC1155) from one address to another in one clic.
 
-- Website: https://movemynft.com/
+- Website: https://movemynft.pedrojok.com/
 - WalletConnect Explorer: https://walletconnect.com/explorer/movemynft
   <br></br>
 

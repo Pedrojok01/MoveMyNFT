@@ -51,7 +51,7 @@ const connectors = connectorsForWallets(
       ],
     },
   ],
-  { appName: "MoveMyNFT", projectId: projectId, appUrl: "https://movemynft.com" }
+  { appName: "MoveMyNFT", projectId: projectId, appUrl: "https://movemynft.pedrojok.com" }
 );
 
 const customFantom = { ...fantom, iconUrl: fantomLogo.src };
